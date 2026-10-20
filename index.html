@@ -107,19 +107,63 @@
 
     .ribbon-tab {
       padding: 6px 12px 7px;
+      border: none;
+      border-radius: 4px 4px 0 0;
+      background: none;
       font-size: 13.5px;
       font-weight: 700;
       color: var(--xl-dark);
       box-shadow: inset 0 -3px 0 var(--xl);
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
+    .ribbon-tab:hover { background: #e9e8e7 }
     .ribbon-tab-off { font-weight: 400; color: var(--muted); box-shadow: none }
+
+    /* 리본 접기 (엑셀의 '탭만 표시'): 접히면 탭만 남고, 탭을 누르면 시트 위로 잠깐 펼쳐짐 */
+    .app { position: relative }
+    .ribbon-wrap { position: relative; flex-shrink: 0 }
+    .app.ribbon-collapsed .ribbon-tab { box-shadow: none }
+    .app.ribbon-collapsed.ribbon-pop .ribbon-tab { box-shadow: inset 0 -3px 0 var(--xl) }
+    .app.ribbon-collapsed .ribbon-wrap { display: none }
+    .app.ribbon-collapsed .fxbar { border-top: 1px solid var(--line); border-radius: 6px 6px 0 0 }
+    .app.ribbon-collapsed.ribbon-pop .ribbon-wrap { display: block; position: absolute; top: 74px; left: 0; right: 0; z-index: 40 }
+    .app.ribbon-pop .ribbon { border-radius: 0 0 6px 6px; box-shadow: 0 8px 18px rgba(0, 0, 0, .18) }
+
+    .ribbon-pin {
+      position: absolute;
+      right: 12px;
+      bottom: 4px;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 24px;
+      padding: 0;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: var(--panel);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .ribbon-pin:hover { background: #f0f0f0; border-color: #e0e0e0; color: var(--text) }
+    .ribbon-pin svg { width: 16px; height: 16px }
+    .ribbon-pin .pin-pin, .app.ribbon-pop .ribbon-pin .pin-up { display: none }
+    .app.ribbon-pop .ribbon-pin .pin-pin { display: block }
+
+    /* 접혔을 때 탭 줄 오른쪽 끝(˄가 있던 자리)의 ˅ 펼치기 버튼. 잠깐 펼친 동안은 리본 안의 📌가 대신함 */
+    .ribbon-pin.ribbon-expand { position: static; display: none; align-self: center; margin: 0 8px 0 auto; background: none }
+    .app.ribbon-collapsed:not(.ribbon-pop) .ribbon-expand { display: flex }
 
     .ribbon {
       display: flex;
       align-items: stretch;
       margin: 0 6px;
-      padding: 4px 2px 2px;
+      padding: 4px 40px 2px 2px;   /* 오른쪽은 리본 축소 버튼 자리 */
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 6px 6px 0 0;
@@ -1015,7 +1059,7 @@
     .fn-example { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 6px 10px; background: var(--xl-weak); border-radius: 4px }
     .fn-example .sw { display: inline-block; width: 22px; height: 22px; border: 1px solid rgba(0, 0, 0, .25); border-radius: 3px }
 
-    /* ── 채도 그래프 (오른쪽 작업창: 엑셀 차트 + 스크롤 막대) ── */
+    /* ── 대비 그래프 (오른쪽 작업창: 엑셀 차트 + 스크롤 막대) ── */
     .sat-pane {
       flex: none;
       width: 372px;
@@ -1202,10 +1246,18 @@
       <div class="doc-title">RGB체험 — 웹 버전 (설치 없이 바로 사용)</div>
     </header>
 
-    <div class="ribbon-tabs" aria-hidden="true">
-      <span class="ribbon-tab">RGB 체험</span>
+    <div class="ribbon-tabs" id="ribbonTabs">
+      <button type="button" class="ribbon-tab" id="ribbonTab" aria-expanded="true" aria-controls="ribbonWrap" title="두 번 누르면 리본을 접거나 펼칩니다 (Ctrl+F1)">RGB 체험</button>
+      <button type="button" class="ribbon-pin ribbon-expand" id="ribbonExpand" aria-label="리본 펼치기 (Ctrl+F1)" title="리본 펼치기 (Ctrl+F1)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 6 4.5 4.5 4.5-4.5" /></svg>
+      </button>
     </div>
 
+    <div class="ribbon-wrap" id="ribbonWrap">
+    <button type="button" class="ribbon-pin" id="ribbonPin" aria-label="리본 축소 (Ctrl+F1)" title="리본 축소 (Ctrl+F1)">
+      <svg class="pin-up" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 10 4.5-4.5 4.5 4.5" /></svg>
+      <svg class="pin-pin" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.5h4l-.6 4 2.1 2H4.5l2.1-2z" /><path d="M8 8.5v5" stroke-linecap="round" /></svg>
+    </button>
     <div class="ribbon" role="toolbar" aria-label="RGB 체험 메뉴">
       <div class="rgroup" role="group" aria-labelledby="grpImage">
         <div class="rgroup-btns">
@@ -1357,7 +1409,7 @@
 
       <div class="rgroup" role="group" aria-labelledby="grpSat">
         <div class="rgroup-btns">
-          <button type="button" class="rbtn" data-action="satLab" title="오른쪽에 채도 그래프 작업창(스크롤 막대 + 차트)을 열거나 닫습니다. a를 움직이면 R·G·B 시트 숫자가 바로 바뀝니다.">
+          <button type="button" class="rbtn" data-action="satLab" title="오른쪽에 대비 그래프 작업창(스크롤 막대 + 차트)을 열거나 닫습니다. a를 움직이면 R·G·B 시트 숫자가 바로 바뀝니다. 기준점을 칸마다 밝기(Y)로 바꾸면 채도 조절이 됩니다.">
             <svg viewBox="0 0 32 32" aria-hidden="true">
               <rect x="3" y="3" width="26" height="26" rx="4" fill="#fff" stroke="#8a8886" stroke-width="1.2" />
               <path d="M7 6v20h20" fill="none" stroke="#605e5c" stroke-width="1.4" />
@@ -1367,10 +1419,10 @@
               <circle cx="11" cy="9" r="1.8" fill="#d13438" />
               <circle cx="21" cy="21" r="1.8" fill="#0f6cbd" />
             </svg>
-            채도<br>그래프
+            대비<br>그래프
           </button>
         </div>
-        <div class="rgroup-label" id="grpSat">채도</div>
+        <div class="rgroup-label" id="grpSat">대비</div>
       </div>
 
       <div class="rgroup" role="group" aria-labelledby="grpHelp">
@@ -1386,6 +1438,7 @@
         </div>
         <div class="rgroup-label" id="grpHelp">안내</div>
       </div>
+    </div>
     </div>
 
     <div class="fxbar">
@@ -1499,6 +1552,7 @@
                 <li>열 머리글(A, B…) 사이 경계를 끌면 너비가, 행 번호 사이 경계를 끌면 높이가 바뀝니다. 두 번 누르면 자동 맞춤.</li>
                 <li>여러 열을 고른 뒤 <b>셀 › 서식 › 열 너비</b>로 한꺼번에 정할 수 있어요.</li>
                 <li>너비와 높이를 작게 하고 색조를 주면 셀이 그대로 그림처럼 보입니다.</li>
+                <li>시트를 넓게 보려면 메뉴(리본) 오른쪽 아래 <b>˄</b>를 누르거나 <kbd>Ctrl</kbd>+<kbd>F1</kbd>, 또는 <b>RGB 체험</b> 탭을 두 번 누르세요. 접힌 동안에는 같은 자리의 <b>˅</b>를 누르면 다시 펼쳐지고, 탭을 한 번 누르면 메뉴가 잠깐 펼쳐집니다(📌를 누르면 그대로 고정).</li>
               </ul>
             </li>
             <li class="step">
@@ -1511,10 +1565,21 @@
               </ul>
             </li>
             <li class="step">
-              <h2><span class="step-no">11</span>채도 그래프로 a 움직여 보기</h2>
+              <h2><span class="step-no">11</span>절대 참조($)로 한 칸을 고정하기</h2>
               <ul>
-                <li><b>채도 › 채도 그래프</b>를 누르면 오른쪽에 엑셀처럼 작은 표·스크롤 막대·차트가 있는 작업창이 열립니다. R·G·B·Canvas 어느 시트에서나 그대로 보여요.</li>
-                <li>표의 <b>B1</b>이 기울기 a, <b>B2</b>가 기준점 128, <b>B3</b>이 수식 <b>=B2+B1*(x-B2)</b>입니다. 차트의 직선은 항상 점 <b>(128, 128)</b>을 지납니다.</li>
+                <li>수식을 옆 칸으로 복사하면 <b>A1</b> 같은 주소는 따라 움직입니다(상대 참조). 모든 칸이 <b>같은 한 칸</b>을 써야 할 때는 <b>$</b>를 붙여 고정합니다.</li>
+                <li>예: <b>Sheet1</b>의 A1에 <b>0.5</b>를 넣고, G 시트 A1에 <b>=R!A1*Sheet1!$A$1</b>을 입력해 채우기 → R!A1은 R!B1, R!A2…로 바뀌지만 <b>Sheet1!$A$1</b>은 그대로입니다. 이제 Sheet1의 A1 하나만 바꾸면 G 시트 전체가 바뀌어요.</li>
+                <li>수식을 쓰는 중 주소 뒤에서 <kbd>F4</kbd>를 누를 때마다 <b>A1 → $A$1 → A$1 → $A1</b> 순서로 바뀝니다. <b>A$1</b>은 행만, <b>$A1</b>은 열만 고정합니다. (노트북은 <kbd>Fn</kbd>+<kbd>F4</kbd>일 수 있어요.)</li>
+                <li>수식을 넓게 복사하는 방법: 오른쪽 아래 점을 끌거나 <b>두 번 누르기</b>(옆 열 길이만큼 아래로), 영역을 골라 <kbd>Ctrl</kbd>+<kbd>D</kbd>(아래로)·<kbd>Ctrl</kbd>+<kbd>R</kbd>(오른쪽으로)·<kbd>Ctrl</kbd>+<kbd>Enter</kbd>(입력한 수식을 영역 전체에).</li>
+                <li><kbd>Ctrl</kbd>+<kbd>`</kbd>(숫자 1 왼쪽 키)를 누르면 칸마다 결과 대신 <b>수식</b>이 보여서, 어떤 주소가 움직이고 어떤 주소가 고정됐는지 한눈에 확인할 수 있어요. 한 번 더 누르면 돌아옵니다.</li>
+              </ul>
+            </li>
+            <li class="step">
+              <h2><span class="step-no">12</span>대비 그래프로 a 움직여 보기</h2>
+              <ul>
+                <li><b>대비 › 대비 그래프</b>를 누르면 오른쪽에 엑셀처럼 작은 표·스크롤 막대·차트가 있는 작업창이 열립니다. R·G·B·Canvas 어느 시트에서나 그대로 보여요.</li>
+                <li>표의 <b>B1</b>이 기울기 a, <b>B2</b>가 기준점 128, <b>B3</b>이 수식 <b>=B2+B1*(x-B2)</b>입니다. 차트의 직선은 항상 점 <b>(128, 128)</b>을 지납니다. 모든 칸이 같은 기준점 128을 쓰므로 a를 키우면 밝은 곳은 더 밝게, 어두운 곳은 더 어둡게 되는 <b>대비</b> 조절입니다.</li>
+                <li>B2 옆 <b>칸마다 밝기(Y) → 채도</b>를 켜면 기준점이 칸마다 그 칸의 밝기가 되어, 밝기는 그대로 두고 색의 진하기만 바뀌는 <b>채도</b> 조절이 됩니다. 두 결과를 비교해 보세요.</li>
                 <li>스크롤 막대(셀 연결 $B$1)를 움직이거나 <b>▶ 재생</b>을 누르면 <b>R·G·B 시트의 숫자가 바로 바뀝니다.</b> R 시트를 보면서 움직여 보세요. 새 값은 언제나 작업창을 열 때의 <b>처음 숫자</b>로 계산합니다.</li>
                 <li>시트에서 셀을 누르면 그 칸의 R·G·B가 차트에 점으로 찍히고, 아래 <b>값 비교</b> 표에 처음 값 x → 지금 값 y와 차이가 나옵니다. 그림은 Canvas 시트에서 <b>전 = 처음 숫자</b>, <b>후 = 지금 시트</b>로 비교하세요.</li>
                 <li>시트가 비어 있으면 <b>예시 사진</b>이나 <b>내 사진...</b>으로 숫자를 넣어 보세요. a를 바꾼 것은 <kbd>Ctrl</kbd>+<kbd>Z</kbd> 한 번으로 처음 숫자로 돌아갑니다.</li>
@@ -1542,10 +1607,10 @@
         </div>
       </section>
       <div class="sat-split" id="satSplit" role="separator" tabindex="0" aria-controls="satPanel" aria-label="작업창 크기 조절 (방향키, 두 번 누르면 원래 크기)" title="끌어서 작업창 크기 조절 · 두 번 누르면 원래 크기" hidden></div>
-      <aside class="sat-pane" id="satPanel" aria-label="채도 그래프" hidden>
+      <aside class="sat-pane" id="satPanel" aria-labelledby="satTitle" hidden>
         <div class="sat-head">
-          <h3>채도 그래프</h3>
-          <button type="button" class="sat-close" id="satClose" aria-label="채도 그래프 닫기" title="채도 그래프 닫기">✕</button>
+          <h3 id="satTitle">대비 그래프</h3>
+          <button type="button" class="sat-close" id="satClose" aria-label="작업창 닫기" title="작업창 닫기">✕</button>
         </div>
         <div class="sat-body">
           <div class="sat-load">
@@ -1573,7 +1638,7 @@
               <tr>
                 <th>2</th><td><label for="satPNum">기준점 p</label></td>
                 <td><input type="number" id="satPNum" min="0" max="255" step="1" value="128"></td>
-                <td><label class="sat-chk"><input type="checkbox" id="satLum"> 칸마다 밝기(Y)</label></td>
+                <td><label class="sat-chk" title="기준점을 칸마다 그 칸의 밝기(Y)로 하면 밝기는 그대로 두고 색의 진하기만 바뀝니다 (채도 조절)."><input type="checkbox" id="satLum"> 칸마다 밝기(Y) → 채도</label></td>
               </tr>
               <tr>
                 <th>3</th><td>새 값 y</td>
@@ -1825,7 +1890,7 @@
         fxBtn: $('fxBtn'), fnDlg: $('fnDlg'), fnCat: $('fnCat'), fnList: $('fnList'), fnSyntax: $('fnSyntax'), fnDesc: $('fnDesc'),
         filterNote: $('filterNote'), excelDl: $('excelDl'), cellFmtBtn: $('cellFmtBtn'), cellFmtMenu: $('cellFmtMenu'), filterGroup: $('filterGroup'), filterBtn: $('filterBtn'), filterMenu: $('filterMenu'),
         satPanel: $('satPanel'), satGraph: $('satGraph'), satSample: $('satSample'), satPickFile: $('satPickFile'), satFile: $('satFile'),
-        satClose: $('satClose'), satHint: $('satHint'), satPx: $('satPx'), satA: $('satA'), satANum: $('satANum'), satPNum: $('satPNum'),
+        satClose: $('satClose'), satTitle: $('satTitle'), satHint: $('satHint'), satPx: $('satPx'), satA: $('satA'), satANum: $('satANum'), satPNum: $('satPNum'),
         satLum: $('satLum'), satY: $('satY'), satFx: $('satFx'), satPlay: $('satPlay'), satNote: $('satNote'), satErr: $('satErr'),
         satScope: $('satScope'), satEq: $('satEq'), satReset: $('satReset'),
         afterNote: $('afterNote'), beforeNote: $('beforeNote'), satSplit: $('satSplit'), tabMenu: $('tabMenu'),
@@ -2377,6 +2442,16 @@
         MAX: { min: 1, max: 255, cat: '통계', syntax: 'MAX(수1, [수2], ...)', desc: '가장 큰 값을 구합니다.', fn: (a, c) => { const v = nums(a, c); return v.length ? Math.max(...v) : 0; } },
         MEDIAN: { min: 1, max: 255, cat: '통계', syntax: 'MEDIAN(수1, [수2], ...)', desc: '가운데 값(중앙값)을 구합니다.', fn: (a, c) => { const v = nums(a, c).sort((x, y) => x - y); return v.length ? percentile(v, 0.5) : fail('#NUM!'); } },
         COUNT: { min: 1, max: 255, cat: '통계', syntax: 'COUNT(값1, [값2], ...)', desc: '숫자가 들어 있는 칸의 개수를 셉니다.', fn: (a, c) => nums(a, c).length },
+        COUNTA: { min: 1, max: 255, cat: '통계', syntax: 'COUNTA(값1, [값2], ...)', desc: '비어 있지 않은 칸(숫자·글자 모두)의 개수를 셉니다.', fn: (a, c) => {
+          let n = 0;
+          const filled = (sheet, k) => { try { return cellValueAt(sheet, k) !== null; } catch (e) { if (e instanceof FErr) return true; throw e; } };   // 오류 칸도 센다
+          for (const x of a) {
+            if (x.k === 'range') { for (let r = x.r1; r <= x.r2; r++) for (let k = x.c1; k <= x.c2; k++) if (filled(x.sheet, r * SIZE + k)) n++; }
+            else if (x.k === 'ref') { if (filled(x.sheet, x.r * SIZE + x.c)) n++; }
+            else n++;
+          }
+          return n;
+        } },
         COUNTIF: { min: 2, max: 2, cat: '통계', syntax: 'COUNTIF(범위, 조건)', desc: '조건에 맞는 칸의 개수를 셉니다. 예: COUNTIF(A1:J10, ">=200")', fn: (a, c) => { const test = criterion(evalNode(a[1], c)); let n = 0; eachInRange(rangeArg(a, 0), (v) => { if (test(v)) n++; }); return n; } },
         SUMIF: { min: 2, max: 3, cat: '수학', syntax: 'SUMIF(범위, 조건, [합계_범위])', desc: '조건에 맞는 칸의 값을 더합니다.', fn: (a, c) => {
           const rg = rangeArg(a, 0), test = criterion(evalNode(a[1], c));
@@ -2390,6 +2465,19 @@
             if (typeof v === 'number') s += v;
           }
           return s;
+        } },
+        AVERAGEIF: { min: 2, max: 3, cat: '통계', syntax: 'AVERAGEIF(범위, 조건, [평균_범위])', desc: '조건에 맞는 칸의 평균을 구합니다. 예: AVERAGEIF(A1:J10, ">=128")', fn: (a, c) => {
+          const rg = rangeArg(a, 0), test = criterion(evalNode(a[1], c));
+          const sr = a.length > 2 ? rangeArg(a, 2) : rg;
+          let s = 0, n = 0;
+          for (let r = rg.r1; r <= rg.r2; r++) for (let k = rg.c1; k <= rg.c2; k++) {
+            if (!test(cellValueAt(rg.sheet, r * SIZE + k))) continue;
+            const rr = sr.r1 + r - rg.r1, cc = sr.c1 + k - rg.c1;
+            if (rr >= SIZE || cc >= SIZE) continue;
+            const v = cellValueAt(sr.sheet, rr * SIZE + cc);
+            if (typeof v === 'number') { s += v; n++; }
+          }
+          return n ? s / n : fail('#DIV/0!');
         } },
         ROUND: { min: 2, max: 2, cat: '수학', syntax: 'ROUND(수, 자릿수)', desc: '반올림합니다. 자릿수 0이면 정수로.', fn: (a, c) => roundTo(num(a, c, 0), num(a, c, 1)) },
         ROUNDUP: { min: 2, max: 2, cat: '수학', syntax: 'ROUNDUP(수, 자릿수)', desc: '올림합니다.', fn: (a, c) => roundTo(num(a, c, 0), num(a, c, 1), 'up') },
@@ -2414,6 +2502,9 @@
         AND: { min: 1, max: 255, cat: '논리', syntax: 'AND(조건1, [조건2], ...)', desc: '모든 조건이 참이면 TRUE.', fn: (a, c) => a.every((x) => toBool(evalNode(x, c))) },
         OR: { min: 1, max: 255, cat: '논리', syntax: 'OR(조건1, [조건2], ...)', desc: '조건 중 하나라도 참이면 TRUE.', fn: (a, c) => a.some((x) => toBool(evalNode(x, c))) },
         NOT: { min: 1, max: 1, cat: '논리', syntax: 'NOT(조건)', desc: '참·거짓을 뒤집습니다.', fn: (a, c) => !toBool(evalNode(a[0], c)) },
+        IFERROR: { min: 2, max: 2, cat: '논리', syntax: 'IFERROR(값, 오류일 때 값)', desc: '계산이 오류(#DIV/0! 등)이면 두 번째 값을 씁니다. 예: IFERROR(A1/B1, 0)', fn: (a, c) => {
+          try { return evalNode(a[0], c); } catch (e) { if (e instanceof FErr && ERR_CODES.includes(e.code)) return evalNode(a[1], c); throw e; }
+        } },
         ROW: { min: 0, max: 1, cat: '참조', syntax: 'ROW([셀])', desc: '행 번호를 구합니다. 비워 두면 수식이 있는 칸의 행 번호.', fn: (a, c) => (a.length ? rangeArg(a, 0).r1 : c.r) + 1 },
         COLUMN: { min: 0, max: 1, cat: '참조', syntax: 'COLUMN([셀])', desc: '열 번호를 구합니다(A=1). 비워 두면 수식이 있는 칸의 열 번호.', fn: (a, c) => (a.length ? rangeArg(a, 0).c1 : c.c) + 1 },
       };
@@ -2496,6 +2587,8 @@
       function cellDisplay(sheet, idx) {
         const v = state.data[sheet][idx];
         if (state.formulas[sheet].has(idx)) {
+          const src = state.formulas[sheet].get(idx);
+          if (state.showFormulas && src.startsWith('=')) return { text: src, align: 'left' };
           const res = state.fval[sheet].get(idx);
           if (res instanceof FErr) return { text: res.code, align: 'center', err: true };
           if (typeof res === 'string') return res === '' ? null : { text: res, align: 'left' };
@@ -4314,6 +4407,36 @@
         scheduleDraw();
       }
 
+      // F4: 커서 자리의 셀 주소를 A1 → $A$1 → A$1 → $A1 → A1 순서로 바꿈 (엑셀과 같음). A1:B2 범위는 두 주소를 함께
+      const ABS_NEXT = { 'FF': [true, true], 'TT': [false, true], 'FT': [true, false], 'TF': [false, false] };
+      function toggleAbsRef(inp) {
+        const text = inp.value;
+        if (!text.startsWith('=')) return;
+        let toks;
+        try { toks = tokenize(text.slice(1)); } catch (e) { if (e instanceof FErr) return; throw e; }
+        let at = 1;
+        const spans = toks.map((t) => { const s = at; at += t.s.length; return { t, s, e: at }; });
+        const caret = inp.selectionStart ?? text.length;
+        let j = spans.findIndex((x) => x.t.t === 'ref' && caret >= x.s && caret <= x.e);
+        if (j < 0) return;
+        let first = j, last = j;   // 범위면 앞뒤 주소까지
+        const isColon = (x) => x && x.t.t === 'op' && x.t.s === ':';
+        if (isColon(spans[j - 1]) && spans[j - 2] && spans[j - 2].t.t === 'ref') first = j - 2;
+        else if (isColon(spans[j + 1]) && spans[j + 2] && spans[j + 2].t.t === 'ref') last = j + 2;
+        const lead = spans[first].t;
+        const [ca, ra] = ABS_NEXT[(lead.ca ? 'T' : 'F') + (lead.ra ? 'T' : 'F')];
+        const refText = (tk) => tk.s.slice(0, tk.s.lastIndexOf('!') + 1) + (ca ? '$' : '') + tk.col + (ra ? '$' : '') + tk.row;
+        const s = spans[first].s, e = spans[last].e;
+        const mid = spans.slice(first, last + 1).map((x) => (x.t.t === 'ref' ? refText(x.t) : x.t.s)).join('');
+        inp.value = text.slice(0, s) + mid + text.slice(e);
+        inp.setSelectionRange(s + mid.length, s + mid.length);
+        const ed = state.edit;
+        if (ed && ed.pt) ed.pt = { s, e: s + mid.length };   // 방금 누른 칸이면 다음에 누르는 칸이 이 주소를 바꿈
+        if (inp === els.editor) els.fx.value = inp.value;
+        else if (ed && ed.via === 'cell') els.editor.value = inp.value;
+        positionEditor();
+      }
+
       function typedInEditor() {
         if (!state.edit) return;
         state.edit.pt = null;
@@ -4344,6 +4467,9 @@
           e.preventDefault();
           cancelEdit();
           focusGrid();
+        } else if (e.key === 'F4') {
+          e.preventDefault();
+          toggleAbsRef(els.editor);
         } else if (state.edit && state.edit.mode === 'enter' && ARROWS[e.key] && !els.editor.value.startsWith('=')) {
           // 입력 모드에서 방향키 = 확정 후 이동 (엑셀과 같음). 수식은 방향키로 글자 사이를 움직임
           e.preventDefault();
@@ -4401,6 +4527,9 @@
           cancelEdit();
           if (state.current !== home) switchSheet(home);
           focusGrid();
+        } else if (e.key === 'F4') {
+          e.preventDefault();
+          toggleAbsRef(els.fx);
         }
       });
 
@@ -4578,6 +4707,43 @@
         v.areas = [tgt];
         v.focus = { r: tgt.r2, c: tgt.c2 };
         selectionChanged();
+      }
+
+      // Ctrl+D(아래로) · Ctrl+R(오른쪽으로): 선택 영역 첫 줄을 나머지에 복사. 한 줄만 골랐으면 바로 위(왼쪽) 칸을 가져옴
+      function fillFromEdge(down) {
+        const v = view();
+        if (v.areas.length > 1) { toast('여러 영역을 고른 상태에서는 채우기를 할 수 없습니다.', 'error'); return; }
+        const a = v.areas[0], keep = { areas: [{ ...a }], anchor: { ...v.anchor }, active: { ...v.active }, focus: { ...v.focus } };
+        const one = down ? a.r1 === a.r2 : a.c1 === a.c2;
+        if (one && (down ? a.r1 === 0 : a.c1 === 0)) return;   // 위(왼쪽)에 칸이 없음
+        const src = down
+          ? { ...a, r1: one ? a.r1 - 1 : a.r1, r2: one ? a.r1 - 1 : a.r1 }
+          : { ...a, c1: one ? a.c1 - 1 : a.c1, c2: one ? a.c1 - 1 : a.c1 };
+        const tgt = down ? { ...a, r1: src.r1 } : { ...a, c1: src.c1 };
+        performFill(src, tgt);
+        Object.assign(v, keep);   // 선택 영역은 그대로 (엑셀과 같음)
+        selectionChanged();
+      }
+
+      // 채우기 핸들 두 번 누르기: 옆 열에 숫자가 이어지는 데까지 아래로 채움
+      function autoFillDown() {
+        const v = view();
+        if (v.areas.length !== 1) return;
+        const a = v.areas[0], sheet = state.current;
+        const filled = (r, c) => c >= 0 && c < SIZE && (state.formulas[sheet].has(r * SIZE + c) || state.data[sheet][r * SIZE + c] === state.data[sheet][r * SIZE + c]);
+        const side = [a.c1 - 1, a.c2 + 1].find((c) => filled(a.r1, c) || filled(a.r2, c));
+        if (side === undefined) { toast('왼쪽이나 오른쪽 열에 값이 있어야 그 길이만큼 채웁니다. 오른쪽 아래 점을 끌어서 채워 보세요.', 'error'); return; }
+        let end = a.r2;
+        while (end + 1 < SIZE && filled(end + 1, side)) end++;
+        if (end === a.r2) return;
+        performFill({ ...a }, { ...a, r2: end });
+      }
+
+      // Ctrl+`: 칸에 계산 결과 대신 수식을 보여 줌 (엑셀 수식 › 수식 표시)
+      function toggleShowFormulas() {
+        state.showFormulas = !state.showFormulas;
+        scheduleDraw();
+        toast(state.showFormulas ? '수식 표시를 켰습니다. 칸에 결과 대신 수식이 보입니다. (Ctrl+` 로 끄기)' : '수식 표시를 껐습니다.');
       }
 
       // ===== 마우스 · 터치 =====
@@ -4794,6 +4960,7 @@
           autoFit(h.edge.axis, resizeGroup(h.edge.axis, h.edge.i));
           return;
         }
+        if (h.handle) { autoFillDown(); return; }
         if (h.zone === 'cell' && !h.beyond && !state.edit) {
           selectCell(h.r, h.c);
           startEdit('edit');
@@ -4826,6 +4993,8 @@
 
         if (ctrl && (lower === 'z' || lower === 'y')) return;   // 위의 공통 단축키가 처리
         if (ctrl && lower === 'a') { e.preventDefault(); selectAll(); return; }
+        if (ctrl && !e.shiftKey && !e.altKey && (lower === 'd' || lower === 'r')) { e.preventDefault(); fillFromEdge(lower === 'd'); return; }
+        if (ctrl && (e.code === 'Backquote' || k === '`')) { e.preventDefault(); toggleShowFormulas(); return; }
         if (ARROWS[k]) {
           e.preventDefault();
           const [dr, dc] = ARROWS[k];
@@ -5506,8 +5675,9 @@
         toggleFilterGroup();
       }, true);
 
-      // ===== 채도 그래프 (오른쪽 작업창: 작은 표 + 스크롤 막대 + 차트) =====
+      // ===== 대비 그래프 (오른쪽 작업창: 작은 표 + 스크롤 막대 + 차트) =====
       // B1 = a (스크롤 막대와 셀 연결), B2 = 기준점 p, B3 = B2 + B1 × (x − B2). 기준점 (p, p)는 고정, a는 직선의 기울기.
+      // 모든 칸이 같은 p(128)를 쓰면 대비 조절, p를 칸마다 그 칸의 밝기(Y)로 하면 채도 조절 (코드의 sat 이름은 예전 이름 그대로).
       // a를 움직이면 R·G·B 시트의 숫자가 바로 바뀜 — 엑셀에서 스크롤 막대에 연결된 셀을 수식이 참조하는 것처럼.
       // 창을 열 때의 숫자를 '처음 숫자'로 기억하고 새 값은 늘 처음 숫자에서 계산. 움직인 것 전체가 되돌리기 한 단계.
       const SAT_XLO = -16, SAT_XHI = 271, SAT_YLO = -56, SAT_YHI = 311;   // 그래프 축 범위 (세로 0~255 밖은 잘리는 구역)
@@ -5523,6 +5693,7 @@
       const satP = (r, g, b) => (sat.lum ? lum(r, g, b) : sat.p);
       const satNum = (x, d = 2) => { const v = Number(x.toFixed(d)); return (v < 0 ? '−' : '') + Math.abs(v); };
       const satATxt = () => satNum(sat.a);
+      const satKind = () => (sat.lum ? '채도' : '대비');
       const satPTxt = (p) => (sat.lum ? satNum(p, 1) : String(sat.p));
 
       // 지금 R·G·B·A 시트 → 0~255 정수 (빈칸 RGB는 0, A는 255)
@@ -5619,7 +5790,7 @@
             pr.after[j] = px[0]; pg.after[j] = px[1]; pb.after[j] = px[2];
           }
           for (const part of sat.entry.parts) writeCells(part.sheet, part.idx, part.after, part.fAfter);
-          sat.entry.label = `채도 a = ${satATxt()} (${sat.where})`;
+          sat.entry.label = `${satKind()} a = ${satATxt()} (${sat.where})`;
           sat.entry.satA = sat.a;
         }
         state.dirty = true;
@@ -5671,6 +5842,7 @@
         els.afterNote.textContent = `지금 R·G·B 시트 (a = ${satATxt()})`;
         els.beforeNote.textContent = '처음 숫자 (a = 1)';
         els.saveAfter.hidden = true;
+        els.satTitle.textContent = `${satKind()} 그래프`;
         const pt = sat.lum ? 'Y' : String(sat.p);
         els.satY.textContent = `= ${pt} + ${satATxt()} × (x − ${pt})`;
         els.satFx.textContent = sat.lum ? '=Y+B1*(x-Y)' : '=B2+B1*(x-B2)';
@@ -5885,16 +6057,22 @@
               `<tbody>${rows}</tbody></table>`) +
           (sat.lum ? `<p class="sat-px-sub">기준점 p = 밝기 = 0.299×${v[0]} + 0.587×${v[1]} + 0.114×${v[2]} = ${pt}</p>` : '');
 
-        const a = sat.a;
-        const center = sat.lum ? '그 칸의 회색(밝기)' : `회색 (${sat.p}, ${sat.p}, ${sat.p})`;
+        const a = sat.a, p0 = sat.p;
         let say;
         if (Math.abs(a - 1) < 1e-9) say = 'a = 1: 직선이 y = x와 겹쳐 아무것도 바뀌지 않습니다.';
-        else if (a > 1) say = `a > 1: 직선이 가팔라져 R·G·B가 ${center}에서 더 멀어집니다 → 색이 진해집니다(채도↑). 너무 크면 0이나 255에서 잘려 색이 뭉개집니다.`;
-        else if (a > 0) say = `0 < a < 1: 직선이 완만해져 R·G·B가 ${center} 쪽으로 모입니다 → 색이 연해집니다(채도↓).`;
-        else if (a === 0) say = `a = 0: 직선이 수평이 되어 R·G·B가 모두 ${center}과 같아집니다 → ${sat.lum ? '흑백 사진' : '온통 회색'}.`;
-        else say = `a < 0: 직선이 거꾸로 기울어 R·G·B가 기준점 반대편으로 뒤집힙니다 → 보색 쪽 색이 됩니다.`;
+        else if (sat.lum) {   // 기준점 = 칸마다 밝기 → 채도
+          if (a > 1) say = 'a > 1: 직선이 가팔라져 R·G·B가 그 칸의 회색(밝기)에서 더 멀어집니다 → 색이 진해집니다(채도↑). 너무 크면 0이나 255에서 잘려 색이 뭉개집니다.';
+          else if (a > 0) say = '0 < a < 1: 직선이 완만해져 R·G·B가 그 칸의 회색(밝기) 쪽으로 모입니다 → 색이 연해집니다(채도↓).';
+          else if (a === 0) say = 'a = 0: 직선이 수평이 되어 R·G·B가 모두 그 칸의 밝기와 같아집니다 → 흑백 사진.';
+          else say = 'a < 0: 직선이 거꾸로 기울어 R·G·B가 그 칸의 밝기를 기준으로 뒤집힙니다 → 보색 쪽 색이 됩니다.';
+        } else {   // 모든 칸이 같은 기준점 → 대비
+          if (a > 1) say = `a > 1: 직선이 가팔라져 ${p0}보다 큰 값은 더 커지고 작은 값은 더 작아집니다 → 밝은 곳은 더 밝게, 어두운 곳은 더 어둡게(대비↑). 너무 크면 0이나 255에서 잘려 뭉개집니다.`;
+          else if (a > 0) say = `0 < a < 1: 직선이 완만해져 모든 값이 ${p0} 쪽으로 모입니다 → 밝은 곳과 어두운 곳의 차이가 줄어 흐릿해집니다(대비↓).`;
+          else if (a === 0) say = `a = 0: 직선이 수평이 되어 모든 값이 ${p0}이 됩니다 → 온통 회색.`;
+          else say = `a < 0: 직선이 거꾸로 기울어 ${p0}을 기준으로 값이 뒤집힙니다 → 밝은 곳은 어둡게, 어두운 곳은 밝게(반전).`;
+        }
         els.satNote.textContent = say + (!sat.lum
-          ? ` (모든 칸이 같은 기준점 ${sat.p}을 쓰면 밝기 대비도 함께 바뀝니다. 밝기는 그대로 두고 색만 바꾸려면 B2의 '칸마다 밝기(Y)로'를 켜 보세요.)`
+          ? ` (모든 칸이 같은 기준점 ${p0}을 쓰므로 밝기 차이, 곧 대비가 바뀝니다. 사진 필터의 '대비 높이기'와 같은 식이에요. B2의 '칸마다 밝기(Y)'를 켜면 기준점이 칸마다 달라져 밝기는 그대로, 색의 진하기(채도)만 바뀝니다.)`
           : ' (칸마다 기준점이 자기 밝기라서 밝기는 거의 그대로이고 색만 바뀝니다. 사진 앱의 채도 조절과 같은 방식입니다.)');
       }
 
@@ -6120,7 +6298,7 @@
         if (sat.open && act !== sat.entry && act.kind === 'cells') queueMicrotask(() => satRebase(true));
       }
 
-      // 되돌리기·다시 실행 뒤: 채도 기록이면 그 a로, 아니면 처음 숫자를 다시 잡음
+      // 되돌리기·다시 실행 뒤: 대비 그래프 기록이면 그 a로, 아니면 처음 숫자를 다시 잡음
       function satAfterReplay() {
         if (!sat.open) return;
         const e = sat.entry;
@@ -6137,7 +6315,7 @@
         satRender();
       }
 
-      // 리본 [채도 그래프]: 오른쪽 작업창 열기 / 닫기
+      // 리본 [대비 그래프]: 오른쪽 작업창 열기 / 닫기
       function satToggle() {
         if (sat.open) satClose();
         else satOpen();
@@ -6601,6 +6779,68 @@
         const b = e.target.closest('[data-action]');
         if (b && ACTIONS[b.dataset.action]) ACTIONS[b.dataset.action]();
       });
+
+      // ===== 리본 접기 (엑셀: 리본 축소 Ctrl+F1 · 탭 두 번 누르기 · 접힌 상태에서 탭을 누르면 잠깐 펼침 · 📌 리본 고정) =====
+      const RIBBON_KEY = 'rgbExcel.ribbonCollapsed';
+      const appEl = document.querySelector('.app');
+      const ribbonTab = $('ribbonTab'), ribbonPin = $('ribbonPin'), ribbonWrap = $('ribbonWrap');
+      const ribbonCollapsed = () => appEl.classList.contains('ribbon-collapsed');
+      const ribbonPopped = () => appEl.classList.contains('ribbon-pop');
+
+      function ribbonPop(on) {
+        // 잠깐 펼칠 때만 탭 바로 아래에 띄움. 닫거나 고정하면 지워야 함 (평소엔 position: relative라 top이 남으면 아래로 밀림)
+        ribbonWrap.style.top = on ? $('ribbonTabs').getBoundingClientRect().bottom - appEl.getBoundingClientRect().top + 'px' : '';
+        appEl.classList.toggle('ribbon-pop', on);
+        ribbonTab.setAttribute('aria-expanded', String(!ribbonCollapsed() || on));
+        const label = on ? '리본 고정 (Ctrl+F1)' : '리본 축소 (Ctrl+F1)';
+        ribbonPin.setAttribute('aria-label', label);
+        ribbonPin.title = label;
+      }
+
+      function setRibbonCollapsed(on, save = true) {
+        appEl.classList.toggle('ribbon-collapsed', on);
+        ribbonPop(false);
+        if (save) {
+          try { localStorage.setItem(RIBBON_KEY, on ? '1' : '0'); } catch { /* 저장 못 하면 이번만 */ }
+          toast(on ? '리본을 접었습니다. 탭(RGB 체험)을 누르면 잠깐 펼쳐지고, Ctrl+F1이나 탭 두 번 누르기로 다시 펼칩니다.' : '리본을 펼쳤습니다.');
+        }
+      }
+
+      ribbonTab.addEventListener('click', () => { if (ribbonCollapsed()) ribbonPop(!ribbonPopped()); });
+      ribbonTab.addEventListener('dblclick', () => setRibbonCollapsed(!ribbonCollapsed()));
+      ribbonPin.addEventListener('click', () => {   // 펼친 상태면 접기, 잠깐 펼친 상태면 고정
+        const collapse = !ribbonPopped();
+        setRibbonCollapsed(collapse);
+        if (collapse) $('ribbonExpand').focus();   // 키보드로 눌렀을 때 포커스가 사라지지 않게
+      });
+      $('ribbonExpand').addEventListener('click', () => { setRibbonCollapsed(false); ribbonPin.focus(); });   // 접힌 상태에서 ˅ → 펼치기
+
+      // 잠깐 펼친 리본: 명령을 고르거나 바깥을 누르면 다시 접힘 (드롭다운 메뉴가 열려 있는 동안은 유지)
+      const menuOpen = () => [...document.querySelectorAll('.xm')].some((m) => !m.hidden);
+      document.addEventListener('click', (e) => {
+        if (!ribbonPopped()) return;
+        const t = e.target;
+        if (t.closest('.ribbon-pin') || t.closest('.rbtn[aria-haspopup]')) return;
+        if (!t.closest('.rbtn') && !t.closest('.xm')) return;
+        setTimeout(() => { if (ribbonPopped() && !menuOpen()) ribbonPop(false); }, 0);
+      });
+      document.addEventListener('pointerdown', (e) => {
+        if (!ribbonPopped() || e.target.closest('.ribbon-wrap, .ribbon-tabs, .xm, dialog, .x-pal')) return;
+        ribbonPop(false);
+      }, true);
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.key === 'F1') {
+          e.preventDefault();
+          setRibbonCollapsed(!ribbonCollapsed());
+        } else if (e.key === 'Escape' && ribbonPopped() && !menuOpen() && !e.target.closest('.xm') && !document.querySelector('dialog[open]')) {
+          ribbonPop(false);
+          ribbonTab.focus();
+        }
+      });
+
+      let ribbonSaved = false;
+      try { ribbonSaved = localStorage.getItem(RIBBON_KEY) === '1'; } catch { /* 무시 */ }
+      if (ribbonSaved) setRibbonCollapsed(true, false);
 
       // 리본 버튼을 눌러도 선택 영역 포커스가 흐트러지지 않게
       document.querySelector('.ribbon').addEventListener('pointerdown', (e) => {
