@@ -508,6 +508,23 @@
 
     .stab[hidden] { display: none }
 
+    /* 시트 추가(+) · 이름 바꾸기 */
+    .stab-add {
+      flex: none;
+      width: 36px;
+      border: none;
+      border-right: 1px solid var(--line);
+      background: none;
+      color: #444;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .stab-add:hover { background: #e9e8e7; color: var(--xl-dark) }
+    .stab-name { flex: none; width: 120px; margin: 4px 6px; padding: 0 6px; border: 1px solid var(--xl); font: inherit; font-size: 13.5px; outline: none }
+    .tab-menu { min-width: 170px }
+
     .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0 }
     .dot-R { background: var(--red) }
     .dot-G { background: var(--green) }
@@ -998,6 +1015,124 @@
     .fn-example { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 6px 10px; background: var(--xl-weak); border-radius: 4px }
     .fn-example .sw { display: inline-block; width: 22px; height: 22px; border: 1px solid rgba(0, 0, 0, .25); border-radius: 3px }
 
+    /* ── 채도 그래프 (오른쪽 작업창: 엑셀 차트 + 스크롤 막대) ── */
+    .sat-pane {
+      flex: none;
+      width: 372px;
+      overflow: auto;
+      background: #fff;
+      font-size: 13px;
+    }
+
+    .sat-pane[hidden] { display: none }
+
+    /* 작업창 크기 조절 손잡이 (왼쪽 경계를 끌기, 두 번 누르면 원래 크기) */
+    .sat-split {
+      position: relative;
+      flex: none;
+      width: 7px;
+      border-left: 1px solid var(--line-strong);
+      background: #f7f7f7;
+      cursor: col-resize;
+      touch-action: none;
+      outline: none;
+    }
+
+    .sat-split[hidden] { display: none }
+
+    .sat-split::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 1px;
+      width: 2px;
+      height: 32px;
+      margin-top: -16px;
+      border-left: 1px dotted #8a8886;
+      border-right: 1px dotted #8a8886;
+    }
+
+    .sat-split:hover, .sat-split:focus-visible, .sat-split.dragging { background: #cfe0f5 }
+    body.sat-resizing { cursor: col-resize; user-select: none; -webkit-user-select: none }
+    body.sat-resizing.rows { cursor: row-resize }
+    .canvas-board.has-sat .filter-note { display: none }
+
+    .pic-frame canvas.sat-cv { display: block; width: 100%; height: 100%; image-rendering: pixelated; cursor: crosshair }
+    .sat-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 12px; border-bottom: 1px solid var(--line); background: #f7f7f7 }
+    .sat-head h3 { flex: 1; margin: 0; font-size: 14px }
+    .sat-load { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 12px; color: #605e5c }
+    .sat-load .x-btn { min-width: 0; height: 26px; font-size: 12.5px }
+    .sat-close { width: 32px; height: 28px; border: none; border-radius: 4px; background: none; color: #444; font-size: 13px; cursor: pointer }
+    .sat-close:hover { background: #c42b1c; color: #fff }
+    .sat-body { padding: 10px 12px 12px }
+    .sat-fx { display: flex; align-items: center; height: 26px; margin-bottom: 6px; border: 1px solid #d0d0d0; font-size: 12.5px }
+    .sat-fx > span { display: flex; align-items: center; height: 100%; padding: 0 8px }
+    .sat-fx-name { width: 46px; border-right: 1px solid #d0d0d0 }
+    .sat-fx-fx { border-right: 1px solid #d0d0d0; color: #605e5c; font-style: italic }
+    .sat-fx-f { font-family: Consolas, "Courier New", monospace }
+    .sat-sheet { width: 100%; border-collapse: collapse; table-layout: fixed }
+    .sat-sheet col.c0 { width: 28px }
+    .sat-sheet col.c1 { width: 76px }
+    .sat-sheet col.c2 { width: 84px }
+    .sat-sheet th { height: 20px; border: 1px solid #d6d6d6; background: var(--head); color: #555; font-size: 11.5px; font-weight: 400 }
+    .sat-sheet td { height: 28px; padding: 0 5px; border: 1px solid #e2e2e2; white-space: nowrap; overflow: hidden }
+    .sat-sheet td input[type="number"] { width: 100%; height: 26px; border: none; background: transparent; font: inherit; text-align: right; outline: none }
+    .sat-sheet td input:disabled { color: #8a8a8a }
+    .sat-sheet td:focus-within { outline: 2px solid var(--xl); outline-offset: -2px }
+    .sat-sheet td.sat-link { background: #f2f9f4 }
+    .sat-y { font-family: Consolas, "Courier New", monospace; font-size: 12.5px }
+    .sat-chk { display: inline-flex; align-items: center; gap: 4px; font-size: 12px }
+    .sat-sb { display: flex; align-items: stretch; height: 20px; border: 1px solid #adadad; background: #f0f0f0 }
+    .sat-sb-btn { width: 18px; padding: 0; border: none; background: #e6e6e6; color: #555; font-size: 8px; cursor: pointer }
+    .sat-sb-btn:hover { background: #d4d4d4 }
+    .sat-sb input[type="range"] { flex: 1; min-width: 40px; height: auto; margin: 0; background: #f0f0f0; -webkit-appearance: none; appearance: none; cursor: pointer }
+    .sat-sb input[type="range"]:focus-visible { outline: 2px solid #0067c0 }
+    .sat-sb input[type="range"]::-webkit-slider-thumb { width: 18px; height: 18px; border: 1px solid #a6a6a6; border-radius: 1px; background: #cdcdcd; -webkit-appearance: none }
+    .sat-sb input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border: 1px solid #a6a6a6; border-radius: 1px; background: #cdcdcd }
+    .sat-sbcap { display: flex; align-items: center; gap: 8px; margin: 4px 0 0; font-size: 11.5px; color: #605e5c }
+    .sat-sbcap span { flex: 1 }
+    .sat-play { min-width: 76px; height: 26px; font-size: 12.5px }
+    .sat-play[aria-pressed="true"] { background: #fff4e5; border-color: #e07b00 }
+    .sat-live { margin: 8px 0 0; padding: 6px 8px; border-left: 3px solid var(--xl); background: var(--xl-weak); font-size: 12px }
+    .sat-chart { margin-top: 10px; padding: 8px 10px 6px; border: 1px solid #d0d0d0; border-radius: 2px }
+    .sat-eq { margin-bottom: 4px; font: 16px "Cambria Math", "Times New Roman", serif; text-align: center }
+    .sat-eq .sat-av { color: #c26a00 }
+    .sat-chart canvas { display: block; width: 100%; max-width: 600px; margin: 0 auto; touch-action: none; cursor: grab }
+    .sat-chart canvas:focus-visible { outline: 2px solid #0067c0; outline-offset: 2px }
+    .sat-chart canvas.dragging { cursor: grabbing }
+    .sat-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 14px; margin-top: 4px; font-size: 11.5px; color: #444 }
+    .lg { display: inline-flex; align-items: center; gap: 5px }
+    .lg i { display: inline-block }
+    .lg-line { width: 20px; height: 3px; background: #e07b00 }
+    .lg-dash { width: 20px; border-top: 2px dashed #a0a0a0 }
+    .lg-dot { width: 9px; height: 9px; border-radius: 50% }
+    .sat-hint { margin: 8px 0 6px; font-size: 12px; color: #605e5c }
+    .sat-hint.warn { color: #8a5a00 }
+    .sat-px { margin-top: 10px; padding: 8px 10px; background: var(--xl-weak); border-radius: 4px; font-size: 12.5px }
+    .sat-px-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 6px }
+    .sat-px-head h4 { margin: 0; font-size: 13px }
+    .sat-px .sw { display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0, 0, 0, .25); border-radius: 3px }
+    .sat-cmp { width: 100%; border-collapse: collapse; background: #fff; font-variant-numeric: tabular-nums }
+    .sat-cmp th, .sat-cmp td { padding: 3px 6px; border: 1px solid #dcdcdc; text-align: right; vertical-align: middle }
+    .sat-cmp thead th { background: var(--head); color: #555; font-size: 11.5px; font-weight: 400; text-align: center; white-space: nowrap }
+    .sat-cmp tbody th { width: 24px; text-align: center }
+    .sat-cmp td.calc { text-align: left; color: #444; font-size: 12px }
+    .sat-cmp td.now { font-weight: 700; white-space: nowrap }
+    .sat-cmp .clip { color: var(--err); font-weight: 400; font-size: 11px }
+    .sat-cmp .up { color: #107c41 }
+    .sat-cmp .down { color: #a4262c }
+    .sat-px-sub { margin: 6px 0 0; font-size: 12px; color: #444 }
+    .sat-note { margin: 8px 0 0; color: #605e5c; font-size: 12.5px }
+    .sat-foot { display: flex; justify-content: flex-end; margin-top: 10px }
+
+    @media (max-width: 760px) {
+      .sheet-area { flex-direction: column }
+      .sheet-area > section { min-height: 0 }
+      .sat-pane { width: auto !important; max-height: 55% }   /* 넓은 화면에서 정한 너비는 무시 */
+      .sat-split { width: auto; height: 7px; border-left: none; border-top: 1px solid var(--line-strong); cursor: row-resize }
+      .sat-split::after { top: 1px; left: 50%; width: 32px; height: 2px; margin: 0 0 0 -16px; border: none; border-top: 1px dotted #8a8886; border-bottom: 1px dotted #8a8886 }
+    }
+
     .fn-list { height: 190px; max-height: none }
     .fn-syntax { min-height: 20px; margin: 10px 0 2px; font-weight: 700 }
     .fn-desc { min-height: 38px; margin: 0; color: #444 }
@@ -1220,6 +1355,24 @@
         <div class="rgroup-label" id="grpFilter">필터</div>
       </div>
 
+      <div class="rgroup" role="group" aria-labelledby="grpSat">
+        <div class="rgroup-btns">
+          <button type="button" class="rbtn" data-action="satLab" title="오른쪽에 채도 그래프 작업창(스크롤 막대 + 차트)을 열거나 닫습니다. a를 움직이면 R·G·B 시트 숫자가 바로 바뀝니다.">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <rect x="3" y="3" width="26" height="26" rx="4" fill="#fff" stroke="#8a8886" stroke-width="1.2" />
+              <path d="M7 6v20h20" fill="none" stroke="#605e5c" stroke-width="1.4" />
+              <path d="M7 26 27 6" stroke="#b0b0b0" stroke-width="1.2" stroke-dasharray="2 2" />
+              <path d="M11 27 21 5" stroke="#e07b00" stroke-width="2.4" stroke-linecap="round" />
+              <circle cx="16" cy="16" r="2.6" fill="#201f1e" />
+              <circle cx="11" cy="9" r="1.8" fill="#d13438" />
+              <circle cx="21" cy="21" r="1.8" fill="#0f6cbd" />
+            </svg>
+            채도<br>그래프
+          </button>
+        </div>
+        <div class="rgroup-label" id="grpSat">채도</div>
+      </div>
+
       <div class="rgroup" role="group" aria-labelledby="grpHelp">
         <div class="rgroup-btns">
           <button type="button" class="rbtn" data-action="help" title="설명서 시트를 엽니다.">
@@ -1240,7 +1393,7 @@
       <input id="nameBox" autocomplete="off" spellcheck="false" title="셀 주소를 입력하고 Enter (예: B2:F10)">
       <button type="button" class="fx-btn" id="fxBtn" title="함수 삽입" aria-label="함수 삽입">fx</button>
       <label for="fxInput" class="sr-only">수식 입력줄 (선택한 셀의 값)</label>
-      <input id="fxInput" autocomplete="off" spellcheck="false" inputmode="decimal">
+      <input id="fxInput" autocomplete="off" spellcheck="false">
     </div>
 
     <main class="sheet-area">
@@ -1249,7 +1402,7 @@
         <div id="scroller" tabindex="0" role="region" aria-roledescription="스프레드시트" aria-label="셀 영역. 방향키로 이동하고 숫자를 입력하세요." aria-describedby="srLive">
           <div id="spacer"></div>
         </div>
-        <input id="cellEditor" class="cell-editor" hidden autocomplete="off" spellcheck="false" inputmode="decimal" aria-label="셀 값 입력">
+        <input id="cellEditor" class="cell-editor" hidden autocomplete="off" spellcheck="false" aria-label="셀 값 입력">
       </section>
 
       <section id="viewGuide" class="doc-sheet" aria-label="설명서 시트">
@@ -1271,6 +1424,7 @@
               <h2><span class="step-no">1</span>R · G · B 시트에 숫자 입력</h2>
               <p>셀 하나가 픽셀 하나입니다. 셀을 누르고 <b>0~255</b> 숫자를 입력한 뒤 <kbd>Enter</kbd>를 누르세요.</p>
               <ul>
+                <li>엑셀처럼 글자(예: <b>빨강</b>, <b>메모</b>)도 입력할 수 있어요. 글자 칸은 이미지에서 빈칸(0)으로 계산되고, 숫자를 글자로 넣으려면 <b>'123</b>처럼 앞에 <b>'</b>를 붙이세요.</li>
                 <li>엑셀에서 복사(<kbd>Ctrl</kbd>+<kbd>C</kbd>)한 표도 붙여넣기(<kbd>Ctrl</kbd>+<kbd>V</kbd>)로 가져올 수 있어요.</li>
                 <li>휴대폰·태블릿에서는 셀을 한 번 더 누르거나 위쪽 <b>fx</b> 칸에 입력하세요.</li>
               </ul>
@@ -1347,6 +1501,25 @@
                 <li>너비와 높이를 작게 하고 색조를 주면 셀이 그대로 그림처럼 보입니다.</li>
               </ul>
             </li>
+            <li class="step">
+              <h2><span class="step-no">10</span>시트를 추가해 계산하고 = 로 가져오기</h2>
+              <ul>
+                <li>아래 시트 탭 끝의 <b>+</b>를 누르면 <b>Sheet1</b> 같은 작업용 시트가 생깁니다(<kbd>Shift</kbd>+<kbd>F11</kbd>). 여기서는 0~255가 아니어도 자유롭게 계산해 보세요.</li>
+                <li>탭을 두 번 누르면 이름을 바꿀 수 있고, 오른쪽 버튼을 누르면 <b>이름 바꾸기 · 삭제</b> 메뉴가 나옵니다. 이름은 한글·영문·숫자·_만 쓸 수 있어요.</li>
+                <li>R 시트에서 칸에 <b>=</b>를 입력한 뒤 <b>Sheet1 탭을 누르고 칸을 누르면</b> <b>=Sheet1!A1</b>이 들어갑니다. <kbd>Enter</kbd>를 누르면 R 시트로 돌아와 값이 들어가요.</li>
+                <li>그 칸의 오른쪽 아래 점을 끌면 <b>=Sheet1!B1</b>, <b>=Sheet1!A2</b>…처럼 옆 칸으로 복사되어 한꺼번에 가져올 수 있습니다.</li>
+              </ul>
+            </li>
+            <li class="step">
+              <h2><span class="step-no">11</span>채도 그래프로 a 움직여 보기</h2>
+              <ul>
+                <li><b>채도 › 채도 그래프</b>를 누르면 오른쪽에 엑셀처럼 작은 표·스크롤 막대·차트가 있는 작업창이 열립니다. R·G·B·Canvas 어느 시트에서나 그대로 보여요.</li>
+                <li>표의 <b>B1</b>이 기울기 a, <b>B2</b>가 기준점 128, <b>B3</b>이 수식 <b>=B2+B1*(x-B2)</b>입니다. 차트의 직선은 항상 점 <b>(128, 128)</b>을 지납니다.</li>
+                <li>스크롤 막대(셀 연결 $B$1)를 움직이거나 <b>▶ 재생</b>을 누르면 <b>R·G·B 시트의 숫자가 바로 바뀝니다.</b> R 시트를 보면서 움직여 보세요. 새 값은 언제나 작업창을 열 때의 <b>처음 숫자</b>로 계산합니다.</li>
+                <li>시트에서 셀을 누르면 그 칸의 R·G·B가 차트에 점으로 찍히고, 아래 <b>값 비교</b> 표에 처음 값 x → 지금 값 y와 차이가 나옵니다. 그림은 Canvas 시트에서 <b>전 = 처음 숫자</b>, <b>후 = 지금 시트</b>로 비교하세요.</li>
+                <li>시트가 비어 있으면 <b>예시 사진</b>이나 <b>내 사진...</b>으로 숫자를 넣어 보세요. a를 바꾼 것은 <kbd>Ctrl</kbd>+<kbd>Z</kbd> 한 번으로 처음 숫자로 돌아갑니다.</li>
+              </ul>
+            </li>
           </ol>
 
           <p class="guide-note">새로고침하거나 창을 닫으면 입력한 숫자가 사라집니다. 남겨 둘 값은 영역을 선택해 복사한 뒤 엑셀이나 메모장에 붙여 두세요.</p>
@@ -1356,18 +1529,83 @@
       <section id="viewCanvas" class="doc-sheet" aria-label="Canvas 시트" hidden>
         <div class="canvas-board">
           <figure class="pic">
-            <figcaption class="pic-head"><span class="chip">후</span><span class="pic-note">방금 만든 이미지</span>
+            <figcaption class="pic-head"><span class="chip">후</span><span class="pic-note" id="afterNote">방금 만든 이미지</span>
               <a class="tool-btn" id="saveAfter" download="rgb_image.png" hidden>PNG로 저장</a></figcaption>
             <div class="pic-frame" id="afterFrame"></div>
           </figure>
           <figure class="pic">
-            <figcaption class="pic-head"><span class="chip">전</span><span class="pic-note">바로 전에 만든 이미지</span></figcaption>
+            <figcaption class="pic-head"><span class="chip">전</span><span class="pic-note" id="beforeNote">바로 전에 만든 이미지</span></figcaption>
             <div class="pic-frame" id="beforeFrame"></div>
           </figure>
           <section class="filter-note" id="filterNote" aria-label="적용한 필터의 계산" hidden></section>
           <p class="canvas-hint"><span>체크무늬가 보이는 곳은 A값이 작아 투명해진 부분입니다. 이미지는 150×150 픽셀이며 크게 확대해서 보여 줍니다.</span></p>
         </div>
       </section>
+      <div class="sat-split" id="satSplit" role="separator" tabindex="0" aria-controls="satPanel" aria-label="작업창 크기 조절 (방향키, 두 번 누르면 원래 크기)" title="끌어서 작업창 크기 조절 · 두 번 누르면 원래 크기" hidden></div>
+      <aside class="sat-pane" id="satPanel" aria-label="채도 그래프" hidden>
+        <div class="sat-head">
+          <h3>채도 그래프</h3>
+          <button type="button" class="sat-close" id="satClose" aria-label="채도 그래프 닫기" title="채도 그래프 닫기">✕</button>
+        </div>
+        <div class="sat-body">
+          <div class="sat-load">
+            <span>사진 숫자 넣기:</span>
+            <button type="button" class="x-btn" id="satSample">예시 사진</button>
+            <button type="button" class="x-btn" id="satPickFile">내 사진...</button>
+            <input type="file" id="satFile" accept="image/*" hidden>
+          </div>
+          <div class="sat-fx" aria-hidden="true"><span class="sat-fx-name">B3</span><span class="sat-fx-fx">fx</span><span class="sat-fx-f" id="satFx">=B2+B1*(x-B2)</span></div>
+          <table class="sat-sheet">
+            <colgroup><col class="c0"><col class="c1"><col class="c2"><col></colgroup>
+            <thead><tr><th></th><th>A</th><th>B</th><th>C</th></tr></thead>
+            <tbody>
+              <tr>
+                <th>1</th><td><label for="satANum">기울기 a</label></td>
+                <td class="sat-link"><input type="number" id="satANum" min="-1" max="3" step="0.05" value="1"></td>
+                <td>
+                  <div class="sat-sb">
+                    <button type="button" class="sat-sb-btn" data-step="-0.05" aria-label="a를 0.05 줄이기">◀</button>
+                    <input type="range" id="satA" min="-1" max="3" step="0.01" value="1" aria-label="a 스크롤 막대 (셀 연결 B1)">
+                    <button type="button" class="sat-sb-btn" data-step="0.05" aria-label="a를 0.05 늘리기">▶</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>2</th><td><label for="satPNum">기준점 p</label></td>
+                <td><input type="number" id="satPNum" min="0" max="255" step="1" value="128"></td>
+                <td><label class="sat-chk"><input type="checkbox" id="satLum"> 칸마다 밝기(Y)</label></td>
+              </tr>
+              <tr>
+                <th>3</th><td>새 값 y</td>
+                <td colspan="2" class="sat-y" id="satY"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="sat-sbcap">
+            <span>스크롤 막대 · 셀 연결 <b>$B$1</b></span>
+            <button type="button" class="x-btn sat-play" id="satPlay" aria-pressed="false">▶ 재생</button>
+          </div>
+          <p class="sat-live" id="satScope"></p>
+          <div class="sat-chart">
+            <div class="sat-eq" id="satEq"></div>
+            <canvas id="satGraph" tabindex="0" role="img" aria-label="원래 값 x와 새 값 y의 그래프. 직선을 끌거나 방향키로 a를 바꿉니다."></canvas>
+            <div class="sat-legend" aria-hidden="true">
+              <span class="lg"><i class="lg-line"></i>새 값 y</span>
+              <span class="lg"><i class="lg-dash"></i>y = x</span>
+              <span class="lg"><i class="lg-dot" style="background:#d13438"></i>R</span>
+              <span class="lg"><i class="lg-dot" style="background:#13a10e"></i>G</span>
+              <span class="lg"><i class="lg-dot" style="background:#0f6cbd"></i>B</span>
+            </div>
+          </div>
+          <div class="sat-px" id="satPx" aria-live="polite"></div>
+          <p class="sat-hint" id="satHint"></p>
+          <p class="sat-note" id="satNote"></p>
+          <p class="x-err" id="satErr" role="alert"></p>
+          <div class="sat-foot">
+            <button type="button" class="x-btn" id="satReset">처음 숫자로 (a = 1)</button>
+          </div>
+        </div>
+      </aside>
     </main>
 
     <nav class="tabsbar" id="sheetTabs" aria-label="시트">
@@ -1377,6 +1615,7 @@
       <button type="button" class="stab" data-sheet="B"><i class="dot dot-B" aria-hidden="true"></i>B</button>
       <button type="button" class="stab" data-sheet="A" hidden><i class="dot dot-A" aria-hidden="true"></i>A</button>
       <button type="button" class="stab" data-sheet="canvas">Canvas</button>
+      <button type="button" class="stab-add" id="addSheetBtn" aria-label="새 시트 추가 (Shift+F11)" title="새 시트 (Shift+F11)">+</button>
     </nav>
 
     <footer class="statusbar">
@@ -1504,6 +1743,7 @@
   </div>
 
   <div class="xm" id="cellFmtMenu" role="menu" aria-label="셀 서식" hidden></div>
+  <div class="xm tab-menu" id="tabMenu" role="menu" aria-label="시트" hidden></div>
   <div class="xm ft-menu" id="filterMenu" role="menu" aria-label="사진 필터" hidden></div>
 
   <dialog class="xdlg" id="fnDlg" aria-labelledby="fnTitle">
@@ -1543,6 +1783,20 @@
       const COL_W = 48, ROW_H = 22, HEAD_W = 44, HEAD_H = 22;
       const DATA_SHEETS = ['R', 'G', 'B', 'A'];
       const SHEET_NAME = { guide: '설명서', R: 'R', G: 'G', B: 'B', A: 'A', canvas: 'Canvas' };
+      const IMG_SHEETS = ['R', 'G', 'B', 'A'];   // 이미지가 되는 시트. 그 뒤로 + 로 추가한 작업용 시트가 DATA_SHEETS에 붙음
+      const sheetLabel = (id) => SHEET_NAME[id] || id;
+      const SHEET_NAME_RE = /^[A-Za-z_\uAC00-\uD7A3][A-Za-z0-9_\uAC00-\uD7A3]*$/;
+      // 수식 속 시트 이름 → 시트 id (대소문자 무시). 없으면 null
+      function sheetIdByName(name) {
+        const u = String(name).toUpperCase();
+        return DATA_SHEETS.find((id) => SHEET_NAME[id].toUpperCase() === u) || null;
+      }
+      // 수식에 쓸 시트 이름: 있는 시트면 그 이름 그대로, 없으면 대문자. 글자·숫자·_가 아니면 '따옴표'
+      function refSheet(name) {
+        const id = sheetIdByName(name);
+        const n = id ? SHEET_NAME[id] : String(name).toUpperCase();
+        return SHEET_NAME_RE.test(n) ? n : `'${n}'`;
+      }
       const UNDO_LIMIT = 50;
       const CELL_FONT = '13px "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Segoe UI", sans-serif';
       const HEAD_FONT = '12px "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Segoe UI", sans-serif';
@@ -1570,6 +1824,11 @@
         pal: $('pal'), palTheme: $('palTheme'), palStd: $('palStd'), palNative: $('palNative'),
         fxBtn: $('fxBtn'), fnDlg: $('fnDlg'), fnCat: $('fnCat'), fnList: $('fnList'), fnSyntax: $('fnSyntax'), fnDesc: $('fnDesc'),
         filterNote: $('filterNote'), excelDl: $('excelDl'), cellFmtBtn: $('cellFmtBtn'), cellFmtMenu: $('cellFmtMenu'), filterGroup: $('filterGroup'), filterBtn: $('filterBtn'), filterMenu: $('filterMenu'),
+        satPanel: $('satPanel'), satGraph: $('satGraph'), satSample: $('satSample'), satPickFile: $('satPickFile'), satFile: $('satFile'),
+        satClose: $('satClose'), satHint: $('satHint'), satPx: $('satPx'), satA: $('satA'), satANum: $('satANum'), satPNum: $('satPNum'),
+        satLum: $('satLum'), satY: $('satY'), satFx: $('satFx'), satPlay: $('satPlay'), satNote: $('satNote'), satErr: $('satErr'),
+        satScope: $('satScope'), satEq: $('satEq'), satReset: $('satReset'),
+        afterNote: $('afterNote'), beforeNote: $('beforeNote'), satSplit: $('satSplit'), tabMenu: $('tabMenu'),
       };
 
       // ===== 상태 =====
@@ -1688,7 +1947,7 @@
           if (!isData(state.current)) return;
           const { r, c } = view().active;
           const val = fmtFull(state.data[state.current][r * SIZE + c]);
-          els.live.textContent = `${state.current} 시트 ${addr(r, c)}, ${val === '' ? '빈 셀' : val}`;
+          els.live.textContent = `${sheetLabel(state.current)} 시트 ${addr(r, c)}, ${val === '' ? '빈 셀' : val}`;
         }, 250);
       }
 
@@ -1753,6 +2012,7 @@
         if (state.undo.length > UNDO_LIMIT) state.undo.shift();
         state.redo.length = 0;
         state.dirty = true;
+        satOnHistory(act);
       }
 
       function afterDataChange(sheet) {
@@ -1781,6 +2041,17 @@
             return done();
           case 'alpha':
             setAlphaVisible(target);
+            return done();
+          case 'sheet':
+            if (act.op === 'rename') {
+              renameSheet(act.id, target);
+              switchSheet(act.id);
+            } else if (target) {
+              mountSheet(target);
+              switchSheet(target.id);
+            } else {
+              unmountSheet((act.before || act.after).id);
+            }
             return done();
           case 'size': {
             const v = state.views[act.sheet];
@@ -1817,8 +2088,8 @@
         }
       }
 
-      const undo = () => replay(state.undo, state.redo, true, '되돌렸습니다');
-      const redo = () => replay(state.redo, state.undo, false, '다시 실행했습니다');
+      const undo = () => { replay(state.undo, state.redo, true, '되돌렸습니다'); satAfterReplay(); };
+      const redo = () => { replay(state.redo, state.undo, false, '다시 실행했습니다'); satAfterReplay(); };
 
       function updateUndoButtons() {
         els.undoBtn.disabled = state.undo.length === 0;
@@ -1856,7 +2127,7 @@
             continue;
           }
           if ((m = /^#(DIV\/0!|VALUE!|REF!|NAME\?|NUM!|N\/A)/i.exec(rest))) { toks.push({ t: 'err', s: m[0], v: m[0].toUpperCase() }); i += m[0].length; continue; }
-          if ((m = /^(?:'([^']+)'!|([A-Za-z]+)!)?(\$?)([A-Za-z]{1,3})(\$?)(\d{1,5})(?![A-Za-z0-9_(])/.exec(rest))) {
+          if ((m = /^(?:'([^']+)'!|([A-Za-z_\uAC00-\uD7A3][A-Za-z0-9_\uAC00-\uD7A3]*)!)?(\$?)([A-Za-z]{1,3})(\$?)(\d{1,5})(?![A-Za-z0-9_(])/.exec(rest))) {
             toks.push({ t: 'ref', s: m[0], sheet: m[1] || m[2] || null, ca: Boolean(m[3]), col: m[4].toUpperCase(), ra: Boolean(m[5]), row: Number(m[6]) });
             i += m[0].length;
             continue;
@@ -1878,8 +2149,9 @@
         const peek = () => toks[p];
         const isOp = (...ops) => toks[p] && toks[p].t === 'op' && ops.includes(toks[p].s);
         const refNode = (tk, sheetHint) => {
-          const sheet = (tk.sheet || sheetHint || hostSheet).toUpperCase();
-          if (!DATA_SHEETS.includes(sheet)) return { k: 'err', v: '#REF!' };
+          const name = tk.sheet || sheetHint;
+          const sheet = name ? sheetIdByName(name) : hostSheet;
+          if (!sheet) return { k: 'err', v: '#REF!' };
           const c = colIndex(tk.col), r = tk.row - 1;
           if (c < 0 || c >= SIZE || r < 0 || r >= SIZE) return { k: 'err', v: '#REF!' };
           return { k: 'ref', sheet, r, c };
@@ -1960,13 +2232,14 @@
 
       // 수식을 (dr, dc)만큼 옮겨 쓴 결과. $가 없는 참조만 따라 움직인다. 이름은 대문자로 정리.
       function shiftFormula(src, dr, dc) {
+        if (src.startsWith("'")) return src;   // 글자는 옮겨도 그대로
         return '=' + tokenize(src.slice(1)).map((tk) => {
           if (tk.t === 'name' || tk.t === 'err') return tk.v;
           if (tk.t !== 'ref') return tk.s;
           const c = colIndex(tk.col) + (tk.ca ? 0 : dc);
           const r = tk.row - 1 + (tk.ra ? 0 : dr);
           if (c < 0 || c >= SIZE || r < 0 || r >= SIZE) return '#REF!';
-          return (tk.sheet ? tk.sheet.toUpperCase() + '!' : '') + (tk.ca ? '$' : '') + colName(c) + (tk.ra ? '$' : '') + (r + 1);
+          return (tk.sheet ? refSheet(tk.sheet) + '!' : '') + (tk.ca ? '$' : '') + colName(c) + (tk.ra ? '$' : '') + (r + 1);
         }).join('');
       }
 
@@ -1983,8 +2256,9 @@
             throw e;
           }
         }
+        if (t.startsWith("'")) return t.length > 1 ? { ok: true, formula: t } : { ok: true, value: NaN };   // '로 시작하면 글자 그대로
         const p = parseNumber(t);
-        return p.ok ? { ok: true, value: p.value } : p;
+        return p.ok ? { ok: true, value: p.value } : { ok: true, formula: "'" + t };   // 숫자가 아니면 글자 (엑셀처럼)
       }
 
       // ── 값 변환 (엑셀 규칙) ──
@@ -2163,11 +2437,11 @@
       const astCache = new Map();
       function getAst(sheet, idx) {
         const src = state.formulas[sheet].get(idx);
-        const key = sheet + idx;
+        const key = sheet + ':' + idx;   // 'S1'+'23'과 'S12'+'3'이 겹치지 않게
         const hit = astCache.get(key);
         if (hit && hit.src === src) return hit.ast;
         let ast;
-        try { ast = parseFormula(src.slice(1), sheet); } catch (e) { ast = { k: 'err', v: '#NAME?' }; }
+        try { ast = src.startsWith("'") ? { k: 'str', v: src.slice(1) } : parseFormula(src.slice(1), sheet); } catch (e) { ast = { k: 'err', v: '#NAME?' }; }
         astCache.set(key, { src, ast });
         return ast;
       }
@@ -2176,7 +2450,7 @@
         if (!calcStatus) return state.fval[sheet].get(idx) ?? 0;
         const st = calcStatus[sheet];
         if (st[idx] === 2) return state.fval[sheet].get(idx);
-        const key = sheet + idx;
+        const key = sheet + ':' + idx;   // 'S1'+'23'과 'S12'+'3'이 겹치지 않게
         if (st[idx] === 1) {
           // 순환 참조: 고리에 든 칸은 모두 0 (엑셀과 같음)
           circular = true;
@@ -2230,8 +2504,14 @@
         return v === v ? { text: fmtCell(v), align: 'right', num: true } : null;
       }
 
-      // 수식 입력줄·편집기에 보일 원문
-      const cellSource = (sheet, idx) => state.formulas[sheet].get(idx) || fmtFull(state.data[sheet][idx]);
+      // 수식 입력줄·편집기에 보일 원문. 글자는 ' 없이 보여 주되, 숫자나 =처럼 보이는 글자는 '를 붙여 둠 (다시 확정해도 글자로)
+      function cellSource(sheet, idx) {
+        const f = state.formulas[sheet].get(idx);
+        if (!f) return fmtFull(state.data[sheet][idx]);
+        if (!f.startsWith("'")) return f;
+        const t = f.slice(1);
+        return parseNumber(t).ok || t.startsWith('=') || t.startsWith("'") ? f : t;
+      }
 
       // ===== 조건부 서식 (엑셀 홈 › 조건부 서식과 같은 구성) =====
       // 규칙 종류 — 모든 규칙은 ranges(사각형 목록)를 가지며, 배열 앞쪽일수록 우선순위가 높다.
@@ -2801,7 +3081,7 @@
       function addRuleToSelection(rule, name) {
         const sheet = state.current, v = view(), where = selAddr(v);
         rule.ranges = v.areas.map((a) => ({ ...a }));
-        applyRules(sheet, [rule, ...state.rules[sheet]], `${sheet} 시트 ${where} ${name}`);
+        applyRules(sheet, [rule, ...state.rules[sheet]], `${sheetLabel(sheet)} 시트 ${where} ${name}`);
         return where;
       }
 
@@ -2854,8 +3134,8 @@
           return;
         }
         if (scope === 'sheet') {
-          applyRules(sheet, [], `${sheet} 시트 조건부 서식 모두 지우기`);
-          toast(`${sheet} 시트의 조건부 서식 규칙 ${rules.length}개를 지웠습니다.`);
+          applyRules(sheet, [], `${sheetLabel(sheet)} 시트 조건부 서식 모두 지우기`);
+          toast(`${sheetLabel(sheet)} 시트의 조건부 서식 규칙 ${rules.length}개를 지웠습니다.`);
           return;
         }
         // 엑셀처럼 규칙 범위에서 선택 영역만 잘라 냄
@@ -2873,7 +3153,7 @@
           toast('선택한 셀에는 조건부 서식 규칙이 없습니다.');
           return;
         }
-        applyRules(sheet, next, `${sheet} 시트 ${selAddr(v)} 조건부 서식 지우기`);
+        applyRules(sheet, next, `${sheetLabel(sheet)} 시트 ${selAddr(v)} 조건부 서식 지우기`);
         toast(`${selAddr(v)}의 조건부 서식을 지웠습니다.`);
       }
 
@@ -3370,7 +3650,7 @@
         const cur = state.rules[mgr.sheet];
         const changed = mgr.rules.length !== cur.length || mgr.rules.some((r, i) => r !== cur[i]);
         if (changed) {
-          applyRules(mgr.sheet, mgr.rules.slice(), `${mgr.sheet} 시트 조건부 서식 규칙 관리`);
+          applyRules(mgr.sheet, mgr.rules.slice(), `${sheetLabel(mgr.sheet)} 시트 조건부 서식 규칙 관리`);
           mgr.changed = true;
         }
         return true;
@@ -3862,7 +4142,7 @@
         };
         if (drag && drag.mode === 'fill' && drag.target) dashed(drag.target, '#555');
         // 수식 입력 중 클릭으로 넣은 참조 범위
-        if (state.edit && state.edit.ptRect && state.edit.sheet === sheet) dashed(state.edit.ptRect, '#0f6cbd');
+        if (state.edit && state.edit.ptRect && state.edit.ptSheet === sheet) dashed(state.edit.ptRect, '#0f6cbd');
         ctx.restore();
 
         // 열 머리글
@@ -3998,7 +4278,7 @@
         const vals = new Float64Array(idx.length).fill(p.formula ? NaN : p.value);
         const fs = p.formula ? Array.from(idx, (k) => shiftFormula(p.formula, Math.floor(k / SIZE) - ed.r, (k % SIZE) - ed.c)) : null;
         const where = fill ? selAddr(v) : addr(ed.r, ed.c);
-        applyChange(ed.sheet, idx, vals, `${ed.sheet} 시트 ${where} 입력`, fs);
+        applyChange(ed.sheet, idx, vals, `${sheetLabel(ed.sheet)} 시트 ${where} 입력`, fs);
         return true;
       }
 
@@ -4007,7 +4287,7 @@
       // 수식을 입력하는 중 셀을 누르면 그 주소를 넣을 수 있는지 (=, (, 연산자, 쉼표 바로 뒤)
       function canPointRef() {
         const ed = state.edit;
-        if (!ed || ed.sheet !== state.current) return false;
+        if (!ed || !isData(state.current)) return false;
         const inp = ed.via === 'fx' ? els.fx : els.editor;
         if (!inp.value.startsWith('=')) return false;
         if (ed.pt) return true;
@@ -4018,12 +4298,14 @@
       function insertRef(a, b) {
         const ed = state.edit, inp = ed.via === 'fx' ? els.fx : els.editor;
         const rect = rectOf(a, b);
-        const text = rectAddr(rect);
+        // 다른 시트의 칸이면 시트 이름을 붙임: Sheet1!A1
+        const text = (state.current !== ed.sheet ? refSheet(SHEET_NAME[state.current]) + '!' : '') + rectAddr(rect);
         const s = ed.pt ? ed.pt.s : inp.selectionStart;
         const e = ed.pt ? ed.pt.e : inp.selectionEnd;
         inp.value = inp.value.slice(0, s) + text + inp.value.slice(e);
         ed.pt = { s, e: s + text.length };
         ed.ptRect = rect;
+        ed.ptSheet = state.current;
         inp.setSelectionRange(ed.pt.e, ed.pt.e);
         if (inp === els.editor) els.fx.value = inp.value;
         else if (ed.via === 'cell') els.editor.value = inp.value;
@@ -4107,14 +4389,17 @@
       els.fx.addEventListener('keydown', (e) => {
         if (!state.edit || state.edit.via !== 'fx' || e.isComposing) return;
         const ctrl = e.ctrlKey || e.metaKey;
+        const home = state.edit.sheet;
         if (e.key === 'Enter') {
           e.preventDefault();
           if (!commitEdit({ fill: ctrl, keepOnInvalid: true })) return;
+          if (state.current !== home) switchSheet(home);   // 다른 시트를 가리키다 확정하면 원래 시트로
           if (!ctrl) moveWithin(1, 0);
           focusGrid();
         } else if (e.key === 'Escape') {
           e.preventDefault();
           cancelEdit();
+          if (state.current !== home) switchSheet(home);
           focusGrid();
         }
       });
@@ -4158,6 +4443,7 @@
         scheduleDraw();
         updateFormulaBar();
         updateStatus();
+        satFollowSelection();
       }
 
       function ensureVisible(r, c) {
@@ -4287,7 +4573,7 @@
             }
           }
         }
-        applyChange(sheet, Int32Array.from(idx), Float64Array.from(vals), `${sheet} 시트 ${rectAddr(tgt)} 채우기`, fs);
+        applyChange(sheet, Int32Array.from(idx), Float64Array.from(vals), `${sheetLabel(sheet)} 시트 ${rectAddr(tgt)} 채우기`, fs);
         const v = view();
         v.areas = [tgt];
         v.focus = { r: tgt.r2, c: tgt.c2 };
@@ -4569,7 +4855,7 @@
       function clearSelection() {
         const v = view();
         const idx = selectedIndices(v);
-        applyChange(state.current, idx, new Float64Array(idx.length).fill(NaN), `${state.current} 시트 ${selAddr(v)} 지우기`);
+        applyChange(state.current, idx, new Float64Array(idx.length).fill(NaN), `${sheetLabel(state.current)} 시트 ${selAddr(v)} 지우기`);
       }
 
       // ===== 복사 · 붙여넣기 =====
@@ -4649,7 +4935,7 @@
           }
         }
         const target = { r1: a.r1, c1: a.c1, r2, c2 };
-        applyChange(state.current, idx, vals, `${state.current} 시트 ${rectAddr(target)} 붙여넣기`, fs);
+        applyChange(state.current, idx, vals, `${sheetLabel(state.current)} 시트 ${rectAddr(target)} 붙여넣기`, fs);
         v.areas = [target];
         v.anchor = { r: a.r1, c: a.c1 };
         v.active = { r: a.r1, c: a.c1 };
@@ -4738,7 +5024,7 @@
         const where = selAddr(v);
         const n = await askNumber({
           title: op.title,
-          prompt: `${op.prompt}\n선택 영역: ${sheet} 시트 ${where}\n(빈칸은 0으로 계산, 결과는 0~255로 제한)`,
+          prompt: `${op.prompt}\n선택 영역: ${sheetLabel(sheet)} 시트 ${where}\n(빈칸은 0으로 계산, 결과는 0~255로 제한)`,
           validate: (x) => (key === 'div' && x === 0 ? '0으로 나눌 수 없습니다.' : ''),
         });
         if (n === null) return;
@@ -4752,7 +5038,7 @@
           const res = op.calc(Number.isNaN(cur) ? 0 : cur, n);
           after[i] = Number(clamp(res, 0, 255).toPrecision(12));
         }
-        const label = `${sheet} 시트 ${where} ${op.sym} ${fmtFull(n)}`;
+        const label = `${sheetLabel(sheet)} 시트 ${where} ${op.sym} ${fmtFull(n)}`;
         const note = skipped ? ` 수식이 든 칸 ${skipped}개는 그대로 두었습니다.` : '';
         if (applyChange(sheet, idx, after, label)) toast(`${label} 계산을 적용했습니다.${note}`);
         else toast('바뀐 값이 없습니다. (이미 0 또는 255에 도달했을 수 있어요)');
@@ -4830,6 +5116,7 @@
 
       function makeImage() {
         commitEdit();
+        if (sat.open) satClose();
         let url;
         try {
           const { R, G, B, A } = state.data;
@@ -4846,6 +5133,7 @@
 
       function clearCanvas() {
         commitEdit();
+        if (sat.open) satClose();
         if (!state.images.after && !state.images.before) {
           toast('지울 이미지가 없습니다.');
           return;
@@ -5094,7 +5382,7 @@
       }
 
       function filterTargets() {
-        if (!isData(state.current)) return null;
+        if (!IMG_SHEETS.includes(state.current)) return null;
         const idx = selectedIndices(view());
         return idx.length > 1 ? idx : null;   // null = 이미지 전체
       }
@@ -5103,6 +5391,7 @@
         commitEdit();
         const f = FILTERS.find((x) => x.id === id);
         if (!f) return;
+        if (sat.open) satClose();
         const scope = filterTargets();
         const where = scope ? `${selAddr(view())} 영역` : '이미지 전체';
         // 예로 보여 줄 칸: 활성 셀(적용 범위 안이면), 아니면 범위의 첫 칸 / 이미지 가운데
@@ -5141,7 +5430,7 @@
         els.filterNote.parentElement.classList.toggle('has-note', Boolean(n));
         if (!n) return;
         els.filterNote.innerHTML =
-          `<h3>적용한 필터: ${esc(n.name)} <small>(${esc(n.where)})</small></h3>` +
+          `<h3>${esc(n.head || '적용한 필터')}: ${esc(n.name)} <small>(${esc(n.where)})</small></h3>` +
           (n.mood ? `<p class="fn-mood">${esc(n.mood)}</p>` : '') +
           `<ol>${n.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>` +
           `<p class="fn-example">예: ${esc(n.cell)} 칸 <b>(R ${n.from[0]}, G ${n.from[1]}, B ${n.from[2]})</b> → <b>(R ${n.to[0]}, G ${n.to[1]}, B ${n.to[2]})</b>` +
@@ -5216,6 +5505,685 @@
         e.stopPropagation();
         toggleFilterGroup();
       }, true);
+
+      // ===== 채도 그래프 (오른쪽 작업창: 작은 표 + 스크롤 막대 + 차트) =====
+      // B1 = a (스크롤 막대와 셀 연결), B2 = 기준점 p, B3 = B2 + B1 × (x − B2). 기준점 (p, p)는 고정, a는 직선의 기울기.
+      // a를 움직이면 R·G·B 시트의 숫자가 바로 바뀜 — 엑셀에서 스크롤 막대에 연결된 셀을 수식이 참조하는 것처럼.
+      // 창을 열 때의 숫자를 '처음 숫자'로 기억하고 새 값은 늘 처음 숫자에서 계산. 움직인 것 전체가 되돌리기 한 단계.
+      const SAT_XLO = -16, SAT_XHI = 271, SAT_YLO = -56, SAT_YHI = 311;   // 그래프 축 범위 (세로 0~255 밖은 잘리는 구역)
+      const SAT_MIN = -1, SAT_MAX = 3;
+      const SAT_CH = [['R', '#d13438'], ['G', '#13a10e'], ['B', '#0f6cbd']];
+      const RGB = ['R', 'G', 'B'];
+      const sat = {
+        open: false, a: 1, p: 128, lum: false, where: '이미지 전체', idx: null, mask: null, pick: 75 * SIZE + 75,
+        src: null, before: null, fBefore: null, entry: null,   // src = 처음 숫자(0~255), before·fBefore = 되돌릴 값·수식, entry = 되돌리기 기록
+        srcImg: null, outImg: null, geo: null, play: 0, dir: 1, last: 0, drag: false,
+      };
+
+      const satP = (r, g, b) => (sat.lum ? lum(r, g, b) : sat.p);
+      const satNum = (x, d = 2) => { const v = Number(x.toFixed(d)); return (v < 0 ? '−' : '') + Math.abs(v); };
+      const satATxt = () => satNum(sat.a);
+      const satPTxt = (p) => (sat.lum ? satNum(p, 1) : String(sat.p));
+
+      // 지금 R·G·B·A 시트 → 0~255 정수 (빈칸 RGB는 0, A는 255)
+      function satFromSheet() {
+        const s = readRGB();
+        s.A = Float64Array.from(state.data.A, (v) => toByte(v, 255));
+        return s;
+      }
+
+      // 사진 → 150×150 (가운데를 정사각형으로 잘라 줄이기)
+      function satFromImage(img) {
+        const cv = document.createElement('canvas');
+        cv.width = cv.height = SIZE;
+        const ctx = cv.getContext('2d');
+        const s = Math.min(img.naturalWidth, img.naturalHeight);
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, SIZE, SIZE);
+        const d = ctx.getImageData(0, 0, SIZE, SIZE).data;   // file://로 연 예시 사진은 여기서 보안 오류가 날 수 있음
+        const out = { R: new Float64Array(N), G: new Float64Array(N), B: new Float64Array(N) };
+        for (let i = 0; i < N; i++) {
+          out.R[i] = d[i * 4];
+          out.G[i] = d[i * 4 + 1];
+          out.B[i] = d[i * 4 + 2];
+        }
+        return out;
+      }
+
+      function satLoadURL(url) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => { try { resolve(satFromImage(img)); } catch (err) { reject(err); } };
+          img.onerror = () => reject(new Error('사진을 열 수 없습니다.'));
+          img.src = url;
+        });
+      }
+
+      function satCompute(i, out) {
+        const { R, G, B } = sat.src;
+        if (sat.mask && !sat.mask[i]) { out[0] = R[i]; out[1] = G[i]; out[2] = B[i]; return; }
+        const p = satP(R[i], G[i], B[i]);
+        out[0] = Math.round(clamp(p + sat.a * (R[i] - p), 0, 255));
+        out[1] = Math.round(clamp(p + sat.a * (G[i] - p), 0, 255));
+        out[2] = Math.round(clamp(p + sat.a * (B[i] - p), 0, 255));
+      }
+
+      // 지금 시트 숫자를 '처음 숫자'로 다시 잡기 (a = 1부터 다시)
+      function satRebase(changed) {
+        if (!sat.open) return;
+        const wasA = sat.a;
+        sat.entry = null;
+        sat.src = satFromSheet();
+        sat.before = {};
+        sat.fBefore = {};
+        for (const s of RGB) {
+          sat.before[s] = Float64Array.from(sat.idx, (k) => state.data[s][k]);
+          sat.fBefore[s] = Array.from(sat.idx, (k) => state.formulas[s].get(k) || null);
+        }
+        satShowA(1);
+        const empty = RGB.every((s) => state.data[s].every((v) => Number.isNaN(v)));
+        els.satHint.classList.toggle('warn', empty || (changed && wasA !== 1));
+        els.satHint.textContent = empty
+          ? 'R·G·B 시트가 비어 있습니다. 위의 [예시 사진]이나 [내 사진...]으로 숫자를 넣어 보세요.'
+          : changed && wasA !== 1
+            ? '시트 숫자가 바뀌어서 지금 숫자를 새 처음 숫자(a = 1)로 잡았습니다.'
+            : '시트에서 칸을 누르면 그 칸의 R·G·B가 그래프의 점과 값 비교 표에 나타납니다.';
+        els.satErr.textContent = '';
+        satRender();
+      }
+
+      // a·p가 바뀌면 R·G·B 시트에 바로 쓰기. 처음 쓸 때 되돌리기 기록을 하나 만들고 이후엔 그 기록을 고쳐 씀
+      function satWrite() {
+        if (!sat.open || !sat.src) return;
+        if (sat.entry && state.undo[state.undo.length - 1] !== sat.entry) sat.entry = null;   // 그사이 되돌렸으면 새 기록
+        const same = sat.a === 1;   // a = 1이면 처음 숫자·수식 그대로
+        if (same && !sat.entry) return;
+        if (!sat.entry) {
+          sat.entry = {
+            kind: 'cells', images: null, label: '', satA: 1,
+            parts: RGB.map((s) => ({
+              sheet: s, idx: sat.idx, before: sat.before[s], fBefore: sat.fBefore[s],
+              after: new Float64Array(sat.idx.length), fAfter: new Array(sat.idx.length).fill(null),
+            })),
+          };
+          pushHistory(sat.entry);
+        }
+        if (same) {   // 처음 숫자로 돌아오면 기록도 지움
+          for (const part of sat.entry.parts) writeCells(part.sheet, part.idx, part.before, part.fBefore);
+          state.undo.pop();
+          sat.entry = null;
+        } else {
+          const [pr, pg, pb] = sat.entry.parts, px = [0, 0, 0];
+          for (let j = 0; j < sat.idx.length; j++) {
+            satCompute(sat.idx[j], px);
+            pr.after[j] = px[0]; pg.after[j] = px[1]; pb.after[j] = px[2];
+          }
+          for (const part of sat.entry.parts) writeCells(part.sheet, part.idx, part.after, part.fAfter);
+          sat.entry.label = `채도 a = ${satATxt()} (${sat.where})`;
+          sat.entry.satA = sat.a;
+        }
+        state.dirty = true;
+        recalc();
+        RGB.forEach(afterDataChange);
+        updateUndoButtons();
+      }
+
+      // 고른 칸 표시 (흰 테두리 + 검은 테두리)
+      function satMarker(ctx) {
+        const x = sat.pick % SIZE, y = Math.floor(sat.pick / SIZE);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#000';
+        ctx.strokeRect(x - 3.5, y - 3.5, 8, 8);
+        ctx.strokeStyle = '#fff';
+        ctx.strokeRect(x - 2.5, y - 2.5, 6, 6);
+      }
+
+      // Canvas 시트의 후·전 액자 안에 미리 보기용 canvas 준비
+      function satFrame(frame) {
+        let cv = frame.querySelector('canvas.sat-cv');
+        if (!cv) {
+          frame.textContent = '';
+          cv = document.createElement('canvas');
+          cv.className = 'sat-cv';
+          cv.width = cv.height = SIZE;
+          frame.appendChild(cv);
+        }
+        return cv.getContext('2d');
+      }
+
+      // 작업창(표·차트·값 비교)과 Canvas 시트의 그림 (전 = 처음 숫자, 후 = 지금 시트)을 다시 그림
+      function satRender() {
+        if (!sat.open || !sat.src) return;
+        const sctx = satFrame(els.beforeFrame), octx = satFrame(els.afterFrame);
+        if (!sat.srcImg) { sat.srcImg = sctx.createImageData(SIZE, SIZE); sat.outImg = octx.createImageData(SIZE, SIZE); }
+        const sd = sat.srcImg.data, od = sat.outImg.data, px = [0, 0, 0];
+        const { R, G, B, A } = sat.src;
+        for (let i = 0; i < N; i++) {
+          const q = i * 4;
+          satCompute(i, px);
+          sd[q] = R[i]; sd[q + 1] = G[i]; sd[q + 2] = B[i]; sd[q + 3] = A[i];
+          od[q] = px[0]; od[q + 1] = px[1]; od[q + 2] = px[2]; od[q + 3] = A[i];
+        }
+        sctx.putImageData(sat.srcImg, 0, 0);
+        octx.putImageData(sat.outImg, 0, 0);
+        satMarker(sctx);
+        satMarker(octx);
+        els.afterNote.textContent = `지금 R·G·B 시트 (a = ${satATxt()})`;
+        els.beforeNote.textContent = '처음 숫자 (a = 1)';
+        els.saveAfter.hidden = true;
+        const pt = sat.lum ? 'Y' : String(sat.p);
+        els.satY.textContent = `= ${pt} + ${satATxt()} × (x − ${pt})`;
+        els.satFx.textContent = sat.lum ? '=Y+B1*(x-Y)' : '=B2+B1*(x-B2)';
+        satDrawGraph();
+        satInfo();
+      }
+
+      // 겹치는 이름표를 축을 따라 벌려 놓기: 원래 자리(at)에서 가장 가까우면서 서로 gap 이상 떨어지게
+      function satSpread(items, gap, lo, hi) {
+        items.sort((m, n) => m.at - n.at);
+        items.forEach((m, j) => { m.pos = j ? Math.max(m.at, items[j - 1].pos + gap) : Math.max(m.at, lo); });
+        for (let j = items.length - 1; j >= 0; j--) {   // 끝을 넘으면 거꾸로 밀어 올림
+          const limit = j === items.length - 1 ? hi : items[j + 1].pos - gap;
+          if (items[j].pos > limit) items[j].pos = limit;
+        }
+        return items;
+      }
+
+      function satDrawGraph() {
+        const cv = els.satGraph;
+        const W = cv.clientWidth || 340, dpr = window.devicePixelRatio || 1;
+        // 가로·세로 눈금 간격을 같게 (a = 1이면 정확히 45°) → 높이는 너비에 맞춰 계산
+        const padL = 62, padR = 12, padT = 24, padB = 40;
+        const xs = SAT_XHI - SAT_XLO, ys = SAT_YHI - SAT_YLO;
+        const pw = W - padL - padR, k = pw / xs, ph = ys * k, H = Math.round(ph + padT + padB);
+        if (cv.style.height !== H + 'px') cv.style.height = H + 'px';
+        if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
+          cv.width = Math.round(W * dpr);
+          cv.height = Math.round(H * dpr);
+        }
+        const ctx = cv.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const X = (v) => padL + (v - SAT_XLO) * k;
+        const Y = (v) => padT + (SAT_YHI - v) * k;
+        sat.geo = { padL, padT, k };
+        const { R, G, B } = sat.src;
+        const i = sat.pick, v = [R[i], G[i], B[i]];
+        const p = satP(...v), a = sat.a;
+        const f = (x) => p + a * (x - p);
+        const FONT = '"Malgun Gothic", "맑은 고딕", "Segoe UI", sans-serif';
+        // 선 위에서도 읽히게 흰 테두리를 두른 글자
+        const label = (t, x, y, col, align = 'left', font = `11px ${FONT}`) => {
+          ctx.font = font;
+          ctx.textAlign = align;
+          ctx.lineJoin = 'round';
+          ctx.strokeStyle = 'rgba(255, 255, 255, .95)';
+          ctx.lineWidth = 3;
+          ctx.strokeText(t, x, y);
+          ctx.fillStyle = col;
+          ctx.fillText(t, x, y);
+        };
+        const L = X(SAT_XLO), Rt = X(SAT_XHI), T = Y(SAT_YHI), Bt = Y(SAT_YLO);
+
+        ctx.clearRect(0, 0, W, H);
+        // 0~255 밖: 위·아래는 잘리는 구역(분홍), 옆은 x값이 없는 구역(회색)
+        ctx.fillStyle = '#fdf0f0';
+        ctx.fillRect(L, T, pw, Y(255) - T);
+        ctx.fillRect(L, Y(0), pw, Bt - Y(0));
+        ctx.fillStyle = '#f4f4f4';
+        ctx.fillRect(L, Y(255), X(0) - L, Y(0) - Y(255));
+        ctx.fillRect(X(255), Y(255), Rt - X(255), Y(0) - Y(255));
+        // 눈금선
+        ctx.lineWidth = 1;
+        for (let t = 0; t <= 256; t += 32) {
+          ctx.strokeStyle = t % 64 ? '#f0f0f0' : '#e0e0e0';
+          ctx.beginPath(); ctx.moveTo(X(Math.min(t, 255)), T); ctx.lineTo(X(Math.min(t, 255)), Bt); ctx.stroke();
+        }
+        for (let t = -32; t <= 288; t += 32) {
+          ctx.strokeStyle = t % 64 ? '#f0f0f0' : '#e0e0e0';
+          ctx.beginPath(); ctx.moveTo(L, Y(t)); ctx.lineTo(Rt, Y(t)); ctx.stroke();
+        }
+        // 255 경계(잘리는 곳)
+        ctx.strokeStyle = '#e8b4b4';
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath(); ctx.moveTo(L, Y(255)); ctx.lineTo(Rt, Y(255)); ctx.stroke();
+        ctx.setLineDash([]);
+        // 축 (x = 0, y = 0)
+        ctx.strokeStyle = '#605e5c';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(X(0), T); ctx.lineTo(X(0), Bt); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(L, Y(0)); ctx.lineTo(Rt, Y(0)); ctx.stroke();
+        ctx.strokeStyle = '#b0b0b0';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(L + 0.5, T + 0.5, pw - 1, Bt - T - 1);
+
+        // 눈금 숫자: 세로축은 왼쪽 첫째 칸, 가로축은 그래프 아래
+        for (const t of [0, 64, 128, 192, 255]) {
+          label(String(t), padL - 34, Y(t) + 4, '#605e5c', 'right');
+          label(String(t), X(t), Bt + 14, '#605e5c', 'center');
+        }
+        // 축 이름 (가로로)
+        label('↑ 새 값 y', 6, 14, '#444', 'left', `600 11.5px ${FONT}`);
+        label('원래 값 x →', L + pw / 2, H - 6, '#444', 'center', `600 11.5px ${FONT}`);
+        // 잘리는 구역 안내
+        label('255보다 크면 → 255로 잘림', X(128), (Y(255) + T) / 2 + 4, '#a4262c', 'center');
+        label('0보다 작으면 → 0으로 잘림', X(128), Bt - 6, '#a4262c', 'center');
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(L, T, pw, Bt - T);
+        ctx.clip();
+        // a = 1: 그대로 (y = x)
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = '#a0a0a0';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(X(SAT_XLO), Y(SAT_XLO)); ctx.lineTo(X(SAT_XHI), Y(SAT_XHI)); ctx.stroke();
+        // 자르기 전 직선 (점선)
+        ctx.strokeStyle = 'rgba(224, 123, 0, .5)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.moveTo(X(SAT_XLO), Y(f(SAT_XLO))); ctx.lineTo(X(SAT_XHI), Y(f(SAT_XHI))); ctx.stroke();
+        ctx.setLineDash([]);
+        // 실제로 쓰이는 그래프: 0~255로 자른 꺾은선
+        ctx.strokeStyle = '#e07b00';
+        ctx.lineWidth = 3;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        for (let x = 0; x <= 255; x++) {
+          const y = clamp(f(x), 0, 255);
+          if (x) ctx.lineTo(X(x), Y(y)); else ctx.moveTo(X(x), Y(y));
+        }
+        ctx.stroke();
+
+        // 고른 칸의 R·G·B: 처음 값 x에서 위로, 지금 값 y에서 왼쪽으로 점선
+        const pts = SAT_CH.map(([n, col], c) => {
+          const raw = f(v[c]), out = clamp(raw, 0, 255);
+          return { n, col, x: v[c], raw, out, shown: Math.round(out) };
+        });
+        for (const q of pts) {
+          ctx.strokeStyle = q.col;
+          ctx.globalAlpha = 0.55;
+          ctx.setLineDash([3, 3]);
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(X(q.x), Y(0)); ctx.lineTo(X(q.x), Y(q.out)); ctx.lineTo(L, Y(q.out)); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.globalAlpha = 1;
+          if (q.raw !== q.out) {   // 잘리기 전 위치는 빈 원
+            ctx.beginPath(); ctx.arc(X(q.x), Y(q.raw), 4, 0, Math.PI * 2); ctx.stroke();
+          }
+        }
+        for (const q of pts) {
+          ctx.fillStyle = q.col;
+          ctx.beginPath(); ctx.arc(X(q.x), Y(q.out), 5.5, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        // 기준점 (p, p) — 직선이 항상 지나는 고정점
+        ctx.fillStyle = '#201f1e';
+        ctx.beginPath(); ctx.arc(X(p), Y(p), 5, 0, Math.PI * 2); ctx.fill();
+        label(`(${satPTxt(p)}, ${satPTxt(p)})`, X(p) + 9, Y(p) + 16, '#201f1e', 'left', `700 11.5px ${FONT}`);
+
+        // 끌 수 있는 손잡이: 기준점에서 직선 방향으로 일정 거리. 위·아래 두 자리 중 R·G·B 점과 덜 겹치는 쪽
+        const th = Math.atan(a), hr = 92;
+        const cand = [1, -1].map((sg) => {
+          const hx = p + sg * hr * Math.cos(th), hy = p + sg * hr * Math.sin(th);
+          const inside = hx >= SAT_XLO + 8 && hx <= SAT_XHI - 8 && hy >= SAT_YLO + 8 && hy <= SAT_YHI - 8;
+          const room = Math.min(...pts.map((q) => Math.hypot(X(q.x) - X(hx), Y(q.out) - Y(hy))));
+          return { hx, hy, score: (inside ? 1000 : 0) + Math.min(room, 60) - (sg < 0 ? 1 : 0) };   // 비슷하면 오른쪽 위
+        });
+        const { hx, hy } = cand[0].score >= cand[1].score ? cand[0] : cand[1];
+        ctx.fillStyle = '#fff';
+        ctx.strokeStyle = '#e07b00';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(X(hx), Y(hy), 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        const right = X(hx) + 70 > Rt;   // 오른쪽 끝에 붙으면 이름표를 왼쪽에
+        label(`a = ${satATxt()}`, X(hx) + (right ? -11 : 11), Y(hy) - 7, '#c26a00', right ? 'right' : 'left', `italic 700 13px "Cambria Math", "Times New Roman", serif`);
+        ctx.restore();
+
+        // 축에 R·G·B 값: x는 y = 0 선 바로 아래, y는 왼쪽 둘째 칸. 겹치면 축을 따라 벌리고 짧은 선으로 이음
+        const bold = `700 11px ${FONT}`;
+        satSpread(pts.map((q) => ({ q, at: X(q.x) })), 26, L + 12, Rt - 12).forEach(({ q, at, pos }) => {
+          if (Math.abs(pos - at) > 1) {
+            ctx.strokeStyle = q.col;
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(at, Y(0)); ctx.lineTo(pos, Y(0) + 4); ctx.stroke();
+          }
+          label(String(q.x), pos, Y(0) + 15, q.col, 'center', bold);
+        });
+        satSpread(pts.map((q) => ({ q, at: Y(q.out) })), 13, T + 6, Bt - 4).forEach(({ q, at, pos }) => {
+          ctx.strokeStyle = q.col;
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(L, at); ctx.lineTo(padL - 4, pos); ctx.stroke();
+          label(String(q.shown), padL - 6, pos + 4, q.col, 'right', bold);
+        });
+
+        // 식
+        const pt = sat.lum ? 'Y' : String(sat.p);
+        els.satEq.innerHTML = `<i>y</i> = <b class="sat-av">${satATxt()}</b> × (<i>x</i> − ${pt}) + ${pt}`;
+      }
+
+      function satInfo() {
+        const { R, G, B } = sat.src;
+        const i = sat.pick, v = [R[i], G[i], B[i]], out = [0, 0, 0];
+        satCompute(i, out);
+        const p = satP(...v), pt = satPTxt(p), at = satATxt();
+        const cell = addr(Math.floor(i / SIZE), i % SIZE);
+        const outside = sat.mask && !sat.mask[i];
+        const rows = SAT_CH.map(([n, col], k) => {
+          const raw = p + sat.a * (v[k] - p);
+          const clip = raw < 0 || raw > 255, d = out[k] - v[k];
+          return `<tr><th style="color:${col}">${n}</th><td>${v[k]}</td>` +
+            `<td class="calc">${pt} + ${at} × (${v[k]} − ${pt}) = ${satNum(raw, 1)}${clip ? ` <span class="clip">${raw > 255 ? '255' : '0'}로 잘림</span>` : ''}</td>` +
+            `<td class="now">${out[k]}</td><td class="${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${d > 0 ? '+' : d < 0 ? '−' : ''}${Math.abs(d)}</td></tr>`;
+        }).join('');
+        els.satPx.innerHTML =
+          `<div class="sat-px-head"><h4>값 비교 — ${cell} 칸</h4>` +
+          `<span class="sw" style="background:rgb(${v.join(',')})" title="처음 색"></span>→` +
+          `<span class="sw" style="background:rgb(${out.join(',')})" title="지금 색"></span></div>` +
+          (outside ? '<p class="sat-px-sub">선택 영역 밖이라 바뀌지 않습니다.</p>'
+            : '<table class="sat-cmp"><thead><tr><th></th><th>처음 x</th><th>계산 p + a × (x − p)</th><th>지금 y</th><th>차이</th></tr></thead>' +
+              `<tbody>${rows}</tbody></table>`) +
+          (sat.lum ? `<p class="sat-px-sub">기준점 p = 밝기 = 0.299×${v[0]} + 0.587×${v[1]} + 0.114×${v[2]} = ${pt}</p>` : '');
+
+        const a = sat.a;
+        const center = sat.lum ? '그 칸의 회색(밝기)' : `회색 (${sat.p}, ${sat.p}, ${sat.p})`;
+        let say;
+        if (Math.abs(a - 1) < 1e-9) say = 'a = 1: 직선이 y = x와 겹쳐 아무것도 바뀌지 않습니다.';
+        else if (a > 1) say = `a > 1: 직선이 가팔라져 R·G·B가 ${center}에서 더 멀어집니다 → 색이 진해집니다(채도↑). 너무 크면 0이나 255에서 잘려 색이 뭉개집니다.`;
+        else if (a > 0) say = `0 < a < 1: 직선이 완만해져 R·G·B가 ${center} 쪽으로 모입니다 → 색이 연해집니다(채도↓).`;
+        else if (a === 0) say = `a = 0: 직선이 수평이 되어 R·G·B가 모두 ${center}과 같아집니다 → ${sat.lum ? '흑백 사진' : '온통 회색'}.`;
+        else say = `a < 0: 직선이 거꾸로 기울어 R·G·B가 기준점 반대편으로 뒤집힙니다 → 보색 쪽 색이 됩니다.`;
+        els.satNote.textContent = say + (!sat.lum
+          ? ` (모든 칸이 같은 기준점 ${sat.p}을 쓰면 밝기 대비도 함께 바뀝니다. 밝기는 그대로 두고 색만 바꾸려면 B2의 '칸마다 밝기(Y)로'를 켜 보세요.)`
+          : ' (칸마다 기준점이 자기 밝기라서 밝기는 거의 그대로이고 색만 바뀝니다. 사진 앱의 채도 조절과 같은 방식입니다.)');
+      }
+
+      // a 숫자와 스크롤 막대만 맞춤 (시트에는 안 씀)
+      function satShowA(a) {
+        sat.a = clamp(Math.round(a * 100) / 100, SAT_MIN, SAT_MAX);
+        els.satA.value = sat.a;
+        if (document.activeElement !== els.satANum) els.satANum.value = sat.a;
+      }
+
+      function satSetA(a) {
+        satShowA(a);
+        satWrite();
+        satRender();
+      }
+
+      // ▶ 재생: a를 SAT_MIN ~ SAT_MAX 사이에서 왕복
+      function satTick(t) {
+        if (!sat.play) return;
+        const dt = sat.last ? Math.min(0.1, (t - sat.last) / 1000) : 0;
+        sat.last = t;
+        let a = sat.a + sat.dir * 0.8 * dt;
+        if (a >= SAT_MAX) { a = SAT_MAX; sat.dir = -1; }
+        if (a <= SAT_MIN) { a = SAT_MIN; sat.dir = 1; }
+        satSetA(a);
+        sat.play = requestAnimationFrame(satTick);
+      }
+
+      function satStop() {
+        if (sat.play) cancelAnimationFrame(sat.play);
+        sat.play = 0;
+        els.satPlay.setAttribute('aria-pressed', 'false');
+        els.satPlay.textContent = '▶ 재생';
+      }
+
+      els.satPlay.addEventListener('click', () => {
+        if (sat.play) { satStop(); return; }
+        sat.last = 0;
+        if (sat.a >= SAT_MAX) sat.dir = -1;
+        els.satPlay.setAttribute('aria-pressed', 'true');
+        els.satPlay.textContent = '❚❚ 멈춤';
+        sat.play = requestAnimationFrame(satTick);
+      });
+
+      els.satA.addEventListener('input', () => { satStop(); satSetA(Number(els.satA.value)); });
+      els.satANum.addEventListener('input', () => {
+        const a = Number(els.satANum.value);
+        if (els.satANum.value.trim() === '' || !Number.isFinite(a)) return;
+        satStop();
+        satSetA(a);
+      });
+      els.satANum.addEventListener('change', () => { els.satANum.value = sat.a; });
+      // 스크롤 막대 양쪽 화살표: 0.05씩
+      for (const b of els.satPanel.querySelectorAll('.sat-sb-btn')) {
+        b.addEventListener('click', () => { satStop(); satSetA(sat.a + Number(b.dataset.step)); });
+      }
+      els.satPNum.addEventListener('input', () => {
+        const v = Number(els.satPNum.value);
+        if (els.satPNum.value.trim() === '' || !Number.isFinite(v)) return;
+        sat.p = Math.round(clamp(v, 0, 255));
+        satWrite();
+        satRender();
+      });
+      els.satPNum.addEventListener('change', () => { els.satPNum.value = sat.p; });
+      els.satLum.addEventListener('change', () => {
+        sat.lum = els.satLum.checked;
+        els.satPNum.disabled = sat.lum;
+        satWrite();
+        satRender();
+      });
+      els.satReset.addEventListener('click', () => { satStop(); satSetA(1); });
+
+      // 그래프 끌기: 기준점과 손가락을 잇는 직선의 기울기가 곧 a
+      function satDragTo(e) {
+        const g = sat.geo, r = els.satGraph.getBoundingClientRect();
+        if (!g || !r.width) return;
+        const z = (els.satGraph.clientWidth || r.width) / r.width;   // 화면 확대·축소 보정
+        const vx = SAT_XLO + ((e.clientX - r.left) * z - g.padL) / g.k;
+        const vy = SAT_YHI - ((e.clientY - r.top) * z - g.padT) / g.k;
+        const { R, G, B } = sat.src, i = sat.pick;
+        const p = satP(R[i], G[i], B[i]);
+        if (Math.abs(vx - p) < 6) return;
+        satSetA((vy - p) / (vx - p));
+      }
+      els.satGraph.addEventListener('pointerdown', (e) => {
+        if (!sat.src) return;
+        satStop();
+        sat.drag = true;
+        els.satGraph.classList.add('dragging');
+        els.satGraph.setPointerCapture(e.pointerId);
+        satDragTo(e);
+      });
+      els.satGraph.addEventListener('pointermove', (e) => { if (sat.drag) satDragTo(e); });
+      const satEndDrag = () => { sat.drag = false; els.satGraph.classList.remove('dragging'); };
+      els.satGraph.addEventListener('pointerup', satEndDrag);
+      els.satGraph.addEventListener('pointercancel', satEndDrag);
+      els.satGraph.addEventListener('keydown', (e) => {
+        const d = { ArrowRight: 0.05, ArrowUp: 0.05, ArrowLeft: -0.05, ArrowDown: -0.05 }[e.key];
+        if (d === undefined) return;
+        e.preventDefault();
+        satStop();
+        satSetA(sat.a + d * (e.shiftKey ? 5 : 1));
+      });
+
+      // Canvas 시트의 그림을 누르면 그 칸을 고름
+      function satPickAt(e, cv) {
+        const r = cv.getBoundingClientRect();
+        const x = clamp(Math.floor((e.clientX - r.left) / r.width * SIZE), 0, SIZE - 1);
+        const y = clamp(Math.floor((e.clientY - r.top) / r.height * SIZE), 0, SIZE - 1);
+        if (isData(state.current)) { selectCell(y, x); return; }   // selectionChanged가 그래프를 다시 그림
+        sat.pick = y * SIZE + x;
+        satRender();
+      }
+      for (const frame of [els.afterFrame, els.beforeFrame]) {
+        frame.addEventListener('pointerdown', (e) => {
+          const cv = e.target.closest('canvas.sat-cv');
+          if (cv && sat.open && sat.src) satPickAt(e, cv);
+        });
+      }
+
+      // 시트에서 셀을 고르면 그 칸을 그래프에 표시
+      function satFollowSelection() {
+        if (!sat.open || !sat.src || !isData(state.current)) return;
+        const v = view(), k = v.active.r * SIZE + v.active.c;
+        if (k === sat.pick) return;
+        sat.pick = k;
+        satRender();
+      }
+
+      // 사진의 숫자를 R·G·B 시트에 넣기 (되돌리기 가능). 넣은 숫자가 새 처음 숫자가 됨
+      async function satInsert(load, name) {
+        commitEdit();
+        satStop();
+        let src;
+        try {
+          src = await load();
+        } catch (err) {
+          els.satErr.textContent = err.name === 'SecurityError'
+            ? '파일을 직접 열면 브라우저 보안 때문에 예시 사진을 읽을 수 없습니다. [내 사진...]으로 nature.jpg를 골라 주세요.'
+            : name === '예시 사진'
+              ? '예시 사진(nature.jpg)을 찾지 못했습니다. index.html과 같은 폴더에 있는지 확인하거나 [내 사진...]을 써 주세요.'
+              : '사진을 열지 못했습니다. JPG나 PNG 파일을 골라 주세요.';
+          return;
+        }
+        const all = Int32Array.from({ length: N }, (_, i) => i);
+        applyChanges(RGB.map((s) => ({ sheet: s, idx: all, vals: src[s], fs: null })), `${name} 숫자 넣기`);
+        satRebase();
+        if (state.current === 'guide') switchSheet('R');
+        toast(`${name}의 숫자를 R·G·B 시트에 넣었습니다. 이제 a를 움직여 보세요.`);
+      }
+      els.satSample.addEventListener('click', () => satInsert(() => satLoadURL('nature.jpg'), '예시 사진'));
+      els.satPickFile.addEventListener('click', () => els.satFile.click());
+      els.satFile.addEventListener('change', () => {
+        const file = els.satFile.files[0];
+        els.satFile.value = '';
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        satInsert(() => satLoadURL(url), '내 사진').finally(() => URL.revokeObjectURL(url));
+      });
+
+      window.addEventListener('resize', () => { if (sat.open && sat.src) satDrawGraph(); });
+
+      // ── 작업창 크기 조절: 왼쪽 경계(좁은 화면에서는 위쪽 경계)를 끌기 ──
+      const SAT_SIZE_KEY = 'rgbExcel.satPaneWidth';
+      const satRows = () => getComputedStyle(els.satPanel.parentElement).flexDirection === 'column';
+      function satResizeTo(px, save) {
+        const area = els.satPanel.parentElement.getBoundingClientRect();
+        if (satRows()) {
+          const h = Math.round(clamp(px, 140, area.height - 100));
+          els.satPanel.style.height = h + 'px';
+          els.satPanel.style.maxHeight = 'none';
+        } else {
+          const w = Math.round(clamp(px, 300, Math.max(300, area.width - 260)));
+          els.satPanel.style.width = w + 'px';
+          if (save) { try { localStorage.setItem(SAT_SIZE_KEY, String(w)); } catch { /* 저장 못 하면 이번만 */ } }
+        }
+      }
+      function satResetSize() {
+        els.satPanel.style.width = els.satPanel.style.height = els.satPanel.style.maxHeight = '';
+        try { localStorage.removeItem(SAT_SIZE_KEY); } catch { /* 무시 */ }
+      }
+      function satRestoreSize() {
+        let w = NaN;
+        try { w = Number(localStorage.getItem(SAT_SIZE_KEY)); } catch { /* 무시 */ }
+        if (w && !satRows()) satResizeTo(w, false);
+      }
+      els.satSplit.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        const rows = satRows(), r = els.satPanel.getBoundingClientRect();
+        const start = rows ? e.clientY : e.clientX, size = rows ? r.height : r.width;
+        els.satSplit.setPointerCapture(e.pointerId);
+        els.satSplit.classList.add('dragging');
+        document.body.classList.add('sat-resizing');
+        document.body.classList.toggle('rows', rows);
+        const move = (ev) => satResizeTo(size + start - (rows ? ev.clientY : ev.clientX), false);   // 왼쪽(위쪽)으로 끌면 넓어짐
+        const end = (ev) => {
+          els.satSplit.removeEventListener('pointermove', move);
+          els.satSplit.removeEventListener('pointerup', end);
+          els.satSplit.removeEventListener('pointercancel', end);
+          els.satSplit.classList.remove('dragging');
+          document.body.classList.remove('sat-resizing', 'rows');
+          satResizeTo(size + start - (rows ? ev.clientY : ev.clientX), true);
+        };
+        els.satSplit.addEventListener('pointermove', move);
+        els.satSplit.addEventListener('pointerup', end);
+        els.satSplit.addEventListener('pointercancel', end);
+      });
+      els.satSplit.addEventListener('dblclick', satResetSize);
+      els.satSplit.addEventListener('keydown', (e) => {
+        const rows = satRows();
+        const d = (rows ? { ArrowUp: 1, ArrowDown: -1 } : { ArrowLeft: 1, ArrowRight: -1 })[e.key];
+        if (!d) return;
+        e.preventDefault();
+        const r = els.satPanel.getBoundingClientRect();
+        satResizeTo((rows ? r.height : r.width) + d * (e.shiftKey ? 64 : 16), true);
+      });
+      // 작업창 크기가 바뀌면 차트를 새 크기로 다시 그림 (시트 쪽은 기존 ResizeObserver가 다시 그림)
+      if ('ResizeObserver' in window) new ResizeObserver(() => { if (sat.open && sat.src) satDrawGraph(); }).observe(els.satPanel);
+
+      // 다른 곳에서 R·G·B 숫자가 바뀌면 (셀 입력, 붙여넣기, 필터 …) 지금 숫자를 새 처음 숫자로
+      function satOnHistory(act) {
+        if (sat.open && act !== sat.entry && act.kind === 'cells') queueMicrotask(() => satRebase(true));
+      }
+
+      // 되돌리기·다시 실행 뒤: 채도 기록이면 그 a로, 아니면 처음 숫자를 다시 잡음
+      function satAfterReplay() {
+        if (!sat.open) return;
+        const e = sat.entry;
+        if (e && state.undo[state.undo.length - 1] === e) satShowA(e.satA);
+        else if (e && state.redo[state.redo.length - 1] === e) satShowA(1);
+        else { satRebase(true); return; }
+        satRender();
+      }
+
+      // 시트를 바꾸면 그 시트의 활성 셀을 그래프에 표시
+      function satPaneMode() {
+        if (!sat.open) return;
+        if (isData(state.current)) sat.pick = view().active.r * SIZE + view().active.c;
+        satRender();
+      }
+
+      // 리본 [채도 그래프]: 오른쪽 작업창 열기 / 닫기
+      function satToggle() {
+        if (sat.open) satClose();
+        else satOpen();
+      }
+
+      function satOpen() {
+        commitEdit();
+        filterDD.close();
+        // 여러 칸을 골랐으면 그 칸만 바꿈
+        const scope = filterTargets();
+        sat.where = scope ? `${selAddr(view())} 영역` : '이미지 전체';
+        sat.idx = scope ? Int32Array.from(scope) : Int32Array.from({ length: N }, (_, i) => i);
+        sat.mask = null;
+        if (scope) {
+          sat.mask = new Uint8Array(N);
+          for (const k of scope) sat.mask[k] = 1;
+        }
+        if (isData(state.current)) sat.pick = view().active.r * SIZE + view().active.c;
+        if (scope && !sat.mask[sat.pick]) sat.pick = scope[0];
+        sat.open = true;
+        els.satPanel.hidden = false;
+        els.satSplit.hidden = false;
+        satRestoreSize();
+        els.canvasView.querySelector('.canvas-board').classList.add('has-sat');
+        els.satScope.innerHTML = `<b>${esc(sat.where)}</b>의 R·G·B 숫자가 a를 따라 바로 바뀝니다. R 시트를 보면서 움직여 보세요.`;
+        if (state.current === 'guide') switchSheet('R');
+        satRebase();
+        els.satA.focus({ preventScroll: true });
+      }
+
+      function satClose() {
+        if (!sat.open) return;
+        satStop();
+        sat.open = false;
+        sat.entry = null;
+        sat.src = null;
+        els.satPanel.hidden = true;
+        els.satSplit.hidden = true;
+        els.canvasView.querySelector('.canvas-board').classList.remove('has-sat');
+        els.afterNote.textContent = '방금 만든 이미지';
+        els.beforeNote.textContent = '바로 전에 만든 이미지';
+        renderCanvasSheet();
+        focusGrid();
+      }
+
+      els.satClose.addEventListener('click', satClose);
 
       // ===== 함수 삽입 (수식 입력줄의 fx) =====
       let fnSel = null;
@@ -5303,6 +6271,11 @@
       }
 
       function renderCanvasSheet() {
+        if (sat.open) {   // 채도 그래프가 열려 있으면 두 그림은 처음 숫자·지금 시트로 씀
+          satRender();
+          renderFilterNote();
+          return;
+        }
         fillFrame(els.afterFrame, state.images.after, '방금 만든 RGBA 이미지', '아직 만든 이미지가 없습니다. 리본의 [이미지 만들기]를 눌러 보세요.');
         fillFrame(els.beforeFrame, state.images.before, '바로 전에 만든 RGBA 이미지', '이미지를 한 번 더 만들면 이전 이미지가 여기로 옮겨져 비교할 수 있어요.');
         els.saveAfter.hidden = !state.images.after;
@@ -5320,10 +6293,10 @@
         }
       }
 
-      function switchSheet(id) {
+      function switchSheet(id, { keepEdit = false } = {}) {
         if (id === 'A' && !state.alphaVisible) return;
         if (id !== state.current) {
-          commitEdit();
+          if (!keepEdit) commitEdit();
           if (isData(state.current)) {
             const v = view();
             v.sl = sc.scrollLeft;
@@ -5333,24 +6306,280 @@
           els.gridView.hidden = !isData(id);
           els.guideView.hidden = id !== 'guide';
           els.canvasView.hidden = id !== 'canvas';
+          satPaneMode();
           if (isData(id)) {
             const v = view();
             updateSpacer();
             sc.scrollLeft = v.sl;
             sc.scrollTop = v.st;
-            sc.setAttribute('aria-label', `${id} 시트 셀 영역. 방향키로 이동하고 숫자를 입력하세요.`);
+            sc.setAttribute('aria-label', `${sheetLabel(id)} 시트 셀 영역. 방향키로 이동하고 숫자를 입력하세요.`);
             draw();
           }
         }
         renderTabs();
         updateFormulaBar();
         updateStatus();
-        focusGrid();
+        if (!keepEdit) focusGrid();
       }
 
+      // ===== 시트 추가 · 이름 바꾸기 · 삭제 =====
+      // 추가한 시트는 id가 'S1', 'S2'…이고 이름은 SHEET_NAME에. 수식에서는 이름으로 부름 (=Sheet1!A1)
+      let sheetSeq = 0;
+      const workSheets = () => DATA_SHEETS.filter((id) => !IMG_SHEETS.includes(id));
+      const editingFormula = () => {
+        const ed = state.edit;
+        return Boolean(ed) && (ed.via === 'fx' ? els.fx : els.editor).value.startsWith('=');
+      };
+
+      function newSheetName() {
+        for (let n = 1; ; n++) if (!sheetIdByName('Sheet' + n)) return 'Sheet' + n;
+      }
+
+      function checkSheetName(name, id) {
+        if (!name) return '시트 이름을 입력하세요.';
+        if (name.length > 20) return '시트 이름은 20자까지 쓸 수 있습니다.';
+        if (!SHEET_NAME_RE.test(name)) return '시트 이름은 한글·영문·숫자·_만 쓸 수 있고, 숫자로 시작할 수 없습니다.';
+        const other = sheetIdByName(name);
+        if ((other && other !== id) || ['설명서', 'CANVAS', 'GUIDE'].includes(name.toUpperCase())) return `'${name}'은(는) 이미 있는 시트 이름입니다.`;
+        return '';
+      }
+
+      // 추가한 시트 탭을 + 버튼 앞에 다시 만듦
+      function buildWorkTabs() {
+        els.tabs.querySelectorAll('[data-work]').forEach((el) => el.remove());
+        const add = $('addSheetBtn');
+        for (const id of workSheets()) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'stab';
+          b.dataset.sheet = id;
+          b.dataset.work = '';
+          b.textContent = SHEET_NAME[id];
+          b.title = '두 번 누르면 이름 바꾸기 · 오른쪽 버튼: 이름 바꾸기, 삭제';
+          els.tabs.insertBefore(b, add);
+        }
+        renderTabs();
+      }
+
+      // 시트 목록이 바뀌면: 수식을 다시 해석(없어진 시트는 #REF!)하고 다시 계산
+      function sheetsChanged() {
+        astCache.clear();
+        recalc();
+        buildWorkTabs();
+        if (isData(state.current)) scheduleDraw();
+        updateFormulaBar();
+        updateStatus();
+      }
+
+      function sheetRecord(id) {
+        return {
+          id, name: SHEET_NAME[id], pos: workSheets().indexOf(id), view: state.views[id],
+          data: Float64Array.from(state.data[id]), formulas: new Map(state.formulas[id]), rules: state.rules[id].slice(),
+        };
+      }
+
+      function mountSheet(rec) {
+        DATA_SHEETS.splice(IMG_SHEETS.length + clamp(rec.pos, 0, workSheets().length), 0, rec.id);
+        SHEET_NAME[rec.id] = rec.name;
+        state.data[rec.id] = Float64Array.from(rec.data);
+        state.formulas[rec.id] = new Map(rec.formulas);
+        state.fval[rec.id] = new Map();
+        state.rules[rec.id] = rec.rules.slice();
+        state.views[rec.id] = rec.view || (rec.view = newView());
+        sheetsChanged();
+      }
+
+      function unmountSheet(id) {
+        if (state.current === id) {
+          const ws = workSheets(), i = ws.indexOf(id);
+          switchSheet(ws[i - 1] || ws[i + 1] || 'canvas');
+        }
+        DATA_SHEETS.splice(DATA_SHEETS.indexOf(id), 1);
+        for (const m of [SHEET_NAME, state.data, state.formulas, state.fval, state.rules, state.views]) delete m[id];
+        sheetsChanged();
+      }
+
+      // 수식 글자 속 시트 이름 바꾸기 (엑셀처럼 이름을 바꾸면 그 시트를 쓰는 수식도 따라 바뀜)
+      function renameInFormula(src, oldName, newName) {
+        if (!src || src.startsWith("'")) return src;   // 글자는 그대로
+        const u = oldName.toUpperCase();
+        let toks, hit = false;
+        try { toks = tokenize(src.slice(1)); } catch { return src; }
+        const out = '=' + toks.map((tk) => {
+          if (tk.t !== 'ref' || !tk.sheet || tk.sheet.toUpperCase() !== u) return tk.s;
+          hit = true;
+          return (SHEET_NAME_RE.test(newName) ? newName : `'${newName}'`) + '!' + tk.s.slice(tk.s.lastIndexOf('!') + 1);
+        }).join('');
+        return hit ? out : src;
+      }
+
+      function renameSheet(id, name) {
+        const old = SHEET_NAME[id];
+        for (const sid of DATA_SHEETS) {
+          for (const [k, src] of state.formulas[sid]) state.formulas[sid].set(k, renameInFormula(src, old, name));
+        }
+        // 되돌리기 기록 속 수식도 (되돌렸을 때 #REF!가 되지 않게)
+        for (const act of [...state.undo, ...state.redo]) {
+          if (act.kind !== 'cells') continue;
+          for (const part of act.parts) {
+            for (const arr of [part.fBefore, part.fAfter]) arr.forEach((f, j) => { if (f) arr[j] = renameInFormula(f, old, name); });
+          }
+        }
+        SHEET_NAME[id] = name;
+        sheetsChanged();
+      }
+
+      // 다른 시트의 수식 중 이 시트를 쓰는 칸 수
+      function countRefsTo(id) {
+        const u = SHEET_NAME[id].toUpperCase();
+        let n = 0;
+        for (const sid of DATA_SHEETS) {
+          if (sid === id) continue;
+          for (const src of state.formulas[sid].values()) {
+            try { if (tokenize(src.slice(1)).some((tk) => tk.t === 'ref' && tk.sheet && tk.sheet.toUpperCase() === u)) n++; } catch { /* 무시 */ }
+          }
+        }
+        return n;
+      }
+
+      function addSheet() {
+        commitEdit();
+        const id = 'S' + (++sheetSeq);
+        const rec = { id, name: newSheetName(), pos: workSheets().length, view: null, data: new Float64Array(N).fill(NaN), formulas: new Map(), rules: [] };
+        mountSheet(rec);
+        pushHistory({ kind: 'sheet', op: 'add', before: null, after: rec, label: `'${rec.name}' 시트 추가` });
+        updateUndoButtons();
+        switchSheet(id);
+        toast(`'${rec.name}' 시트를 추가했습니다. 여기서 계산한 뒤 R 시트 등에서 =${rec.name}!A1 처럼 가져오세요.`);
+      }
+
+      function deleteSheet(id) {
+        commitEdit();
+        const rec = sheetRecord(id), refs = countRefsTo(id);
+        unmountSheet(id);
+        pushHistory({ kind: 'sheet', op: 'delete', before: rec, after: null, label: `'${rec.name}' 시트 삭제` });
+        updateUndoButtons();
+        toast(`'${rec.name}' 시트를 삭제했습니다.${refs ? ` 이 시트를 쓰던 수식 ${refs}칸은 #REF!가 됩니다.` : ''} Ctrl+Z로 되돌릴 수 있어요.`);
+      }
+
+      // 탭 이름 바꾸기: 탭 자리에 입력 상자
+      function startRename(id) {
+        commitEdit();
+        closeTabMenu();
+        const btn = els.tabs.querySelector(`.stab[data-sheet="${id}"]`);
+        if (!btn) return;
+        const inp = document.createElement('input');
+        inp.className = 'stab-name';
+        inp.value = SHEET_NAME[id];
+        inp.maxLength = 20;
+        inp.setAttribute('aria-label', '새 시트 이름 (한글·영문·숫자·_)');
+        btn.hidden = true;
+        btn.after(inp);
+        inp.focus();
+        inp.select();
+        let done = false;
+        const finish = (ok) => {
+          if (done) return;
+          done = true;
+          const name = inp.value.trim(), old = SHEET_NAME[id];
+          inp.remove();
+          btn.hidden = false;
+          if (!ok || name === old) return;
+          const err = checkSheetName(name, id);
+          if (err) { toast(err, 'error'); return; }
+          renameSheet(id, name);
+          pushHistory({ kind: 'sheet', op: 'rename', id, before: old, after: name, label: `시트 이름 '${old}' → '${name}'` });
+          updateUndoButtons();
+          toast(`시트 이름을 '${name}'(으)로 바꿨습니다. 이 시트를 쓰던 수식도 함께 바뀌었어요.`);
+        };
+        inp.addEventListener('keydown', (e) => {
+          e.stopPropagation();
+          if (e.isComposing) return;
+          if (e.key === 'Enter') { e.preventDefault(); finish(true); focusGrid(); }
+          else if (e.key === 'Escape') { e.preventDefault(); finish(false); focusGrid(); }
+        });
+        inp.addEventListener('blur', () => finish(true));
+      }
+
+      // 탭 오른쪽 버튼 메뉴 (추가한 시트만)
+      let tabMenuFor = null;
+      function openTabMenu(id, x, y) {
+        tabMenuFor = id;
+        const m = els.tabMenu;
+        m.innerHTML = ddItem('rename', '이름 바꾸기', 'R') + ddItem('delete', '삭제', 'D') + '<div class="xm-sep" role="separator"></div>' + ddItem('add', '새 시트', 'N');
+        m.hidden = false;
+        m.style.left = clamp(x, 8, window.innerWidth - m.offsetWidth - 8) + 'px';
+        m.style.top = clamp(y - m.offsetHeight, 8, window.innerHeight - m.offsetHeight - 8) + 'px';
+        m.querySelector('button').focus();
+      }
+      function closeTabMenu() { els.tabMenu.hidden = true; tabMenuFor = null; }
+
+      els.tabMenu.addEventListener('click', (e) => {
+        const b = e.target.closest('[data-act]');
+        if (!b) return;
+        const id = tabMenuFor;
+        closeTabMenu();
+        if (b.dataset.act === 'rename') startRename(id);
+        else if (b.dataset.act === 'delete') deleteSheet(id);
+        else addSheet();
+      });
+      els.tabMenu.addEventListener('keydown', (e) => {
+        const items = [...els.tabMenu.querySelectorAll('button')];
+        const i = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus();
+        } else if (e.key === 'Escape' || e.key === 'Tab') {
+          e.preventDefault();
+          closeTabMenu();
+          focusGrid();
+        }
+      });
+      document.addEventListener('pointerdown', (e) => { if (!els.tabMenu.hidden && !els.tabMenu.contains(e.target)) closeTabMenu(); });
+
+      // 수식을 입력하다가 다른 시트 탭을 누르면: 입력을 끝내지 않고 그 시트로 가서 칸을 눌러 참조를 넣음 (엑셀과 같음)
+      function visitSheet(id) {
+        const ed = state.edit;
+        if (ed.via === 'cell') {   // 셀 위 입력 상자는 원래 시트에만 있으므로 수식 입력줄로 옮겨 계속 입력
+          ed.via = 'fx';
+          els.fx.value = els.editor.value;
+          els.editor.hidden = true;
+        }
+        switchSheet(id, { keepEdit: true });
+        els.fx.focus({ preventScroll: true });
+        const len = els.fx.value.length;
+        els.fx.setSelectionRange(len, len);
+        setMode(id === ed.sheet ? '편집' : `참조 — ${sheetLabel(id)} 시트의 칸을 누르세요`);
+      }
+
+      // 탭을 누를 때 입력 상자의 포커스를 빼앗지 않음 (수식 입력 중일 때)
+      els.tabs.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('.stab') && editingFormula()) e.preventDefault();
+      });
       els.tabs.addEventListener('click', (e) => {
         const b = e.target.closest('.stab');
-        if (b) switchSheet(b.dataset.sheet);
+        if (!b) return;
+        const id = b.dataset.sheet;
+        if (isData(id) && editingFormula()) visitSheet(id);
+        else switchSheet(id);
+      });
+      els.tabs.addEventListener('dblclick', (e) => {
+        const b = e.target.closest('.stab[data-work]');
+        if (b) startRename(b.dataset.sheet);
+      });
+      els.tabs.addEventListener('contextmenu', (e) => {
+        const b = e.target.closest('.stab[data-work]');
+        if (!b) return;
+        e.preventDefault();
+        switchSheet(b.dataset.sheet);
+        openTabMenu(b.dataset.sheet, e.clientX, e.clientY);
+      });
+      $('addSheetBtn').addEventListener('click', addSheet);
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'F11' || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+        if (document.querySelector('dialog[open]')) return;
+        e.preventDefault();
+        addSheet();
       });
 
       const ACTIONS = {
@@ -5363,6 +6592,7 @@
         showAlpha,
         hideAlpha,
         setAlpha,
+        satLab: satToggle,
         help: () => switchSheet('guide'),
         start: () => switchSheet('R'),
       };
