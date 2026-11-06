@@ -590,6 +590,8 @@
     #statusStats { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
     #statusStats b { font-weight: 600; color: var(--text); margin-left: 4px }
     #statusStats span + span { margin-left: 14px }
+    .status-size { margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums }
+    #statusStats:not(:empty) + .status-size { margin-left: 14px }
 
     /* ── 입력 대화 상자 (엑셀 InputBox 느낌) ── */
     .inputbox {
@@ -1218,6 +1220,53 @@
     @media (prefers-reduced-motion: reduce) {
       .toast { transition: none }
     }
+  
+    /* ── 설명서 (2026-11-05 정리: 기본 4단계 · 더 해 보기 · 단축키) ── */
+    .guide { max-width: 1040px; padding: 26px 30px 28px; }
+    .guide h1 { font-size: 24px }
+    .guide-sub { font-size: 15px }
+    .g-sec { margin: 26px 0 12px; font-size: 13px; font-weight: 700; color: var(--xl-dark, #185c37); letter-spacing: .02em }
+    .g-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; counter-reset: none }
+    .g-flow li { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 16px; border: 1px solid var(--line); border-radius: 8px; background: #fbfdfb }
+    .g-flow li:not(:last-child)::after { content: '→'; position: absolute; right: -13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-weight: 700; font-size: 15px }
+    .g-n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--xl); color: #fff; font-weight: 700; font-size: 14px }
+    .g-flow b { font-size: 17px }
+    .g-flow p { margin: 0; font-size: 14.5px; line-height: 1.55 }
+    .g-flow small { margin-top: auto; padding-top: 4px; font-size: 13px; color: var(--muted); line-height: 1.5 }
+    .g-more { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px }
+    .g-more div { display: grid; grid-template-columns: 132px 1fr; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line) }
+    .g-more dt { font-weight: 700; font-size: 14.5px }
+    .g-more dd { margin: 0; font-size: 14.5px; line-height: 1.6; color: #333 }
+    .g-more code { font-size: 13px; background: #f1f4f2; border: 1px solid var(--line); border-radius: 3px; padding: 0 4px }
+    .g-keys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 20px }
+    .g-keys li { display: flex; align-items: center; gap: 10px; font-size: 14.5px }
+    .g-keys li > span { flex: none; min-width: 118px }
+    .g-mobile { margin: 12px 0 0; font-size: 13.5px; color: var(--muted) }
+    .guide .guide-note { margin-top: 20px }
+    @media (max-width: 900px) {
+      .g-flow { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+      .g-flow li:nth-child(2)::after { content: none }
+      .g-more, .g-keys { grid-template-columns: minmax(0, 1fr) }
+    }
+    @media (max-width: 520px) {
+      .g-flow { grid-template-columns: minmax(0, 1fr) }
+      .g-flow li::after { content: none !important }
+      .g-more div { grid-template-columns: minmax(0, 1fr); gap: 2px }
+      .guide { padding: 20px 16px }
+    }
+  
+    /* ── 오른쪽 클릭 메뉴 · 선택하여 붙여넣기 ── */
+    .xm-key { margin-left: 24px; font-size: 12px; color: #6b6b6b; white-space: nowrap }
+    .xm-item[aria-disabled="true"] { color: #a19f9d; cursor: default }
+    .xm-item[aria-disabled="true"]:hover { background: none }
+    .ps-body { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; min-width: min(460px, 86vw) }
+    .ps-set { margin: 0; padding: 8px 12px 10px; border: 1px solid #d1d1d1; display: flex; flex-direction: column; gap: 4px }
+    .ps-set legend { padding: 0 4px; font-size: 13px; font-weight: 700 }
+    .ps-set label, .ps-checks label { display: flex; align-items: center; gap: 6px; min-height: 28px; font-size: 14px; cursor: pointer }
+    .ps-wide, .ps-checks, .ps-hint { grid-column: 1 / -1 }
+    .ps-checks { display: flex; flex-wrap: wrap; gap: 4px 24px }
+    .ps-hint { margin: 0; font-size: 12.5px; color: #6b6b6b }
+    .ps-set[hidden] { display: none }
   </style>
 </head>
 
@@ -1462,8 +1511,8 @@
         <article class="guide">
           <div class="guide-head">
             <div>
-              <h1>RGB 이미지 체험 사용 방법</h1>
-              <p class="guide-sub">숫자 150×150칸이 곧 이미지의 픽셀입니다. 숫자를 바꿔 나만의 이미지를 만들어 보세요.</p>
+              <h1>RGB 이미지 체험</h1>
+              <p class="guide-sub">셀 하나 = 픽셀 하나. 숫자를 바꾸면 색이 바뀝니다.</p>
             </div>
             <div class="guide-actions">
               <button type="button" class="start-btn" data-action="start">R 시트에서 시작하기</button>
@@ -1472,122 +1521,43 @@
             </div>
           </div>
 
-          <ol class="steps">
-            <li class="step">
-              <h2><span class="step-no">1</span>R · G · B 시트에 숫자 입력</h2>
-              <p>셀 하나가 픽셀 하나입니다. 셀을 누르고 <b>0~255</b> 숫자를 입력한 뒤 <kbd>Enter</kbd>를 누르세요.</p>
-              <ul>
-                <li>엑셀처럼 글자(예: <b>빨강</b>, <b>메모</b>)도 입력할 수 있어요. 글자 칸은 이미지에서 빈칸(0)으로 계산되고, 숫자를 글자로 넣으려면 <b>'123</b>처럼 앞에 <b>'</b>를 붙이세요.</li>
-                <li>엑셀에서 복사(<kbd>Ctrl</kbd>+<kbd>C</kbd>)한 표도 붙여넣기(<kbd>Ctrl</kbd>+<kbd>V</kbd>)로 가져올 수 있어요.</li>
-                <li>휴대폰·태블릿에서는 셀을 한 번 더 누르거나 위쪽 <b>fx</b> 칸에 입력하세요.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">2</span>셀 영역 선택</h2>
-              <ul>
-                <li>마우스로 드래그하거나 <kbd>Shift</kbd>+방향키로 넓힙니다.</li>
-                <li>열 머리글(A, B…)이나 행 번호를 누르면 줄 전체가 선택됩니다.</li>
-                <li>왼쪽 위 이름 상자에 <b>B2:F10</b>처럼 입력해도 됩니다.</li>
-                <li><kbd>Ctrl</kbd>을 누른 채 드래그하면 여러 영역을 함께 고릅니다.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">3</span>RGB 체험 메뉴로 계산</h2>
-              <p>선택한 영역에 더하기·빼기·곱하기·나누기를 적용합니다. 빈칸은 0으로 계산하고, 결과는 0~255로 제한됩니다.</p>
-              <table class="ex-table">
-                <thead><tr><th scope="col">예시</th><th scope="col">결과</th></tr></thead>
-                <tbody>
-                  <tr><td>100 + 50</td><td>150</td></tr>
-                  <tr><td>250 + 50</td><td>255 (최댓값 255)</td></tr>
-                  <tr><td>빈칸 + 30</td><td>30 (빈칸은 0)</td></tr>
-                  <tr><td>50 × 3</td><td>150</td></tr>
-                </tbody>
-              </table>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">4</span>이미지 만들기</h2>
-              <p><b>이미지 만들기</b>를 누르면 Canvas 시트에 결과가 나타납니다.</p>
-              <p>다시 만들면 이전 이미지는 오른쪽(<b>전</b>)으로, 새 이미지는 왼쪽(<b>후</b>)에 놓여 비교할 수 있어요.</p>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">5</span>알파(A) 시트와 투명도</h2>
-              <p><b>A 시트 보이기</b>를 누르면 숨겨진 A 시트가 나타납니다. A값은 0~255이고 처음에는 모두 255입니다.</p>
-              <p><b>투명도 설정</b>은 R·G·B 시트에서 선택한 영역과 <b>같은 위치</b>의 A값을 한 번에 입력합니다.</p>
-              <div class="alpha-swatches" aria-label="A값에 따른 투명도">
-                <span class="alpha-swatch"><i class="a0"></i>0 완전 투명</span>
-                <span class="alpha-swatch"><i class="a128"></i>128 반투명</span>
-                <span class="alpha-swatch"><i></i>255 완전 불투명</span>
-              </div>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">6</span>되돌리기와 초기화</h2>
-              <ul>
-                <li>잘못했다면 <kbd>Ctrl</kbd>+<kbd>Z</kbd> 또는 맨 위 되돌리기 버튼을 누르세요. 입력·계산·붙여넣기뿐 아니라 이미지 만들기, Canvas 지우기, A 시트 보이기/숨기기, 조건부 서식도 누른 순서대로 하나씩 되돌아갑니다. 다시 실행은 <kbd>Ctrl</kbd>+<kbd>Y</kbd>입니다.</li>
-                <li>선택한 셀은 <kbd>Delete</kbd>로 비웁니다.</li>
-                <li><b>Canvas 지우기</b>로 결과 이미지를 지우고 새로 시작합니다.</li>
-                <li>완성한 이미지는 Canvas 시트의 <b>PNG로 저장</b>으로 내려받을 수 있어요.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">7</span>조건부 서식으로 숫자를 색으로 보기</h2>
-              <ul>
-                <li>영역을 고르고 <b>조건부 서식 › 색조</b>를 누르면 숫자 크기에 따라 셀이 칠해집니다. 예: R 시트에 <b>빨강 - 흰색</b></li>
-                <li><b>셀 강조 규칙</b>은 200보다 큰 값처럼 조건에 맞는 셀만 표시합니다.</li>
-                <li>데이터 막대·아이콘 집합·새 규칙·규칙 관리도 엑셀과 같은 방법으로 쓸 수 있어요.</li>
-                <li>서식은 셀을 보기 쉽게 할 뿐이고, 만들어지는 이미지는 바뀌지 않아요.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">8</span>수식(fx)으로 숫자 만들기</h2>
-              <ul>
-                <li>칸에 <b>=</b>로 시작해 입력하면 수식입니다. 예: <b>=A1*2</b>, <b>=COLUMN()*1.7</b>, <b>=IF(A1&gt;128,255,0)</b></li>
-                <li>다른 시트도 쓸 수 있어요. 예: G 시트에 <b>=R!A1*0.5</b></li>
-                <li>수식을 쓰다가 칸을 누르면 그 주소가 들어가고, 선택 영역 오른쪽 아래 점을 끌면 수식이 옆 칸으로 복사됩니다.</li>
-                <li>수식 입력줄의 <b>fx</b>를 누르면 쓸 수 있는 함수 목록이 나옵니다.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">9</span>셀 크기 바꾸기</h2>
-              <ul>
-                <li>열 머리글(A, B…) 사이 경계를 끌면 너비가, 행 번호 사이 경계를 끌면 높이가 바뀝니다. 두 번 누르면 자동 맞춤.</li>
-                <li>여러 열을 고른 뒤 <b>셀 › 서식 › 열 너비</b>로 한꺼번에 정할 수 있어요.</li>
-                <li>너비와 높이를 작게 하고 색조를 주면 셀이 그대로 그림처럼 보입니다.</li>
-                <li>시트를 넓게 보려면 메뉴(리본) 오른쪽 아래 <b>˄</b>를 누르거나 <kbd>Ctrl</kbd>+<kbd>F1</kbd>, 또는 <b>RGB 체험</b> 탭을 두 번 누르세요. 접힌 동안에는 같은 자리의 <b>˅</b>를 누르면 다시 펼쳐지고, 탭을 한 번 누르면 메뉴가 잠깐 펼쳐집니다(📌를 누르면 그대로 고정).</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">10</span>시트를 추가해 계산하고 = 로 가져오기</h2>
-              <ul>
-                <li>아래 시트 탭 끝의 <b>+</b>를 누르면 <b>Sheet1</b> 같은 작업용 시트가 생깁니다(<kbd>Shift</kbd>+<kbd>F11</kbd>). 여기서는 0~255가 아니어도 자유롭게 계산해 보세요.</li>
-                <li>탭을 두 번 누르면 이름을 바꿀 수 있고, 오른쪽 버튼을 누르면 <b>이름 바꾸기 · 삭제</b> 메뉴가 나옵니다. 이름은 한글·영문·숫자·_만 쓸 수 있어요.</li>
-                <li>R 시트에서 칸에 <b>=</b>를 입력한 뒤 <b>Sheet1 탭을 누르고 칸을 누르면</b> <b>=Sheet1!A1</b>이 들어갑니다. <kbd>Enter</kbd>를 누르면 R 시트로 돌아와 값이 들어가요.</li>
-                <li>그 칸의 오른쪽 아래 점을 끌면 <b>=Sheet1!B1</b>, <b>=Sheet1!A2</b>…처럼 옆 칸으로 복사되어 한꺼번에 가져올 수 있습니다.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">11</span>절대 참조($)로 한 칸을 고정하기</h2>
-              <ul>
-                <li>수식을 옆 칸으로 복사하면 <b>A1</b> 같은 주소는 따라 움직입니다(상대 참조). 모든 칸이 <b>같은 한 칸</b>을 써야 할 때는 <b>$</b>를 붙여 고정합니다.</li>
-                <li>예: <b>Sheet1</b>의 A1에 <b>0.5</b>를 넣고, G 시트 A1에 <b>=R!A1*Sheet1!$A$1</b>을 입력해 채우기 → R!A1은 R!B1, R!A2…로 바뀌지만 <b>Sheet1!$A$1</b>은 그대로입니다. 이제 Sheet1의 A1 하나만 바꾸면 G 시트 전체가 바뀌어요.</li>
-                <li>수식을 쓰는 중 주소 뒤에서 <kbd>F4</kbd>를 누를 때마다 <b>A1 → $A$1 → A$1 → $A1</b> 순서로 바뀝니다. <b>A$1</b>은 행만, <b>$A1</b>은 열만 고정합니다. (노트북은 <kbd>Fn</kbd>+<kbd>F4</kbd>일 수 있어요.)</li>
-                <li>수식을 넓게 복사하는 방법: 오른쪽 아래 점을 끌거나 <b>두 번 누르기</b>(옆 열 길이만큼 아래로), 영역을 골라 <kbd>Ctrl</kbd>+<kbd>D</kbd>(아래로)·<kbd>Ctrl</kbd>+<kbd>R</kbd>(오른쪽으로)·<kbd>Ctrl</kbd>+<kbd>Enter</kbd>(입력한 수식을 영역 전체에).</li>
-                <li><kbd>Ctrl</kbd>+<kbd>`</kbd>(숫자 1 왼쪽 키)를 누르면 칸마다 결과 대신 <b>수식</b>이 보여서, 어떤 주소가 움직이고 어떤 주소가 고정됐는지 한눈에 확인할 수 있어요. 한 번 더 누르면 돌아옵니다.</li>
-              </ul>
-            </li>
-            <li class="step">
-              <h2><span class="step-no">12</span>대비 그래프로 a 움직여 보기</h2>
-              <ul>
-                <li><b>대비 › 대비 그래프</b>를 누르면 오른쪽에 엑셀처럼 작은 표·스크롤 막대·차트가 있는 작업창이 열립니다. R·G·B·Canvas 어느 시트에서나 그대로 보여요.</li>
-                <li>표의 <b>B1</b>이 기울기 a, <b>B2</b>가 기준점 128, <b>B3</b>이 수식 <b>=B2+B1*(x-B2)</b>입니다. 차트의 직선은 항상 점 <b>(128, 128)</b>을 지납니다. 모든 칸이 같은 기준점 128을 쓰므로 a를 키우면 밝은 곳은 더 밝게, 어두운 곳은 더 어둡게 되는 <b>대비</b> 조절입니다.</li>
-                <li>B2 옆 <b>칸마다 밝기(Y) → 채도</b>를 켜면 기준점이 칸마다 그 칸의 밝기가 되어, 밝기는 그대로 두고 색의 진하기만 바뀌는 <b>채도</b> 조절이 됩니다. 두 결과를 비교해 보세요.</li>
-                <li>스크롤 막대(셀 연결 $B$1)를 움직이거나 <b>▶ 재생</b>을 누르면 <b>R·G·B 시트의 숫자가 바로 바뀝니다.</b> R 시트를 보면서 움직여 보세요. 새 값은 언제나 작업창을 열 때의 <b>처음 숫자</b>로 계산합니다.</li>
-                <li>시트에서 셀을 누르면 그 칸의 R·G·B가 차트에 점으로 찍히고, 아래 <b>값 비교</b> 표에 처음 값 x → 지금 값 y와 차이가 나옵니다. 그림은 Canvas 시트에서 <b>전 = 처음 숫자</b>, <b>후 = 지금 시트</b>로 비교하세요.</li>
-                <li>시트가 비어 있으면 <b>예시 사진</b>이나 <b>내 사진...</b>으로 숫자를 넣어 보세요. a를 바꾼 것은 <kbd>Ctrl</kbd>+<kbd>Z</kbd> 한 번으로 처음 숫자로 돌아갑니다.</li>
-              </ul>
-            </li>
+          <h2 class="g-sec">기본 4단계</h2>
+          <ol class="g-flow">
+            <li><span class="g-n">1</span><b>숫자 입력</b><p>R·G·B 시트 칸에 <strong>0~255</strong>를 쓰고 <kbd>Enter</kbd></p><small>엑셀 표를 그대로 붙여넣어도 돼요</small></li>
+            <li><span class="g-n">2</span><b>영역 선택</b><p>드래그 또는 <kbd>Shift</kbd>+방향키</p><small>이름 상자에 B2:F10처럼 써도 돼요</small></li>
+            <li><span class="g-n">3</span><b>계산</b><p>더하기·빼기·곱하기·나누기 버튼</p><small>250 + 50 → 255 · 빈칸은 0</small></li>
+            <li><span class="g-n">4</span><b>이미지 만들기</b><p>Canvas 시트에 그림이 나와요</p><small>다시 만들면 전·후로 나란히 비교</small></li>
           </ol>
 
-          <p class="guide-note">새로고침하거나 창을 닫으면 입력한 숫자가 사라집니다. 남겨 둘 값은 영역을 선택해 복사한 뒤 엑셀이나 메모장에 붙여 두세요.</p>
+          <h2 class="g-sec">더 해 보기</h2>
+          <dl class="g-more">
+            <div><dt>투명도 (A 시트)</dt><dd><strong>A 시트 보이기</strong>로 열어요. 0 = 투명, 255 = 불투명. <strong>투명도 설정</strong>은 고른 영역과 같은 위치를 한 번에 채워요.</dd></div>
+            <div><dt>조건부 서식</dt><dd>숫자 크기를 색으로 보기(색조·셀 강조·데이터 막대). 만들어지는 이미지는 그대로예요.</dd></div>
+            <div><dt>수식 (fx)</dt><dd><code>=A1*2</code> · <code>=IF(A1&gt;128,255,0)</code> · 다른 시트는 <code>=R!A1*0.5</code>. 점을 끌면 옆 칸으로 복사돼요.</dd></div>
+            <div><dt>셀 크기</dt><dd>머리글 경계를 끌어 조절해요. 작게 줄이고 색조를 주면 셀이 그림처럼 보여요.</dd></div>
+            <div><dt>시트 키우기</dt><dd>마지막 행·열에서 <kbd>↓</kbd> <kbd>→</kbd>로 한 줄씩, 큰 표를 붙여넣으면 그 크기로 (최대 500×500)</dd></div>
+            <div><dt>대비 그래프</dt><dd>리본 <strong>대비 › 대비 그래프</strong>: 기울기 a를 움직이면 R·G·B 숫자가 바로 바뀌어요. <strong>칸마다 밝기(Y)</strong>를 켜면 채도 조절. 비어 있으면 <strong>예시 사진</strong>으로 시작</dd></div>
+            <div><dt>시트 추가</dt><dd>탭 옆 <strong>+</strong>로 작업용 시트를 만들어 계산하고 <code>=시트1!A1</code>처럼 가져와요. 탭을 오른쪽 클릭하면 이름 바꾸기·삭제</dd></div>
+            <div><dt>저장 · 새로 시작</dt><dd>Canvas 시트의 <strong>PNG로 저장</strong> · <strong>Canvas 지우기</strong></dd></div>
+          </dl>
+
+          <h2 class="g-sec">단축키</h2>
+          <ul class="g-keys">
+            <li><span><kbd>Ctrl</kbd>+<kbd>Z</kbd></span>되돌리기</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>Y</kbd></span>다시 실행</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd></span>복사 / 붙여넣기</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>A</kbd></span>이어진 영역 (두 번: 시트 전체)</li>
+            <li><span><kbd>Ctrl</kbd>+드래그</span>여러 영역 함께 고르기</li>
+            <li><span><kbd>Delete</kbd></span>고른 칸 비우기</li>
+            <li><span><kbd>F4</kbd></span>수식 속 주소를 $A$1 → A$1 → $A1로</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>D</kbd> / <kbd>R</kbd></span>위 칸 / 왼쪽 칸으로 채우기</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>`</kbd></span>수식 보이기</li>
+            <li><span><kbd>Ctrl</kbd>+<kbd>F1</kbd></span>리본 접기 · 펼치기</li>
+            <li><span>오른쪽 클릭</span>잘라내기 · 선택하여 붙여넣기 (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>V</kbd>)</li>
+          </ul>
+          <p class="g-mobile">휴대폰·태블릿: 칸을 한 번 더 누르거나 위쪽 <strong>fx</strong> 칸에 입력하세요.</p>
+
+          <p class="guide-note">새로고침하거나 창을 닫으면 숫자가 사라져요. 남길 값은 복사해서 엑셀이나 메모장에 붙여 두세요.</p>
         </article>
       </section>
 
@@ -1603,7 +1573,7 @@
             <div class="pic-frame" id="beforeFrame"></div>
           </figure>
           <section class="filter-note" id="filterNote" aria-label="적용한 필터의 계산" hidden></section>
-          <p class="canvas-hint"><span>체크무늬가 보이는 곳은 A값이 작아 투명해진 부분입니다. 이미지는 150×150 픽셀이며 크게 확대해서 보여 줍니다.</span></p>
+          <p class="canvas-hint"><span>체크무늬가 보이는 곳은 A값이 작아 투명해진 부분입니다. 이미지는 <span id="canvasSize">150×150</span> 픽셀(가로×세로)이며 크게 확대해서 보여 줍니다.</span></p>
         </div>
       </section>
       <div class="sat-split" id="satSplit" role="separator" tabindex="0" aria-controls="satPanel" aria-label="작업창 크기 조절 (방향키, 두 번 누르면 원래 크기)" title="끌어서 작업창 크기 조절 · 두 번 누르면 원래 크기" hidden></div>
@@ -1686,6 +1656,7 @@
     <footer class="statusbar">
       <span id="statusMode">준비</span>
       <span id="statusStats"></span>
+      <span id="statusSize" class="status-size"></span>
     </footer>
   </div>
 
@@ -1704,6 +1675,37 @@
 
   <div class="xm" id="cfMenu" role="menu" aria-label="조건부 서식" hidden></div>
   <div class="xm" id="cfSub" role="menu" hidden></div>
+  <div class="xm" id="ctxMenu" role="menu" aria-label="셀 메뉴" hidden></div>
+
+  <dialog class="xdlg" id="psDlg" aria-labelledby="psTitle">
+    <div class="xdlg-title"><span id="psTitle">선택하여 붙여넣기</span><button type="button" class="xdlg-tb" data-cancel aria-label="닫기">✕</button></div>
+    <div class="xdlg-body ps-body">
+      <fieldset class="ps-set"><legend>붙여넣기</legend>
+        <label><input type="radio" name="psWhat" value="all" checked> 모두 (수식 포함)</label>
+        <label><input type="radio" name="psWhat" value="values"> 값만</label>
+      </fieldset>
+      <fieldset class="ps-set"><legend>연산</legend>
+        <label><input type="radio" name="psOp" value="" checked> 없음</label>
+        <label><input type="radio" name="psOp" value="add"> 더하기</label>
+        <label><input type="radio" name="psOp" value="sub"> 빼기</label>
+        <label><input type="radio" name="psOp" value="mul"> 곱하기</label>
+        <label><input type="radio" name="psOp" value="div"> 나누기</label>
+      </fieldset>
+      <fieldset class="ps-set ps-wide" id="psWhereSet"><legend>붙여넣을 시트</legend>
+        <label><input type="radio" name="psWhere" value="cur" checked> 지금 시트</label>
+        <label><input type="radio" name="psWhere" value="rgb"> R · G · B 세 시트 모두 (같은 위치)</label>
+      </fieldset>
+      <div class="ps-checks">
+        <label><input type="checkbox" id="psSkip"> 내용 있는 셀만 붙여넣기</label>
+        <label><input type="checkbox" id="psTr"> 행/열 바꿈</label>
+      </div>
+      <p class="ps-hint">연산을 고르면 붙여넣을 값과 원래 칸의 값을 계산합니다 (빈칸은 0, 결과는 0~255).</p>
+    </div>
+    <div class="xdlg-foot">
+      <button type="button" class="x-btn x-default" data-ok>확인</button>
+      <button type="button" class="x-btn" data-cancel>취소</button>
+    </div>
+  </dialog>
 
   <dialog class="xdlg" id="qDlg" aria-labelledby="qTitle">
     <div class="xdlg-title"><span id="qTitle">보다 큼</span><span class="xdlg-tb" aria-hidden="true">?</span><button type="button" class="xdlg-tb" data-cancel aria-label="닫기">✕</button></div>
@@ -1843,8 +1845,14 @@
       'use strict';
 
       // ===== 상수 =====
-      const SIZE = 150;                 // 이미지 한 변 = 시트의 행·열 수
-      const N = SIZE * SIZE;
+      // 시트의 행·열 수 = 이미지의 세로·가로 픽셀 수. 처음엔 150×150이고, 더 큰 표를 붙여넣거나
+      // 마지막 행·열에서 ↓·→를 누르면 늘어난다(최대 MAX_DIM).
+      // 칸 번호 = 행 × STRIDE + 열 — STRIDE를 최대 크기로 고정해 두어 시트가 늘어나도 칸 번호(되돌리기 기록·수식)가 그대로다.
+      const MAX_DIM = 500;
+      const STRIDE = MAX_DIM;
+      const NCAP = MAX_DIM * MAX_DIM;
+      const BASE_SIZE = 150;
+      const dims = { rows: BASE_SIZE, cols: BASE_SIZE };
       const COL_W = 48, ROW_H = 22, HEAD_W = 44, HEAD_H = 22;
       const DATA_SHEETS = ['R', 'G', 'B', 'A'];
       const SHEET_NAME = { guide: '설명서', R: 'R', G: 'G', B: 'B', A: 'A', canvas: 'Canvas' };
@@ -1888,7 +1896,7 @@
         mgrUp: $('mgrUp'), mgrDown: $('mgrDown'), mgrList: $('mgrList'), mgrErr: $('mgrErr'), mgrApply: $('mgrApply'),
         pal: $('pal'), palTheme: $('palTheme'), palStd: $('palStd'), palNative: $('palNative'),
         fxBtn: $('fxBtn'), fnDlg: $('fnDlg'), fnCat: $('fnCat'), fnList: $('fnList'), fnSyntax: $('fnSyntax'), fnDesc: $('fnDesc'),
-        filterNote: $('filterNote'), excelDl: $('excelDl'), cellFmtBtn: $('cellFmtBtn'), cellFmtMenu: $('cellFmtMenu'), filterGroup: $('filterGroup'), filterBtn: $('filterBtn'), filterMenu: $('filterMenu'),
+        filterNote: $('filterNote'), size: $('statusSize'), canvasSize: $('canvasSize'), excelDl: $('excelDl'), cellFmtBtn: $('cellFmtBtn'), cellFmtMenu: $('cellFmtMenu'), filterGroup: $('filterGroup'), filterBtn: $('filterBtn'), filterMenu: $('filterMenu'),
         satPanel: $('satPanel'), satGraph: $('satGraph'), satSample: $('satSample'), satPickFile: $('satPickFile'), satFile: $('satFile'),
         satClose: $('satClose'), satTitle: $('satTitle'), satHint: $('satHint'), satPx: $('satPx'), satA: $('satA'), satANum: $('satANum'), satPNum: $('satPNum'),
         satLum: $('satLum'), satY: $('satY'), satFx: $('satFx'), satPlay: $('satPlay'), satNote: $('satNote'), satErr: $('satErr'),
@@ -1897,18 +1905,18 @@
       };
 
       // ===== 상태 =====
-      const blankSheet = () => new Float64Array(N).fill(NaN);   // NaN = 빈칸
+      const blankSheet = () => new Float64Array(NCAP).fill(NaN);   // NaN = 빈칸
       const newView = () => {
         const v = {
           areas: [{ r1: 0, c1: 0, r2: 0, c2: 0 }], active: { r: 0, c: 0 }, anchor: { r: 0, c: 0 }, focus: { r: 0, c: 0 }, sl: 0, st: 0,
-          colW: new Array(SIZE).fill(COL_W), rowH: new Array(SIZE).fill(ROW_H),   // 열 너비 · 행 높이(픽셀)
+          colW: new Array(MAX_DIM).fill(COL_W), rowH: new Array(MAX_DIM).fill(ROW_H),   // 열 너비 · 행 높이(픽셀)
         };
         rebuildGeom(v);
         return v;
       };
 
       const state = {
-        data: { R: blankSheet(), G: blankSheet(), B: blankSheet(), A: new Float64Array(N).fill(255) },
+        data: { R: blankSheet(), G: blankSheet(), B: blankSheet(), A: new Float64Array(NCAP).fill(255) },
         views: { R: newView(), G: newView(), B: newView(), A: newView() },
         alphaVisible: false,
         current: 'guide',
@@ -1954,7 +1962,7 @@
         const m = /^\$?([A-Za-z]{1,3})\$?(\d{1,5})$/.exec(text.trim());
         if (!m) return null;
         const c = colIndex(m[1].toUpperCase()), r = parseInt(m[2], 10) - 1;
-        return (c >= 0 && c < SIZE && r >= 0 && r < SIZE) ? { r, c } : null;
+        return (c >= 0 && c < MAX_DIM && r >= 0 && r < MAX_DIM) ? { r, c } : null;
       }
 
       function parseRange(text) {
@@ -1987,11 +1995,11 @@
           const a = v.areas[0];
           const out = new Int32Array((a.r2 - a.r1 + 1) * (a.c2 - a.c1 + 1));
           let k = 0;
-          for (let r = a.r1; r <= a.r2; r++) for (let c = a.c1; c <= a.c2; c++) out[k++] = r * SIZE + c;
+          for (let r = a.r1; r <= a.r2; r++) for (let c = a.c1; c <= a.c2; c++) out[k++] = r * STRIDE + c;
           return out;
         }
         const set = new Set();   // 여러 영역이 겹쳐도 한 번만 계산
-        for (const a of v.areas) for (let r = a.r1; r <= a.r2; r++) for (let c = a.c1; c <= a.c2; c++) set.add(r * SIZE + c);
+        for (const a of v.areas) for (let r = a.r1; r <= a.r2; r++) for (let c = a.c1; c <= a.c2; c++) set.add(r * STRIDE + c);
         return Int32Array.from(set);
       }
 
@@ -2011,7 +2019,7 @@
         liveTimer = setTimeout(() => {
           if (!isData(state.current)) return;
           const { r, c } = view().active;
-          const val = fmtFull(state.data[state.current][r * SIZE + c]);
+          const val = fmtFull(state.data[state.current][r * STRIDE + c]);
           els.live.textContent = `${sheetLabel(state.current)} 시트 ${addr(r, c)}, ${val === '' ? '빈 셀' : val}`;
         }, 250);
       }
@@ -2020,6 +2028,7 @@
       // 셀 변경 묶음 parts = [{ sheet, idx, vals, fs }] — fs[i]가 있으면 그 칸은 수식, 없으면 값
       // opts.images = { before, after } 를 주면 Canvas 이미지도 같은 한 단계로 기록
       function applyChanges(parts, label, opts = {}) {
+        const dimsBefore = opts.dimsBefore || { ...dims };   // 붙여넣기로 시트가 늘었으면 늘기 전 크기
         const recs = [];
         for (const { sheet, idx, vals, fs } of parts) {
           const data = state.data[sheet], fm = state.formulas[sheet];
@@ -2038,7 +2047,8 @@
         if (!recs.length && !opts.images) return false;
         for (const p of recs) writeCells(p.sheet, p.idx, p.after, p.fAfter);
         recalc();
-        pushHistory({ kind: 'cells', parts: recs, images: opts.images || null, label });
+        const grew = dimsBefore.rows !== dims.rows || dimsBefore.cols !== dims.cols;
+        pushHistory({ kind: 'cells', parts: recs, images: opts.images || null, label, dims: grew ? { before: dimsBefore, after: { ...dims } } : null });
         if (opts.images) {
           state.images = { ...opts.images.after };
           renderCanvasSheet();
@@ -2135,7 +2145,12 @@
             afterDataChange(act.sheet);
             return done(visible ? '' : ' (A 시트)');
           }
+          case 'dims':
+            setDims(target);
+            if (isData(state.current)) selectionChanged();
+            return done(` (가로 ${dims.cols} × 세로 ${dims.rows})`);
           case 'cells': {
+            if (act.dims) setDims(useBefore ? act.dims.before : act.dims.after);
             for (const p of act.parts) writeCells(p.sheet, p.idx, useBefore ? p.before : p.after, useBefore ? p.fBefore : p.fAfter);
             recalc();
             if (act.images) {
@@ -2151,6 +2166,54 @@
             return done(visible ? '' : ' (A 시트)');
           }
         }
+      }
+
+      // ===== 시트(=이미지) 크기 =====
+      function clampView(v) {
+        const R = dims.rows - 1, C = dims.cols - 1;
+        const pt = (q) => ({ r: Math.min(q.r, R), c: Math.min(q.c, C) });
+        v.areas = v.areas.map((a) => ({ r1: Math.min(a.r1, R), c1: Math.min(a.c1, C), r2: Math.min(a.r2, R), c2: Math.min(a.c2, C) }));
+        v.active = pt(v.active);
+        v.anchor = pt(v.anchor);
+        v.focus = pt(v.focus);
+      }
+
+      function setDims({ rows, cols }) {
+        dims.rows = rows;
+        dims.cols = cols;
+        DATA_SHEETS.forEach((s) => clampView(state.views[s]));
+        updateSpacer();
+        updateSizeInfo();
+        scheduleDraw();
+        satDimsChanged();
+      }
+
+      // rows × cols 를 담을 만큼 늘림 (줄이지는 않음). reason 이 있으면 되돌리기 기록에 따로 남김
+      function growTo(rows, cols, reason) {
+        const next = { rows: clamp(Math.max(dims.rows, rows), 1, MAX_DIM), cols: clamp(Math.max(dims.cols, cols), 1, MAX_DIM) };
+        if (next.rows === dims.rows && next.cols === dims.cols) return false;
+        const before = { ...dims };
+        setDims(next);
+        if (reason) {
+          // 방향키로 한 줄씩 늘릴 때는 이어진 기록을 하나로 묶음
+          const last = state.undo[state.undo.length - 1];
+          const label = `시트 크기 가로 ${dims.cols} × 세로 ${dims.rows}`;
+          if (last && last.kind === 'dims' && last.reason === reason && !state.redo.length) {
+            last.after = { ...dims };
+            last.label = label;
+          } else {
+            pushHistory({ kind: 'dims', reason, before, after: { ...dims }, label });
+          }
+          updateUndoButtons();
+        }
+        return true;
+      }
+
+      // 상태 표시줄·Canvas 안내의 크기 글자
+      function updateSizeInfo() {
+        const t = `${dims.cols}×${dims.rows}`;
+        els.size.textContent = `이미지 ${t} (가로×세로)`;
+        els.canvasSize.textContent = t;
       }
 
       const undo = () => { replay(state.undo, state.redo, true, '되돌렸습니다'); satAfterReplay(); };
@@ -2218,7 +2281,7 @@
           const sheet = name ? sheetIdByName(name) : hostSheet;
           if (!sheet) return { k: 'err', v: '#REF!' };
           const c = colIndex(tk.col), r = tk.row - 1;
-          if (c < 0 || c >= SIZE || r < 0 || r >= SIZE) return { k: 'err', v: '#REF!' };
+          if (c < 0 || c >= MAX_DIM || r < 0 || r >= MAX_DIM) return { k: 'err', v: '#REF!' };
           return { k: 'ref', sheet, r, c };
         };
         function primary() {
@@ -2303,7 +2366,7 @@
           if (tk.t !== 'ref') return tk.s;
           const c = colIndex(tk.col) + (tk.ca ? 0 : dc);
           const r = tk.row - 1 + (tk.ra ? 0 : dr);
-          if (c < 0 || c >= SIZE || r < 0 || r >= SIZE) return '#REF!';
+          if (c < 0 || c >= MAX_DIM || r < 0 || r >= MAX_DIM) return '#REF!';
           return (tk.sheet ? refSheet(tk.sheet) + '!' : '') + (tk.ca ? '$' : '') + colName(c) + (tk.ra ? '$' : '') + (r + 1);
         }).join('');
       }
@@ -2381,7 +2444,7 @@
         switch (n.k) {
           case 'num': case 'str': case 'bool': return n.v;
           case 'err': return fail(n.v);
-          case 'ref': return cellValueAt(n.sheet, n.r * SIZE + n.c);
+          case 'ref': return cellValueAt(n.sheet, n.r * STRIDE + n.c);
           case 'range': return fail('#VALUE!');
           case 'neg': return -toNum(evalNode(n.e, ctx));
           case 'bin': return binop(n.op, evalNode(n.a, ctx), evalNode(n.b, ctx));
@@ -2395,7 +2458,7 @@
 
       // ── 함수 ──
       function eachInRange(rg, fn) {
-        for (let r = rg.r1; r <= rg.r2; r++) for (let c = rg.c1; c <= rg.c2; c++) fn(cellValueAt(rg.sheet, r * SIZE + c));
+        for (let r = rg.r1; r <= rg.r2; r++) for (let c = rg.c1; c <= rg.c2; c++) fn(cellValueAt(rg.sheet, r * STRIDE + c));
       }
       // 숫자 목록: 범위·참조 안에서는 숫자 칸만, 직접 쓴 값은 숫자로 바꿔서
       function nums(args, ctx) {
@@ -2446,8 +2509,8 @@
           let n = 0;
           const filled = (sheet, k) => { try { return cellValueAt(sheet, k) !== null; } catch (e) { if (e instanceof FErr) return true; throw e; } };   // 오류 칸도 센다
           for (const x of a) {
-            if (x.k === 'range') { for (let r = x.r1; r <= x.r2; r++) for (let k = x.c1; k <= x.c2; k++) if (filled(x.sheet, r * SIZE + k)) n++; }
-            else if (x.k === 'ref') { if (filled(x.sheet, x.r * SIZE + x.c)) n++; }
+            if (x.k === 'range') { for (let r = x.r1; r <= x.r2; r++) for (let k = x.c1; k <= x.c2; k++) if (filled(x.sheet, r * STRIDE + k)) n++; }
+            else if (x.k === 'ref') { if (filled(x.sheet, x.r * STRIDE + x.c)) n++; }
             else n++;
           }
           return n;
@@ -2458,10 +2521,10 @@
           const sr = a.length > 2 ? rangeArg(a, 2) : rg;
           let s = 0;
           for (let r = rg.r1; r <= rg.r2; r++) for (let k = rg.c1; k <= rg.c2; k++) {
-            if (!test(cellValueAt(rg.sheet, r * SIZE + k))) continue;
+            if (!test(cellValueAt(rg.sheet, r * STRIDE + k))) continue;
             const rr = sr.r1 + r - rg.r1, cc = sr.c1 + k - rg.c1;
-            if (rr >= SIZE || cc >= SIZE) continue;
-            const v = cellValueAt(sr.sheet, rr * SIZE + cc);
+            if (rr >= MAX_DIM || cc >= MAX_DIM) continue;
+            const v = cellValueAt(sr.sheet, rr * STRIDE + cc);
             if (typeof v === 'number') s += v;
           }
           return s;
@@ -2471,10 +2534,10 @@
           const sr = a.length > 2 ? rangeArg(a, 2) : rg;
           let s = 0, n = 0;
           for (let r = rg.r1; r <= rg.r2; r++) for (let k = rg.c1; k <= rg.c2; k++) {
-            if (!test(cellValueAt(rg.sheet, r * SIZE + k))) continue;
+            if (!test(cellValueAt(rg.sheet, r * STRIDE + k))) continue;
             const rr = sr.r1 + r - rg.r1, cc = sr.c1 + k - rg.c1;
-            if (rr >= SIZE || cc >= SIZE) continue;
-            const v = cellValueAt(sr.sheet, rr * SIZE + cc);
+            if (rr >= MAX_DIM || cc >= MAX_DIM) continue;
+            const v = cellValueAt(sr.sheet, rr * STRIDE + cc);
             if (typeof v === 'number') { s += v; n++; }
           }
           return n ? s / n : fail('#DIV/0!');
@@ -2552,7 +2615,7 @@
         calcStack.push(key);
         let res;
         try {
-          res = evalNode(getAst(sheet, idx), { sheet, r: Math.floor(idx / SIZE), c: idx % SIZE });
+          res = evalNode(getAst(sheet, idx), { sheet, r: Math.floor(idx / STRIDE), c: idx % STRIDE });
           if (res === null) res = 0;
           if (typeof res === 'number' && !Number.isFinite(res)) res = new FErr('#NUM!');
         } catch (e) {
@@ -2574,7 +2637,7 @@
         calcStack.length = 0;
         circSet.clear();
         for (const s of DATA_SHEETS) {
-          calcStatus[s] = new Uint8Array(N);
+          calcStatus[s] = new Uint8Array(NCAP);
           state.fval[s] = new Map();
         }
         // 행 순서대로 계산하면 위·왼쪽을 참조하는 보통 수식은 재귀가 얕다
@@ -3193,7 +3256,7 @@
           lo = Infinity; hi = -Infinity;
           for (const x of nums) { lo = Math.min(lo, x); hi = Math.max(hi, x); sum += x; }
         }
-        const activeVal = state.data[state.current][v.active.r * SIZE + v.active.c];
+        const activeVal = state.data[state.current][v.active.r * STRIDE + v.active.c];
         // 처음 채워 두는 값: 사이 = 선택 범위 최솟값~최댓값, 같음 = 활성 셀 값, 순위 = 10, 나머지 = 평균
         let init = [];
         if (q.op === 'between') init = [lo, hi];
@@ -3934,7 +3997,7 @@
         const ranges = parseRanges(inp.value);
         if (!ranges) {
           inp.setAttribute('aria-invalid', 'true');
-          els.mgrErr.textContent = '적용 대상은 A1:B5, C3처럼 A1~ET150 범위의 주소로 입력하세요.';
+          els.mgrErr.textContent = `적용 대상은 A1:B5, C3처럼 A1~${addr(MAX_DIM - 1, MAX_DIM - 1)} 범위의 주소로 입력하세요.`;
           return;
         }
         inp.removeAttribute('aria-invalid');
@@ -3979,10 +4042,10 @@
         v.rowY = prefix(v.rowH);
       }
 
-      // pre[i] <= pos 인 가장 큰 i (0 ~ SIZE-1)
-      function indexAt(pre, pos) {
+      // pre[i] <= pos 인 가장 큰 i (0 ~ n-1, n = 지금 열 수 또는 행 수)
+      function indexAt(pre, pos, n) {
         if (pos <= 0) return 0;
-        let lo = 0, hi = SIZE - 1;
+        let lo = 0, hi = n - 1;
         while (lo < hi) {
           const mid = (lo + hi + 1) >> 1;
           if (pre[mid] <= pos) lo = mid;
@@ -3993,8 +4056,8 @@
 
       function updateSpacer() {
         const v = isData(state.current) ? view() : state.views.R;
-        els.spacer.style.width = (HEAD_W + v.colX[SIZE]) + 'px';
-        els.spacer.style.height = (HEAD_H + v.rowY[SIZE]) + 'px';
+        els.spacer.style.width = (HEAD_W + v.colX[dims.cols]) + 'px';
+        els.spacer.style.height = (HEAD_H + v.rowY[dims.rows]) + 'px';
       }
 
       function commitSize(sheet, colBefore, rowBefore, label) {
@@ -4027,7 +4090,7 @@
 
       // 머리글 경계를 끌 때 함께 바뀔 줄: 그 줄 전체가 선택돼 있으면 선택된 줄 모두
       function resizeGroup(axis, i) {
-        const full = view().areas.filter((a) => (axis === 'col' ? a.r1 === 0 && a.r2 === SIZE - 1 && i >= a.c1 && i <= a.c2 : a.c1 === 0 && a.c2 === SIZE - 1 && i >= a.r1 && i <= a.r2));
+        const full = view().areas.filter((a) => (axis === 'col' ? a.r1 === 0 && a.r2 === dims.rows - 1 && i >= a.c1 && i <= a.c2 : a.c1 === 0 && a.c2 === dims.cols - 1 && i >= a.r1 && i <= a.r2));
         return full.length ? selectedLines(axis) : [i];
       }
 
@@ -4041,8 +4104,8 @@
           ctx.font = CELL_FONT;
           for (const c of lines) {
             let max = 0;
-            for (let r = 0; r < SIZE; r++) {
-              const d = cellDisplay(sheet, r * SIZE + c);
+            for (let r = 0; r < dims.rows; r++) {
+              const d = cellDisplay(sheet, r * STRIDE + c);
               if (d) max = Math.max(max, ctx.measureText(d.text).width);
             }
             v.colW[c] = max ? clamp(Math.ceil(max) + 10, MIN_PX, MAX_COL_PX) : COL_W;
@@ -4103,14 +4166,14 @@
         const yOf = (r) => HEAD_H + rowY[r] - st;
         const rectW = (a) => colX[a.c2 + 1] - colX[a.c1];
         const rectH = (a) => rowY[a.r2 + 1] - rowY[a.r1];
-        const c0 = indexAt(colX, sl), c1 = indexAt(colX, sl + W - HEAD_W);
-        const r0 = indexAt(rowY, st), r1 = indexAt(rowY, st + H - HEAD_H);
-        const gridRight = Math.min(W, xOf(SIZE));
-        const gridBottom = Math.min(H, yOf(SIZE));
+        const c0 = indexAt(colX, sl, dims.cols), c1 = indexAt(colX, sl + W - HEAD_W, dims.cols);
+        const r0 = indexAt(rowY, st, dims.rows), r1 = indexAt(rowY, st + H - HEAD_H, dims.rows);
+        const gridRight = Math.min(W, xOf(dims.cols));
+        const gridBottom = Math.min(H, yOf(dims.rows));
         const sheet = state.current;
         const data = state.data[sheet];
 
-        // 시트 밖(150칸 너머)은 회색
+        // 시트 밖(마지막 행·열 너머)은 회색
         ctx.fillStyle = '#f3f2f1';
         ctx.fillRect(0, 0, wrapW, wrapH);
         ctx.fillStyle = '#fff';
@@ -4125,11 +4188,11 @@
         ctx.strokeStyle = '#e1e1e1';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        for (let c = c0; c <= Math.min(c1 + 1, SIZE); c++) {
+        for (let c = c0; c <= Math.min(c1 + 1, dims.cols); c++) {
           const x = Math.round(xOf(c)) - 0.5;
           ctx.moveTo(x, HEAD_H); ctx.lineTo(x, gridBottom);
         }
-        for (let r = r0; r <= Math.min(r1 + 1, SIZE); r++) {
+        for (let r = r0; r <= Math.min(r1 + 1, dims.rows); r++) {
           const y = Math.round(yOf(r)) - 0.5;
           ctx.moveTo(HEAD_W, y); ctx.lineTo(gridRight, y);
         }
@@ -4141,7 +4204,7 @@
         if (hasRules) {
           for (let r = r0; r <= r1; r++) {
             for (let c = c0; c <= c1; c++) {
-              const i = r * SIZE + c;
+              const i = r * STRIDE + c;
               const f = cellFormat(sheet, r, c, data[i]);
               if (!f) continue;
               fmts.set(i, f);
@@ -4159,7 +4222,7 @@
         ctx.fillStyle = 'rgba(16, 124, 65, 0.13)';
         for (const a of v.areas) ctx.fillRect(xOf(a.c1), yOf(a.r1), rectW(a), rectH(a));
         const ac = v.active;
-        const af = fmts.get(ac.r * SIZE + ac.c);
+        const af = fmts.get(ac.r * STRIDE + ac.c);
         ctx.fillStyle = af && af.fill ? af.fill : '#fff';
         ctx.fillRect(Math.round(xOf(ac.c)), Math.round(yOf(ac.r)), colW[ac.c] - 1, rowH[ac.r] - 1);
         if (af && af.bar) drawBar(ctx, af.bar, xOf(ac.c), yOf(ac.r), colW[ac.c], rowH[ac.r]);
@@ -4174,7 +4237,7 @@
           if (rh < 9) continue;   // 너무 낮은 행은 글자를 그리지 않음
           const y = yOf(r) + rh / 2 + 1;
           for (let c = c0; c <= c1; c++) {
-            const i = r * SIZE + c, cw = colW[c], x = xOf(c);
+            const i = r * STRIDE + c, cw = colW[c], x = xOf(c);
             const f = fmts.get(i);
             const iconW = f && f.icon && cw >= 18 && rh >= 12 ? 16 : 0;
             if (iconW) drawIcon(ctx, f.icon.spec, x + 9, y - 1, Math.min(13, rh - 4));
@@ -4326,7 +4389,7 @@
         const { r, c } = view().active;
         ensureVisible(r, c);
         state.edit = { sheet: state.current, r, c, mode, via: 'cell', pt: null, ptRect: null };
-        els.editor.value = initial !== undefined ? initial : cellSource(state.current, r * SIZE + c);
+        els.editor.value = initial !== undefined ? initial : cellSource(state.current, r * STRIDE + c);
         els.editor.hidden = false;
         positionEditor();
         els.editor.focus({ preventScroll: true });
@@ -4367,9 +4430,9 @@
         }
         endEditUI();
         const v = state.views[ed.sheet];
-        const idx = fill ? selectedIndices(v) : Int32Array.of(ed.r * SIZE + ed.c);
+        const idx = fill ? selectedIndices(v) : Int32Array.of(ed.r * STRIDE + ed.c);
         const vals = new Float64Array(idx.length).fill(p.formula ? NaN : p.value);
-        const fs = p.formula ? Array.from(idx, (k) => shiftFormula(p.formula, Math.floor(k / SIZE) - ed.r, (k % SIZE) - ed.c)) : null;
+        const fs = p.formula ? Array.from(idx, (k) => shiftFormula(p.formula, Math.floor(k / STRIDE) - ed.r, (k % STRIDE) - ed.c)) : null;
         const where = fill ? selAddr(v) : addr(ed.r, ed.c);
         applyChange(ed.sheet, idx, vals, `${sheetLabel(ed.sheet)} 시트 ${where} 입력`, fs);
         return true;
@@ -4497,7 +4560,7 @@
         }
         const v = view();
         if (document.activeElement !== els.nameBox) els.nameBox.value = addr(v.active.r, v.active.c);
-        if (!state.edit) els.fx.value = cellSource(state.current, v.active.r * SIZE + v.active.c);
+        if (!state.edit) els.fx.value = cellSource(state.current, v.active.r * STRIDE + v.active.c);
         els.fx.placeholder = '값 또는 =수식을 입력하고 Enter';
         announceCell();
       }
@@ -4551,10 +4614,11 @@
         e.preventDefault();
         const rg = parseRange(els.nameBox.value);
         if (!rg) {
-          toast('B2 또는 B2:F10처럼 A1~ET150 사이 주소를 입력하세요.', 'error');
+          toast(`B2 또는 B2:F10처럼 A1~${addr(MAX_DIM - 1, MAX_DIM - 1)} 사이 주소를 입력하세요.`, 'error');
           els.nameBox.select();
           return;
         }
+        growTo(Math.max(rg.a.r, rg.b.r) + 1, Math.max(rg.a.c, rg.b.c) + 1, 'name');
         const v = view();
         v.areas = [rectOf(rg.a, rg.b)];
         v.anchor = { ...rg.a };
@@ -4595,18 +4659,31 @@
         selectionChanged();
       }
 
+      // 엑셀처럼: 마지막 행에서 ↓(또는 마지막 열에서 →)로 한 칸 가면 시트가 한 줄 늘어남
+      function growForStep(r, c, dr, dc) {
+        const row = dr === 1 && r === dims.rows - 1, col = dc === 1 && c === dims.cols - 1;
+        if (!row && !col) return;
+        if (!growTo(dims.rows + (row ? 1 : 0), dims.cols + (col ? 1 : 0), 'step')) {
+          toast(`시트는 최대 ${MAX_DIM}×${MAX_DIM}칸까지 늘릴 수 있습니다.`, 'error');
+          return;
+        }
+        toast(`${row ? `${dims.rows}행` : `${colName(dims.cols - 1)}열`}을 추가했습니다. 이미지 크기: 가로 ${dims.cols} × 세로 ${dims.rows} (Ctrl+Z로 되돌리기)`);
+      }
+
       function moveActive(dr, dc, toEdge) {
         const { r, c } = view().active;
-        const nr = toEdge ? (dr < 0 ? 0 : dr > 0 ? SIZE - 1 : r) : clamp(r + dr, 0, SIZE - 1);
-        const nc = toEdge ? (dc < 0 ? 0 : dc > 0 ? SIZE - 1 : c) : clamp(c + dc, 0, SIZE - 1);
+        if (!toEdge) growForStep(r, c, dr, dc);
+        const nr = toEdge ? (dr < 0 ? 0 : dr > 0 ? dims.rows - 1 : r) : clamp(r + dr, 0, dims.rows - 1);
+        const nc = toEdge ? (dc < 0 ? 0 : dc > 0 ? dims.cols - 1 : c) : clamp(c + dc, 0, dims.cols - 1);
         selectCell(nr, nc);
       }
 
       function extendBy(dr, dc, toEdge) {
         const v = view();
         const f = v.focus;
-        const nr = toEdge ? (dr < 0 ? 0 : dr > 0 ? SIZE - 1 : f.r) : clamp(f.r + dr, 0, SIZE - 1);
-        const nc = toEdge ? (dc < 0 ? 0 : dc > 0 ? SIZE - 1 : f.c) : clamp(f.c + dc, 0, SIZE - 1);
+        if (!toEdge) growForStep(f.r, f.c, dr, dc);
+        const nr = toEdge ? (dr < 0 ? 0 : dr > 0 ? dims.rows - 1 : f.r) : clamp(f.r + dr, 0, dims.rows - 1);
+        const nc = toEdge ? (dc < 0 ? 0 : dc > 0 ? dims.cols - 1 : f.c) : clamp(f.c + dc, 0, dims.cols - 1);
         v.focus = { r: nr, c: nc };
         v.areas[v.areas.length - 1] = rectOf(v.anchor, v.focus);
         ensureVisible(nr, nc);
@@ -4638,10 +4715,45 @@
 
       function selectAll() {
         const v = view();
-        v.areas = [{ r1: 0, c1: 0, r2: SIZE - 1, c2: SIZE - 1 }];
+        v.areas = [{ r1: 0, c1: 0, r2: dims.rows - 1, c2: dims.cols - 1 }];
         v.anchor = { r: 0, c: 0 };
         v.active = { r: 0, c: 0 };
-        v.focus = { r: SIZE - 1, c: SIZE - 1 };
+        v.focus = { r: dims.rows - 1, c: dims.cols - 1 };
+        selectionChanged();
+      }
+
+      // 엑셀의 '현재 영역': 활성 셀에서 값이 있는 칸으로 (대각선 포함) 이어진 사각형
+      function currentRegion(sheet, r, c) {
+        const R = dims.rows - 1, C = dims.cols - 1, data = state.data[sheet], fm = state.formulas[sheet];
+        const filled = (rr, cc) => {
+          if (rr < 0 || cc < 0 || rr > R || cc > C) return false;
+          const k = rr * STRIDE + cc;
+          return data[k] === data[k] || fm.has(k);
+        };
+        const rowHas = (rr, c1, c2) => { for (let cc = c1; cc <= c2; cc++) if (filled(rr, cc)) return true; return false; };
+        const colHas = (cc, r1, r2) => { for (let rr = r1; rr <= r2; rr++) if (filled(rr, cc)) return true; return false; };
+        const a = { r1: r, c1: c, r2: r, c2: c };
+        for (let grew = true; grew;) {
+          grew = false;
+          if (a.r1 > 0 && rowHas(a.r1 - 1, a.c1 - 1, a.c2 + 1)) { a.r1--; grew = true; }
+          if (a.r2 < R && rowHas(a.r2 + 1, a.c1 - 1, a.c2 + 1)) { a.r2++; grew = true; }
+          if (a.c1 > 0 && colHas(a.c1 - 1, a.r1 - 1, a.r2 + 1)) { a.c1--; grew = true; }
+          if (a.c2 < C && colHas(a.c2 + 1, a.r1 - 1, a.r2 + 1)) { a.c2++; grew = true; }
+        }
+        return a;
+      }
+
+      // Ctrl+A: 값이 이어진 영역 선택 → 한 번 더 누르면 시트 전체 (주변에 값이 없으면 바로 전체)
+      function selectRegion() {
+        const v = view();
+        const reg = currentRegion(state.current, v.active.r, v.active.c);
+        const cur = v.areas.length === 1 ? v.areas[0] : null;
+        const single = reg.r1 === reg.r2 && reg.c1 === reg.c2;
+        const same = cur && cur.r1 === reg.r1 && cur.c1 === reg.c1 && cur.r2 === reg.r2 && cur.c2 === reg.c2;
+        if (single || same) { selectAll(); return; }
+        v.areas = [reg];
+        v.anchor = { r: reg.r1, c: reg.c1 };
+        v.focus = { r: reg.r2, c: reg.c2 };   // 활성 셀은 엑셀처럼 그대로
         selectionChanged();
       }
 
@@ -4671,7 +4783,7 @@
           if (len < 2) break;
           const ys = [];
           for (let t = 0; t < len; t++) {
-            const k = vertical ? (src.r1 + t) * SIZE + line : line * SIZE + src.c1 + t;
+            const k = vertical ? (src.r1 + t) * STRIDE + line : line * STRIDE + src.c1 + t;
             if (fm.has(k) || data[k] !== data[k]) { ys.length = 0; break; }
             ys.push(data[k]);
           }
@@ -4689,9 +4801,9 @@
             const pos = vertical ? r - src.r1 : c - src.c1;
             const m = ((pos % len) + len) % len;
             const sr = vertical ? src.r1 + m : r, scol = vertical ? c : src.c1 + m;
-            const sk = sr * SIZE + scol;
+            const sk = sr * STRIDE + scol;
             const f = fm.get(sk);
-            idx.push(r * SIZE + c);
+            idx.push(r * STRIDE + c);
             if (f) {
               fs.push(shiftFormula(f, r - sr, c - scol));
               vals.push(NaN);
@@ -4730,11 +4842,11 @@
         const v = view();
         if (v.areas.length !== 1) return;
         const a = v.areas[0], sheet = state.current;
-        const filled = (r, c) => c >= 0 && c < SIZE && (state.formulas[sheet].has(r * SIZE + c) || state.data[sheet][r * SIZE + c] === state.data[sheet][r * SIZE + c]);
+        const filled = (r, c) => c >= 0 && c < dims.cols && (state.formulas[sheet].has(r * STRIDE + c) || state.data[sheet][r * STRIDE + c] === state.data[sheet][r * STRIDE + c]);
         const side = [a.c1 - 1, a.c2 + 1].find((c) => filled(a.r1, c) || filled(a.r2, c));
         if (side === undefined) { toast('왼쪽이나 오른쪽 열에 값이 있어야 그 길이만큼 채웁니다. 오른쪽 아래 점을 끌어서 채워 보세요.', 'error'); return; }
         let end = a.r2;
-        while (end + 1 < SIZE && filled(end + 1, side)) end++;
+        while (end + 1 < dims.rows && filled(end + 1, side)) end++;
         if (end === a.r2) return;
         performFill({ ...a }, { ...a, r2: end });
       }
@@ -4756,7 +4868,7 @@
         if (x < HEAD_W && y < HEAD_H) zone = 'corner';
         else if (y < HEAD_H) zone = 'col';
         else if (x < HEAD_W) zone = 'row';
-        const c = indexAt(v.colX, gx), r = indexAt(v.rowY, gy);
+        const c = indexAt(v.colX, gx, dims.cols), r = indexAt(v.rowY, gy, dims.rows);
         // 머리글 경계(크기 조절) — 경계는 왼쪽(위쪽) 줄의 것
         let edge = null;
         const near = (pre, pos, i) => {
@@ -4779,7 +4891,7 @@
         return {
           x, y, zone, r, c, edge, handle,
           inside: x >= 0 && y >= 0 && x < sc.clientWidth && y < sc.clientHeight,
-          beyond: (zone !== 'row' && gx >= v.colX[SIZE]) || (zone !== 'col' && gy >= v.rowY[SIZE]),
+          beyond: (zone !== 'row' && gx >= v.colX[dims.cols]) || (zone !== 'col' && gy >= v.rowY[dims.rows]),
         };
       }
 
@@ -4787,7 +4899,7 @@
         const v = view();
         if (h.zone === 'corner') { selectAll(); return null; }
         const cell = { r: h.zone === 'col' ? 0 : h.r, c: h.zone === 'row' ? 0 : h.c };
-        const far = { r: h.zone === 'col' ? SIZE - 1 : h.r, c: h.zone === 'row' ? SIZE - 1 : h.c };
+        const far = { r: h.zone === 'col' ? dims.rows - 1 : h.r, c: h.zone === 'row' ? dims.cols - 1 : h.c };
         if (shift) {
           extendTo(h, h.zone);
           return h.zone;
@@ -4807,10 +4919,10 @@
         let to;
         if (mode === 'col') {
           v.anchor.r = 0;
-          to = { r: SIZE - 1, c: h.c };
+          to = { r: dims.rows - 1, c: h.c };
         } else if (mode === 'row') {
           v.anchor.c = 0;
-          to = { r: h.r, c: SIZE - 1 };
+          to = { r: h.r, c: dims.cols - 1 };
         } else {
           to = { r: h.r, c: h.c };
         }
@@ -4914,7 +5026,7 @@
           return;
         }
         const f = view().focus;
-        const next = drag.mode === 'col' ? { r: SIZE - 1, c: h.c } : drag.mode === 'row' ? { r: h.r, c: SIZE - 1 } : { r: h.r, c: h.c };
+        const next = drag.mode === 'col' ? { r: dims.rows - 1, c: h.c } : drag.mode === 'row' ? { r: h.r, c: dims.cols - 1 } : { r: h.r, c: h.c };
         if (next.r !== f.r || next.c !== f.c) extendTo(h, drag.mode);
       });
 
@@ -4992,7 +5104,7 @@
         const lower = k.length === 1 ? k.toLowerCase() : k;
 
         if (ctrl && (lower === 'z' || lower === 'y')) return;   // 위의 공통 단축키가 처리
-        if (ctrl && lower === 'a') { e.preventDefault(); selectAll(); return; }
+        if (ctrl && lower === 'a') { e.preventDefault(); selectRegion(); return; }
         if (ctrl && !e.shiftKey && !e.altKey && (lower === 'd' || lower === 'r')) { e.preventDefault(); fillFromEdge(lower === 'd'); return; }
         if (ctrl && (e.code === 'Backquote' || k === '`')) { e.preventDefault(); toggleShowFormulas(); return; }
         if (ARROWS[k]) {
@@ -5009,7 +5121,7 @@
           case 'PageDown': e.preventDefault(); moveActive(page, 0, false); return;
           case 'PageUp': e.preventDefault(); moveActive(-page, 0, false); return;
           case 'Home': e.preventDefault(); ctrl ? selectCell(0, 0) : selectCell(view().active.r, 0); return;
-          case 'End': if (ctrl) { e.preventDefault(); selectCell(SIZE - 1, SIZE - 1); } return;
+          case 'End': if (ctrl) { e.preventDefault(); selectCell(dims.rows - 1, dims.cols - 1); } return;
           case 'F2': e.preventDefault(); startEdit('edit'); return;
           case 'Delete':
           case 'Backspace': e.preventDefault(); clearSelection(); return;
@@ -5035,22 +5147,7 @@
 
       document.addEventListener('copy', (e) => {
         if (!gridHasFocus()) return;
-        const v = view();
-        const a = v.areas[v.areas.length - 1];
-        const sheet = state.current;
-        const lines = [], cells = [];
-        for (let r = a.r1; r <= a.r2; r++) {
-          const row = [];
-          for (let c = a.c1; c <= a.c2; c++) {
-            const k = r * SIZE + c;
-            const d = cellDisplay(sheet, k);
-            row.push(d ? (d.num ? fmtFull(state.data[sheet][k]) : d.text) : '');
-            cells.push({ f: state.formulas[sheet].get(k) || null, v: state.data[sheet][k], sr: r, sc: c });
-          }
-          lines.push(row.join('\t'));
-        }
-        const text = lines.join('\r\n') + '\r\n';
-        clip = { text: normClip(text), w: a.c2 - a.c1 + 1, cells };
+        const { text, a } = makeClip(false);
         e.clipboardData.setData('text/plain', text);
         e.preventDefault();
         toast(`${rectAddr(a)}을(를) 복사했습니다. 엑셀이나 다른 시트에 붙여넣을 수 있어요.`);
@@ -5062,23 +5159,17 @@
         pasteText(e.clipboardData.getData('text/plain'));
       });
 
-      function pasteText(text) {
+      // o = { values, op, rgb, skip, tr } — 선택하여 붙여넣기 선택지 (모두 없으면 보통 붙여넣기)
+      function pasteText(text, o = {}) {
         if (!text) { toast('붙여넣을 내용이 없습니다.', 'error'); return; }
-        let block, bad = 0;
-        if (clip && normClip(text) === clip.text) {
-          block = [];
-          for (let i = 0; i < clip.cells.length; i += clip.w) block.push(clip.cells.slice(i, i + clip.w));
-        } else {
-          const lines = text.replace(/\r\n?/g, '\n').split('\n');
-          if (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
-          const rows = lines.map((l) => l.split('\t'));
-          const w = Math.max(...rows.map((row) => row.length));
-          block = rows.map((row) => Array.from({ length: w }, (_, i) => {
-            const p = parseEntry(row[i]);
-            if (!p.ok) { bad++; return { f: null, v: NaN }; }
-            return p.formula ? { f: p.formula, v: NaN } : { f: null, v: p.value };
-          }));
+        const special = !!(o.values || o.op || o.rgb || o.skip || o.tr);
+        let { block, bad, internal } = blockFromText(text);
+        // 잘라내기한 내용을 보통 붙여넣기 하면 원래 자리를 비움 (선택하여 붙여넣기에서는 복사처럼)
+        const cutFrom = internal && clip && clip.cut && !special ? clip.cut : null;
+        if (o.tr) {   // 행/열 바꿈: 수식은 계산된 값으로 넣음
+          block = block[0].map((_, c) => block.map((row) => row[c])).map((row) => row.map((cell) => internal && cell.f ? { f: null, v: cell.v } : { f: cell.f, v: cell.v }));
         }
+        if (o.values || o.op) block = block.map((row) => row.map((cell) => ({ f: null, v: internal || !cell.f ? cell.v : NaN, blank: !cell.f && Number.isNaN(cell.v) })));
         const bh = block.length, bw = block[0].length;
 
         const v = view();
@@ -5087,24 +5178,51 @@
         // 선택 영역이 복사한 크기의 배수면 반복해서 채움 (한 칸 값 → 영역 전체)
         const tile = ah % bh === 0 && aw % bw === 0;
         const th = tile ? ah : bh, tw = tile ? aw : bw;
-        const r2 = Math.min(SIZE - 1, a.r1 + th - 1);
-        const c2 = Math.min(SIZE - 1, a.c1 + tw - 1);
-        const clipped = a.r1 + th - 1 > SIZE - 1 || a.c1 + tw - 1 > SIZE - 1;
+        // 시트보다 큰 표면 (최대 MAX_DIM까지) 시트·이미지를 늘림 — 예: 200×200 표 → 200×200 이미지
+        const dimsBefore = { ...dims };
+        const grew = growTo(a.r1 + th, a.c1 + tw);
+        const r2 = Math.min(dims.rows - 1, a.r1 + th - 1);
+        const c2 = Math.min(dims.cols - 1, a.c1 + tw - 1);
+        const clipped = a.r1 + th > MAX_DIM || a.c1 + tw > MAX_DIM;
 
-        const count = (r2 - a.r1 + 1) * (c2 - a.c1 + 1);
-        const idx = new Int32Array(count), vals = new Float64Array(count), fs = new Array(count);
-        let k = 0;
-        for (let r = a.r1; r <= r2; r++) {
-          for (let c = a.c1; c <= c2; c++) {
-            const cell = block[(r - a.r1) % bh][(c - a.c1) % bw];
-            idx[k] = r * SIZE + c;
-            vals[k] = cell.f ? NaN : cell.v;
-            fs[k] = cell.f ? (cell.sr !== undefined ? shiftFormula(cell.f, r - cell.sr, c - cell.sc) : cell.f) : null;
-            k++;
-          }
-        }
         const target = { r1: a.r1, c1: a.c1, r2, c2 };
-        applyChange(state.current, idx, vals, `${sheetLabel(state.current)} 시트 ${rectAddr(target)} 붙여넣기`, fs);
+        const sheets = o.rgb ? ['R', 'G', 'B'] : [state.current];
+        const calc = o.op ? OPS[o.op].calc : null;
+        let divZero = false;
+        const parts = sheets.map((sheet) => {
+          const data = state.data[sheet];
+          const idxL = [], valL = [], fL = [];
+          for (let r = a.r1; r <= r2; r++) {
+            for (let c = a.c1; c <= c2; c++) {
+              const cell = block[(r - a.r1) % bh][(c - a.c1) % bw];
+              const blank = cell.blank !== undefined ? cell.blank : (!cell.f && Number.isNaN(cell.v));
+              if (o.skip && blank) continue;   // 내용 있는 셀만: 빈 칸은 원래 값을 둠
+              const kk = r * STRIDE + c;
+              idxL.push(kk);
+              if (calc) {
+                const cur = data[kk], src = Number.isNaN(cell.v) ? 0 : cell.v;
+                if (o.op === 'div' && src === 0) divZero = true;
+                const res = o.op === 'div' && src === 0 ? (Number.isNaN(cur) ? 0 : cur) : calc(Number.isNaN(cur) ? 0 : cur, src);
+                valL.push(Number(clamp(res, 0, 255).toPrecision(12))); fL.push(null);
+              } else {
+                valL.push(cell.f ? NaN : cell.v);
+                fL.push(cell.f ? (cell.sr !== undefined && !o.tr ? shiftFormula(cell.f, r - cell.sr, c - cell.sc) : cell.f) : null);
+              }
+            }
+          }
+          return { sheet, idx: Int32Array.from(idxL), vals: Float64Array.from(valL), fs: fL };
+        });
+        if (cutFrom) {   // 잘라낸 원래 자리 비우기 (붙여넣은 칸과 겹치는 곳은 빼고)
+          const ca = cutFrom.area, inTarget = (r, c) => cutFrom.sheet === state.current && r >= target.r1 && r <= target.r2 && c >= target.c1 && c <= target.c2;
+          const cIdx = [];
+          for (let r = ca.r1; r <= ca.r2; r++) for (let c = ca.c1; c <= ca.c2; c++) if (!inTarget(r, c)) cIdx.push(r * STRIDE + c);
+          if (cIdx.length) parts.push({ sheet: cutFrom.sheet, idx: Int32Array.from(cIdx), vals: new Float64Array(cIdx.length).fill(NaN), fs: new Array(cIdx.length).fill(null) });
+          clip.cut = null;
+        }
+        const how = [o.values && '값만', o.op && PS_LABEL[o.op], o.skip && '내용 있는 셀만', o.tr && '행/열 바꿈', o.rgb && 'R·G·B 모두'].filter(Boolean).join(', ');
+        const label = `${o.rgb ? 'R·G·B' : sheetLabel(state.current)} 시트 ${rectAddr(target)} ${special ? `선택하여 붙여넣기(${how})` : cutFrom ? '잘라내기 붙여넣기' : '붙여넣기'}`;
+        const changed = applyChanges(parts, label, { dimsBefore });
+        if (!changed && grew) setDims(dimsBefore);
         v.areas = [target];
         v.anchor = { r: a.r1, c: a.c1 };
         v.active = { r: a.r1, c: a.c1 };
@@ -5112,11 +5230,218 @@
         selectionChanged();
 
         const notes = [];
+        if (special) notes.push(how);
+        if (divZero) notes.push('0으로 나누는 칸은 그대로 두었습니다');
         if (bad) notes.push(`숫자·수식이 아닌 값 ${bad}개는 빈칸으로 넣었습니다`);
-        if (clipped) notes.push('150칸을 넘는 부분은 잘렸습니다');
-        if (notes.length) toast(`${rectAddr(target)}에 붙여넣었습니다. ${notes.join(', ')}.`, 'error');
+        if (clipped) notes.push(`${MAX_DIM}칸을 넘는 부분은 잘렸습니다`);
+        if (grew && changed) notes.push(`시트와 이미지를 가로 ${dims.cols} × 세로 ${dims.rows}로 늘렸습니다`);
+        if (bad || clipped) toast(`${rectAddr(target)}에 붙여넣었습니다. ${notes.join(', ')}.`, 'error');
+        else if (notes.length) toast(`${rectAddr(target)}에 붙여넣었습니다. ${notes.join(', ')}.`);
         else toast(`${rectAddr(target)}에 붙여넣었습니다.`);
       }
+
+      // ===== 오른쪽 클릭 메뉴 · 잘라내기 · 선택하여 붙여넣기 =====
+      // 메뉴의 복사·붙여넣기는 브라우저 클립보드를 쓰고, 읽기가 막히면 이 앱 안에서 복사한 내용(clip)을 씀
+      const ctxMenu = $('ctxMenu'), psDlg = $('psDlg');
+      const PS_LABEL = { add: '더하기', sub: '빼기', mul: '곱하기', div: '나누기' };
+
+      function makeClip(cut) {
+        const v = view();
+        const a = v.areas[v.areas.length - 1];
+        const sheet = state.current;
+        const lines = [], cells = [];
+        for (let r = a.r1; r <= a.r2; r++) {
+          const row = [];
+          for (let c = a.c1; c <= a.c2; c++) {
+            const k = r * STRIDE + c;
+            const d = cellDisplay(sheet, k);
+            row.push(d ? (d.num ? fmtFull(state.data[sheet][k]) : d.text) : '');
+            cells.push({ f: state.formulas[sheet].get(k) || null, v: state.data[sheet][k], sr: r, sc: c });
+          }
+          lines.push(row.join('\t'));
+        }
+        const text = lines.join('\r\n') + '\r\n';
+        clip = { text: normClip(text), w: a.c2 - a.c1 + 1, cells, cut: cut ? { sheet, area: { ...a } } : null };
+        scheduleDraw();
+        return { text, a };
+      }
+
+      async function menuCopy(cut) {
+        commitEdit();
+        if (!requireDataSheet()) return;
+        const { text, a } = makeClip(cut);
+        try { await navigator.clipboard.writeText(text); } catch (err) { /* 앱 안 붙여넣기는 그대로 됨 */ }
+        toast(cut ? `${rectAddr(a)}을(를) 잘라냈습니다. 붙여넣을 곳을 고르고 붙여넣으세요.` : `${rectAddr(a)}을(를) 복사했습니다.`);
+      }
+
+      async function readClipText() {
+        try {
+          const t = await navigator.clipboard.readText();
+          if (t) return t;
+        } catch (err) { /* 권한이 없으면 아래로 */ }
+        return clip ? clip.text : null;
+      }
+
+      async function menuPaste() {
+        commitEdit();
+        if (!requireDataSheet()) return;
+        const t = await readClipText();
+        if (t == null) { toast('붙여넣을 내용이 없습니다. 먼저 복사하거나, Ctrl+V로 붙여넣어 보세요.', 'error'); return; }
+        pasteText(t);
+      }
+
+      // 붙여넣을 덩어리(block)를 만든다: 앱 안에서 복사한 것이면 수식·원래 위치까지, 밖에서 온 글이면 숫자·수식으로 해석
+      function blockFromText(text) {
+        if (clip && normClip(text) === clip.text) {
+          const block = [];
+          for (let i = 0; i < clip.cells.length; i += clip.w) block.push(clip.cells.slice(i, i + clip.w));
+          return { block, bad: 0, internal: true };
+        }
+        let bad = 0;
+        const lines = text.replace(/\r\n?/g, '\n').split('\n');
+        if (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
+        const rows = lines.map((l) => l.split('\t'));
+        const w = Math.max(...rows.map((row) => row.length));
+        const block = rows.map((row) => Array.from({ length: w }, (_, i) => {
+          const p = parseEntry(row[i]);
+          if (!p.ok) { bad++; return { f: null, v: NaN }; }
+          return p.formula ? { f: p.formula, v: NaN } : { f: null, v: p.value };
+        }));
+        return { block, bad, internal: false };
+      }
+
+      async function openPasteSpecial() {
+        commitEdit();
+        if (!requireDataSheet()) return;
+        const text = await readClipText();
+        if (text == null) { toast('붙여넣을 내용이 없습니다. 먼저 복사하세요.', 'error'); return; }
+        const rgbOk = ['R', 'G', 'B'].includes(state.current);
+        $('psWhereSet').hidden = !rgbOk;
+        psDlg.querySelector('input[name="psWhat"][value="all"]').checked = true;
+        psDlg.querySelector('input[name="psOp"][value=""]').checked = true;
+        psDlg.querySelector('input[name="psWhere"][value="cur"]').checked = true;
+        $('psSkip').checked = false; $('psTr').checked = false;
+        const opts = await modal(psDlg, {
+          focus: psDlg.querySelector('input[name="psWhat"]:checked'),
+          submit: () => ({
+            values: psDlg.querySelector('input[name="psWhat"]:checked').value === 'values',
+            op: psDlg.querySelector('input[name="psOp"]:checked').value || null,
+            rgb: rgbOk && psDlg.querySelector('input[name="psWhere"]:checked').value === 'rgb',
+            skip: $('psSkip').checked, tr: $('psTr').checked,
+          }),
+        });
+        if (!opts) return;
+        pasteText(text, opts);
+      }
+
+      // 값으로 채우기: 고른 영역 전체를 한 숫자로
+      async function fillValue() {
+        commitEdit();
+        if (!requireDataSheet()) return;
+        const v = view(), where = selAddr(v), sheet = state.current;
+        const n = await askNumber({
+          title: '값으로 채우기',
+          prompt: `${sheet} 시트 ${where}을(를) 채울 값을 입력하세요. (0~255)`,
+          initial: '255',
+          validate: (x) => (x < 0 || x > 255 ? '0부터 255 사이의 숫자를 입력하세요.' : ''),
+        });
+        if (n === null) return;
+        const idx = selectedIndices(v);
+        if (applyChange(sheet, idx, new Float64Array(idx.length).fill(n), `${sheet} 시트 ${where} ${fmtFull(n)}(으)로 채우기`)) toast(`${where}을(를) ${fmtFull(n)}(으)로 채웠습니다.`);
+      }
+
+      document.addEventListener('cut', (e) => {
+        if (!gridHasFocus()) return;
+        const { text, a } = makeClip(true);
+        e.clipboardData.setData('text/plain', text);
+        e.preventDefault();
+        toast(`${rectAddr(a)}을(를) 잘라냈습니다. 붙여넣을 곳을 고르고 붙여넣으세요.`);
+      });
+
+      const CTX_ITEMS = [
+        ['cut', '잘라내기', 'T', 'Ctrl+X'], ['copy', '복사', 'C', 'Ctrl+C'], ['paste', '붙여넣기', 'P', 'Ctrl+V'],
+        ['pasteSpecial', '선택하여 붙여넣기', 'S', 'Ctrl+Alt+V', true], null,
+        ['clear', '내용 지우기', 'N', 'Delete'], ['fill', '값으로 채우기', 'F', '', true], null,
+        ['colW', '열 너비', 'W', '', true], ['rowH', '행 높이', 'R', '', true],
+      ];
+
+      function openCtxMenu(x, y) {
+        closeDropdowns();
+        if (typeof closeCfMenu === 'function') closeCfMenu();
+        ctxMenu.innerHTML = CTX_ITEMS.map((it) => it ? `<button type="button" class="xm-item" role="menuitem" data-ctx="${it[0]}">` +
+          `<span class="xm-ico"></span><span class="xm-label">${accel(it[1], it[2], it[4])}</span>${it[3] ? `<span class="xm-key">${it[3]}</span>` : ''}</button>` : SEP).join('');
+        ctxMenu.hidden = false;
+        ctxMenu.style.left = clamp(x, 8, window.innerWidth - ctxMenu.offsetWidth - 8) + 'px';
+        ctxMenu.style.top = clamp(y, 8, window.innerHeight - ctxMenu.offsetHeight - 8) + 'px';
+        ctxMenu.querySelector('button').focus();
+      }
+
+      function closeCtxMenu(focusGrid) {
+        if (ctxMenu.hidden) return;
+        ctxMenu.hidden = true;
+        if (focusGrid && isData(state.current)) sc.focus({ preventScroll: true });
+      }
+
+      sc.addEventListener('contextmenu', (e) => {
+        if (!isData(state.current)) return;
+        const h = hit(e);
+        if (!h.inside) return;
+        e.preventDefault();
+        commitEdit();
+        // 엑셀처럼: 누른 칸이 지금 선택 밖이면 그 칸을 고름
+        if (h.zone === 'cell' && !h.beyond) {
+          const inSel = view().areas.some((a) => h.r >= a.r1 && h.r <= a.r2 && h.c >= a.c1 && h.c <= a.c2);
+          if (!inSel) selectCell(h.r, h.c);
+        }
+        openCtxMenu(e.clientX, e.clientY);
+      });
+
+      ctxMenu.addEventListener('click', (e) => {
+        const b = e.target.closest('[data-ctx]');
+        if (!b) return;
+        const act = b.dataset.ctx;
+        closeCtxMenu(true);
+        if (act === 'cut') menuCopy(true);
+        else if (act === 'copy') menuCopy(false);
+        else if (act === 'paste') menuPaste();
+        else if (act === 'pasteSpecial') openPasteSpecial();
+        else if (act === 'clear') { commitEdit(); if (requireDataSheet()) clearSelection(); }
+        else if (act === 'fill') fillValue();
+        else if (act === 'colW') { commitEdit(); if (requireDataSheet()) askLineSize('col'); }
+        else if (act === 'rowH') { commitEdit(); if (requireDataSheet()) askLineSize('row'); }
+      });
+
+      ctxMenu.addEventListener('keydown', (e) => {
+        e.stopPropagation();   // 메뉴에서 누른 키가 셀 입력으로 새지 않게
+        const items = [...ctxMenu.querySelectorAll('button')];
+        const i = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus(); }
+        else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+        else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+        else if (e.key === 'Escape') { e.preventDefault(); closeCtxMenu(true); }
+        else if (e.key === 'Tab') closeCtxMenu();
+        else if (e.key.length === 1) {   // 밑줄 글자로 바로 고르기 (엑셀과 같음)
+          const k = e.key.toUpperCase(), hitItem = items.find((b) => (b.querySelector('u') || {}).textContent === k);
+          if (hitItem) { e.preventDefault(); hitItem.click(); }
+        }
+      });
+
+      document.addEventListener('pointerdown', (e) => { if (!ctxMenu.hidden && !ctxMenu.contains(e.target)) closeCtxMenu(); }, true);
+      window.addEventListener('blur', () => closeCtxMenu());
+      els.scroller.addEventListener('scroll', () => closeCtxMenu(), { passive: true });
+
+      // 키보드: 메뉴 키 · Shift+F10 = 셀 메뉴, Ctrl+Alt+V = 선택하여 붙여넣기
+      document.addEventListener('keydown', (e) => {
+        if (!gridHasFocus()) return;
+        if (e.key === 'ContextMenu' || (e.shiftKey && e.key === 'F10')) {
+          e.preventDefault();
+          const v = view(), r = els.scroller.getBoundingClientRect();
+          openCtxMenu(r.left + HEAD_W + v.colX[v.active.c] - els.scroller.scrollLeft + 20, r.top + HEAD_H + v.rowY[v.active.r] - els.scroller.scrollTop + 14);
+        } else if ((e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'v' || e.key === 'V')) {
+          e.preventDefault();
+          openPasteSpecial();
+        }
+      });
 
       // ===== 상태 표시줄 (평균 · 개수 · 합계) =====
       function updateStatus() {
@@ -5267,17 +5592,20 @@
 
       function imageURL(R, G, B, A) {
         const cv = document.createElement('canvas');
-        cv.width = SIZE;
-        cv.height = SIZE;
+        const W = dims.cols, H = dims.rows;
+        cv.width = W;
+        cv.height = H;
         const ctx = cv.getContext('2d');
-        const img = ctx.createImageData(SIZE, SIZE);
+        const img = ctx.createImageData(W, H);
         const d = img.data;
-        for (let i = 0; i < N; i++) {
-          const p = i * 4;
-          d[p] = toByte(R[i], 0);
-          d[p + 1] = toByte(G[i], 0);
-          d[p + 2] = toByte(B[i], 0);
-          d[p + 3] = toByte(A[i], 255);
+        for (let y = 0; y < H; y++) {
+          for (let x = 0; x < W; x++) {
+            const i = y * STRIDE + x, p = (y * W + x) * 4;
+            d[p] = toByte(R[i], 0);
+            d[p + 1] = toByte(G[i], 0);
+            d[p + 2] = toByte(B[i], 0);
+            d[p + 3] = toByte(A[i], 255);
+          }
         }
         ctx.putImageData(img, 0, 0);
         return cv.toDataURL('image/png');
@@ -5391,7 +5719,7 @@
       const lum = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
       const sepia = (r, g, b) => [0.393 * r + 0.769 * g + 0.189 * b, 0.349 * r + 0.686 * g + 0.168 * b, 0.272 * r + 0.534 * g + 0.131 * b];
       const vignetteK = (x, y, s) => {
-        const dx = (x - (SIZE - 1) / 2) / (SIZE / 2), dy = (y - (SIZE - 1) / 2) / (SIZE / 2);
+        const dx = (x - (dims.cols - 1) / 2) / (dims.cols / 2), dy = (y - (dims.rows - 1) / 2) / (dims.rows / 2);
         return 1 - s * Math.min(1, (dx * dx + dy * dy) / 2);
       };
       const LUM_TXT = '밝기 = 0.299×R + 0.587×G + 0.114×B';
@@ -5439,13 +5767,21 @@
         return s;
       }
 
+      // 지금 시트 크기 안의 칸 번호 (왼쪽 위부터 행 순서)
+      function sheetIndices() {
+        const out = new Int32Array(dims.rows * dims.cols);
+        let k = 0;
+        for (let r = 0; r < dims.rows; r++) for (let c = 0; c < dims.cols; c++) out[k++] = r * STRIDE + c;
+        return out;
+      }
+
       function gradeImage(src, p) {
         const { R, G, B } = src;
-        const out = { R: new Float64Array(N), G: new Float64Array(N), B: new Float64Array(N) };
+        const out = { R: new Float64Array(NCAP), G: new Float64Array(NCAP), B: new Float64Array(NCAP) };
         const blur = p.glow ? runFilter(FILTERS.find((f) => f.id === 'blur'), src) : null;
         const mul = p.mul || [1, 1, 1], add = p.add || 0, con = p.contrast ?? 1, sat = p.sat ?? 1;
         const lo = p.lo || 0, hi = p.hi ?? 255;
-        for (let i = 0; i < N; i++) {
+        for (const i of sheetIndices()) {
           let v = [R[i], G[i], B[i]];
           if (p.gray) { const y = lum(...v); v = [y, y, y]; }
           if (p.sepia) { const s = sepia(...v); v = v.map((x, k) => x * (1 - p.sepia) + s[k] * p.sepia); }
@@ -5461,7 +5797,7 @@
             v = v.map((x, k) => { const c = clamp(x, 0, 255); return c + (255 - c) * (bl[k] / 255) * p.glow; });
           }
           v = v.map((x) => lo + clamp(x, 0, 255) * (hi - lo) / 255);
-          if (p.vignette) { const k = vignetteK(i % SIZE, Math.floor(i / SIZE), p.vignette); v = v.map((x) => x * k); }
+          if (p.vignette) { const k = vignetteK(i % STRIDE, Math.floor(i / STRIDE), p.vignette); v = v.map((x) => x * k); }
           if (p.grain) { const n = (Math.random() * 2 - 1) * p.grain; v = v.map((x) => x + n); }
           out.R[i] = Math.round(clamp(v[0], 0, 255));
           out.G[i] = Math.round(clamp(v[1], 0, 255));
@@ -5509,41 +5845,42 @@
       function runFilter(f, src) {
         if (f.grade) return gradeImage(src, f.grade);
         const { R, G, B } = src;
-        const out = { R: new Float64Array(N), G: new Float64Array(N), B: new Float64Array(N) };
+        const out = { R: new Float64Array(NCAP), G: new Float64Array(NCAP), B: new Float64Array(NCAP) };
+        const W = dims.cols, H = dims.rows;
         const put = (i, rgb) => {
           out.R[i] = Math.round(clamp(rgb[0], 0, 255));
           out.G[i] = Math.round(clamp(rgb[1], 0, 255));
           out.B[i] = Math.round(clamp(rgb[2], 0, 255));
         };
         if (f.px) {
-          for (let i = 0; i < N; i++) put(i, f.px(R[i], G[i], B[i], i % SIZE, Math.floor(i / SIZE)));
+          for (const i of sheetIndices()) put(i, f.px(R[i], G[i], B[i], i % STRIDE, Math.floor(i / STRIDE)));
         } else if (f.kernel) {
           // 주변 칸과 곱해 더하기 (합성곱). 가장자리는 가장 가까운 칸을 씀
           const n = Math.sqrt(f.kernel.length), h = n >> 1;
           const div = f.kernel.reduce((s, w) => s + w, 0) || 1;
-          for (let y = 0; y < SIZE; y++) {
-            for (let x = 0; x < SIZE; x++) {
+          for (let y = 0; y < H; y++) {
+            for (let x = 0; x < W; x++) {
               let sr = 0, sg = 0, sb = 0, k = 0;
               for (let dy = -h; dy <= h; dy++) {
-                const yy = clamp(y + dy, 0, SIZE - 1);
+                const yy = clamp(y + dy, 0, H - 1);
                 for (let dx = -h; dx <= h; dx++) {
-                  const j = yy * SIZE + clamp(x + dx, 0, SIZE - 1), w = f.kernel[k++];
+                  const j = yy * STRIDE + clamp(x + dx, 0, W - 1), w = f.kernel[k++];
                   sr += R[j] * w; sg += G[j] * w; sb += B[j] * w;
                 }
               }
-              put(y * SIZE + x, [sr / div, sg / div, sb / div]);
+              put(y * STRIDE + x, [sr / div, sg / div, sb / div]);
             }
           }
         } else if (f.block) {
           const b = f.block;
-          for (let by = 0; by < SIZE; by += b) {
-            for (let bx = 0; bx < SIZE; bx += b) {
+          for (let by = 0; by < H; by += b) {
+            for (let bx = 0; bx < W; bx += b) {
               let sr = 0, sg = 0, sb = 0, n = 0;
-              for (let y = by; y < Math.min(by + b, SIZE); y++) for (let x = bx; x < Math.min(bx + b, SIZE); x++) {
-                const j = y * SIZE + x;
+              for (let y = by; y < Math.min(by + b, H); y++) for (let x = bx; x < Math.min(bx + b, W); x++) {
+                const j = y * STRIDE + x;
                 sr += R[j]; sg += G[j]; sb += B[j]; n++;
               }
-              for (let y = by; y < Math.min(by + b, SIZE); y++) for (let x = bx; x < Math.min(bx + b, SIZE); x++) put(y * SIZE + x, [sr / n, sg / n, sb / n]);
+              for (let y = by; y < Math.min(by + b, H); y++) for (let x = bx; x < Math.min(bx + b, W); x++) put(y * STRIDE + x, [sr / n, sg / n, sb / n]);
             }
           }
         }
@@ -5564,11 +5901,11 @@
         const scope = filterTargets();
         const where = scope ? `${selAddr(view())} 영역` : '이미지 전체';
         // 예로 보여 줄 칸: 활성 셀(적용 범위 안이면), 아니면 범위의 첫 칸 / 이미지 가운데
-        let ex = isData(state.current) ? view().active.r * SIZE + view().active.c : 75 * SIZE + 75;
+        let ex = isData(state.current) ? view().active.r * STRIDE + view().active.c : (dims.rows >> 1) * STRIDE + (dims.cols >> 1);
         if (scope && !scope.includes(ex)) ex = scope[0];
         const src = readRGB();
         const res = runFilter(f, src);
-        const idx = scope || Int32Array.from({ length: N }, (_, i) => i);
+        const idx = scope || sheetIndices();
         const parts = ['R', 'G', 'B'].map((s) => ({ sheet: s, idx, vals: Float64Array.from(idx, (k) => res[s][k]), fs: null }));
         // 전/후 이미지도 함께 만들어 Canvas에서 비교
         const { R, G, B, A } = state.data;
@@ -5584,7 +5921,7 @@
         }
         const note = {
           name: f.name, mood: f.mood || '', where, steps: f.steps,
-          cell: addr(Math.floor(ex / SIZE), ex % SIZE),
+          cell: addr(Math.floor(ex / STRIDE), ex % STRIDE),
           from: [src.R[ex], src.G[ex], src.B[ex]], to: [res.R[ex], res.G[ex], res.B[ex]],
         };
         applyChanges(parts, `필터 '${f.name}' (${where})`, { images: { before: { ...state.images }, after: { before: beforeURL, after: afterURL, note } } });
@@ -5629,16 +5966,19 @@
           // 현재 숫자로 필터 결과 미리 보기
           const src = readRGB();
           const big = document.createElement('canvas');
-          big.width = big.height = SIZE;
+          const W = dims.cols, H = dims.rows;
+          big.width = W;
+          big.height = H;
           const bctx = big.getContext('2d');
-          const img = bctx.createImageData(SIZE, SIZE);
+          const img = bctx.createImageData(W, H);
           for (const cv of menu.querySelectorAll('canvas[data-thumb]')) {
             const res = runFilter(FILTERS.find((x) => x.id === cv.dataset.thumb), src);
-            for (let i = 0; i < N; i++) {
-              img.data[i * 4] = res.R[i];
-              img.data[i * 4 + 1] = res.G[i];
-              img.data[i * 4 + 2] = res.B[i];
-              img.data[i * 4 + 3] = 255;
+            for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+              const i = y * STRIDE + x, p = (y * W + x) * 4;
+              img.data[p] = res.R[i];
+              img.data[p + 1] = res.G[i];
+              img.data[p + 2] = res.B[i];
+              img.data[p + 3] = 255;
             }
             bctx.putImageData(img, 0, 0);
             const ctx = cv.getContext('2d');
@@ -5684,11 +6024,13 @@
       const SAT_MIN = -1, SAT_MAX = 3;
       const SAT_CH = [['R', '#d13438'], ['G', '#13a10e'], ['B', '#0f6cbd']];
       const RGB = ['R', 'G', 'B'];
+      var SAT_READY = false;   // setDims가 sat보다 먼저 불릴 수 있어서 (var는 미리 선언됨)
       const sat = {
-        open: false, a: 1, p: 128, lum: false, where: '이미지 전체', idx: null, mask: null, pick: 75 * SIZE + 75,
+        open: false, a: 1, p: 128, lum: false, where: '이미지 전체', idx: null, mask: null, pick: 75 * STRIDE + 75,
         src: null, before: null, fBefore: null, entry: null,   // src = 처음 숫자(0~255), before·fBefore = 되돌릴 값·수식, entry = 되돌리기 기록
         srcImg: null, outImg: null, geo: null, play: 0, dir: 1, last: 0, drag: false,
       };
+      SAT_READY = true;
 
       const satP = (r, g, b) => (sat.lum ? lum(r, g, b) : sat.p);
       const satNum = (x, d = 2) => { const v = Number(x.toFixed(d)); return (v < 0 ? '−' : '') + Math.abs(v); };
@@ -5703,17 +6045,21 @@
         return s;
       }
 
-      // 사진 → 150×150 (가운데를 정사각형으로 잘라 줄이기)
+      // 사진 → 지금 시트 크기(가로×세로). 가운데를 시트 비율로 잘라 줄이고, sheetIndices() 순서로 돌려줌
       function satFromImage(img) {
+        const W = dims.cols, H = dims.rows;
         const cv = document.createElement('canvas');
-        cv.width = cv.height = SIZE;
+        cv.width = W;
+        cv.height = H;
         const ctx = cv.getContext('2d');
-        const s = Math.min(img.naturalWidth, img.naturalHeight);
+        const iw = img.naturalWidth, ih = img.naturalHeight, ratio = W / H;
+        const sw = Math.min(iw, ih * ratio), sh = sw / ratio;
         ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, SIZE, SIZE);
-        const d = ctx.getImageData(0, 0, SIZE, SIZE).data;   // file://로 연 예시 사진은 여기서 보안 오류가 날 수 있음
-        const out = { R: new Float64Array(N), G: new Float64Array(N), B: new Float64Array(N) };
-        for (let i = 0; i < N; i++) {
+        ctx.drawImage(img, (iw - sw) / 2, (ih - sh) / 2, sw, sh, 0, 0, W, H);
+        const d = ctx.getImageData(0, 0, W, H).data;   // file://로 연 예시 사진은 여기서 보안 오류가 날 수 있음
+        const n = W * H;
+        const out = { R: new Float64Array(n), G: new Float64Array(n), B: new Float64Array(n) };
+        for (let i = 0; i < n; i++) {
           out.R[i] = d[i * 4];
           out.G[i] = d[i * 4 + 1];
           out.B[i] = d[i * 4 + 2];
@@ -5801,7 +6147,7 @@
 
       // 고른 칸 표시 (흰 테두리 + 검은 테두리)
       function satMarker(ctx) {
-        const x = sat.pick % SIZE, y = Math.floor(sat.pick / SIZE);
+        const x = sat.pick % STRIDE, y = Math.floor(sat.pick / STRIDE);
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#000';
         ctx.strokeRect(x - 3.5, y - 3.5, 8, 8);
@@ -5816,9 +6162,9 @@
           frame.textContent = '';
           cv = document.createElement('canvas');
           cv.className = 'sat-cv';
-          cv.width = cv.height = SIZE;
           frame.appendChild(cv);
         }
+        if (cv.width !== dims.cols || cv.height !== dims.rows) { cv.width = dims.cols; cv.height = dims.rows; }   // 시트 크기 = 그림 크기
         return cv.getContext('2d');
       }
 
@@ -5826,11 +6172,12 @@
       function satRender() {
         if (!sat.open || !sat.src) return;
         const sctx = satFrame(els.beforeFrame), octx = satFrame(els.afterFrame);
-        if (!sat.srcImg) { sat.srcImg = sctx.createImageData(SIZE, SIZE); sat.outImg = octx.createImageData(SIZE, SIZE); }
+        if (!sat.srcImg || sat.srcImg.width !== dims.cols || sat.srcImg.height !== dims.rows) { sat.srcImg = sctx.createImageData(dims.cols, dims.rows); sat.outImg = octx.createImageData(dims.cols, dims.rows); }
         const sd = sat.srcImg.data, od = sat.outImg.data, px = [0, 0, 0];
         const { R, G, B, A } = sat.src;
-        for (let i = 0; i < N; i++) {
-          const q = i * 4;
+        const W = dims.cols, H = dims.rows;
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+          const i = y * STRIDE + x, q = (y * W + x) * 4;
           satCompute(i, px);
           sd[q] = R[i]; sd[q + 1] = G[i]; sd[q + 2] = B[i]; sd[q + 3] = A[i];
           od[q] = px[0]; od[q + 1] = px[1]; od[q + 2] = px[2]; od[q + 3] = A[i];
@@ -6039,7 +6386,7 @@
         const i = sat.pick, v = [R[i], G[i], B[i]], out = [0, 0, 0];
         satCompute(i, out);
         const p = satP(...v), pt = satPTxt(p), at = satATxt();
-        const cell = addr(Math.floor(i / SIZE), i % SIZE);
+        const cell = addr(Math.floor(i / STRIDE), i % STRIDE);
         const outside = sat.mask && !sat.mask[i];
         const rows = SAT_CH.map(([n, col], k) => {
           const raw = p + sat.a * (v[k] - p);
@@ -6180,10 +6527,10 @@
       // Canvas 시트의 그림을 누르면 그 칸을 고름
       function satPickAt(e, cv) {
         const r = cv.getBoundingClientRect();
-        const x = clamp(Math.floor((e.clientX - r.left) / r.width * SIZE), 0, SIZE - 1);
-        const y = clamp(Math.floor((e.clientY - r.top) / r.height * SIZE), 0, SIZE - 1);
+        const x = clamp(Math.floor((e.clientX - r.left) / r.width * dims.cols), 0, dims.cols - 1);
+        const y = clamp(Math.floor((e.clientY - r.top) / r.height * dims.rows), 0, dims.rows - 1);
         if (isData(state.current)) { selectCell(y, x); return; }   // selectionChanged가 그래프를 다시 그림
-        sat.pick = y * SIZE + x;
+        sat.pick = y * STRIDE + x;
         satRender();
       }
       for (const frame of [els.afterFrame, els.beforeFrame]) {
@@ -6196,7 +6543,7 @@
       // 시트에서 셀을 고르면 그 칸을 그래프에 표시
       function satFollowSelection() {
         if (!sat.open || !sat.src || !isData(state.current)) return;
-        const v = view(), k = v.active.r * SIZE + v.active.c;
+        const v = view(), k = v.active.r * STRIDE + v.active.c;
         if (k === sat.pick) return;
         sat.pick = k;
         satRender();
@@ -6213,11 +6560,11 @@
           els.satErr.textContent = err.name === 'SecurityError'
             ? '파일을 직접 열면 브라우저 보안 때문에 예시 사진을 읽을 수 없습니다. [내 사진...]으로 nature.jpg를 골라 주세요.'
             : name === '예시 사진'
-              ? '예시 사진(nature.jpg)을 찾지 못했습니다. index.html과 같은 폴더에 있는지 확인하거나 [내 사진...]을 써 주세요.'
+              ? '예시 사진(nature.jpg)을 찾지 못했습니다. 이 페이지와 같은 폴더에 있는지 확인하거나 [내 사진...]을 써 주세요.'
               : '사진을 열지 못했습니다. JPG나 PNG 파일을 골라 주세요.';
           return;
         }
-        const all = Int32Array.from({ length: N }, (_, i) => i);
+        const all = sheetIndices();
         applyChanges(RGB.map((s) => ({ sheet: s, idx: all, vals: src[s], fs: null })), `${name} 숫자 넣기`);
         satRebase();
         if (state.current === 'guide') switchSheet('R');
@@ -6299,6 +6646,14 @@
       }
 
       // 되돌리기·다시 실행 뒤: 대비 그래프 기록이면 그 a로, 아니면 처음 숫자를 다시 잡음
+      // 시트(=이미지) 크기가 바뀌면: '이미지 전체'로 열었던 작업창은 새 크기 전체로, 그림도 새 크기로
+      function satDimsChanged() {
+        if (!SAT_READY || !sat.open) return;
+        if (sat.where === '이미지 전체') sat.idx = sheetIndices();
+        sat.srcImg = null;
+        satRebase(true);
+      }
+
       function satAfterReplay() {
         if (!sat.open) return;
         const e = sat.entry;
@@ -6311,7 +6666,7 @@
       // 시트를 바꾸면 그 시트의 활성 셀을 그래프에 표시
       function satPaneMode() {
         if (!sat.open) return;
-        if (isData(state.current)) sat.pick = view().active.r * SIZE + view().active.c;
+        if (isData(state.current)) sat.pick = view().active.r * STRIDE + view().active.c;
         satRender();
       }
 
@@ -6327,13 +6682,13 @@
         // 여러 칸을 골랐으면 그 칸만 바꿈
         const scope = filterTargets();
         sat.where = scope ? `${selAddr(view())} 영역` : '이미지 전체';
-        sat.idx = scope ? Int32Array.from(scope) : Int32Array.from({ length: N }, (_, i) => i);
+        sat.idx = scope ? Int32Array.from(scope) : sheetIndices();
         sat.mask = null;
         if (scope) {
-          sat.mask = new Uint8Array(N);
+          sat.mask = new Uint8Array(NCAP);
           for (const k of scope) sat.mask[k] = 1;
         }
-        if (isData(state.current)) sat.pick = view().active.r * SIZE + view().active.c;
+        if (isData(state.current)) sat.pick = view().active.r * STRIDE + view().active.c;
         if (scope && !sat.mask[sat.pick]) sat.pick = scope[0];
         sat.open = true;
         els.satPanel.hidden = false;
@@ -6436,11 +6791,14 @@
       function fillFrame(frame, url, alt, emptyText) {
         frame.textContent = '';
         if (url) {
-          const img = new Image(SIZE, SIZE);
+          const img = new Image();
+          // 가로·세로가 다른 이미지도 비율대로 보이게
+          img.onload = () => { frame.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`; };
           img.src = url;
           img.alt = alt;
           frame.appendChild(img);
         } else {
+          frame.style.aspectRatio = '';
           const p = document.createElement('p');
           p.className = 'pic-empty';
           p.textContent = emptyText;
@@ -6623,7 +6981,7 @@
       function addSheet() {
         commitEdit();
         const id = 'S' + (++sheetSeq);
-        const rec = { id, name: newSheetName(), pos: workSheets().length, view: null, data: new Float64Array(N).fill(NaN), formulas: new Map(), rules: [] };
+        const rec = { id, name: newSheetName(), pos: workSheets().length, view: null, data: new Float64Array(NCAP).fill(NaN), formulas: new Map(), rules: [] };
         mountSheet(rec);
         pushHistory({ kind: 'sheet', op: 'add', before: null, after: rec, label: `'${rec.name}' 시트 추가` });
         updateUndoButtons();
@@ -6857,6 +7215,7 @@
       });
 
       // ===== 시작 =====
+      updateSizeInfo();
       buildCfUI();
       updateSpacer();
       renderTabs();
